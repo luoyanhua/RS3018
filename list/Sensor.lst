@@ -1,0 +1,160 @@
+C51 COMPILER V9.54   SENSOR                                                                02/20/2022 16:48:15 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
+OBJECT MODULE PLACED IN .\list\Sensor.obj
+COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE Sensor.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\
+                    -Sensor.lst) TABS(2) OBJECT(.\list\Sensor.obj)
+
+line level    source
+
+   1          /*---------------------------------------------------------------------*/
+   2          /* --- STC MCU Limited ------------------------------------------------*/
+   3          /* --- STC 1T Series MCU Demo Programme -------------------------------*/
+   4          /* --- Mobile: (86)13922805190 ----------------------------------------*/
+   5          /* --- Fax: 86-0513-55012956,55012947,55012969 ------------------------*/
+   6          /* --- Tel: 86-0513-55012928,55012929,55012966 ------------------------*/
+   7          /* --- Web: www.STCMCU.com --------------------------------------------*/
+   8          /* --- Web: www.STCMCUDATA.com  ---------------------------------------*/
+   9          /* --- QQ:  800003751 -------------------------------------------------*/
+  10          /* »Áπ˚“™‘⁄≥Ã–Ú÷– π”√¥À¥˙¬Î,«Î‘⁄≥Ã–Ú÷–◊¢√˜ π”√¡ÀSTCµƒ◊ ¡œº∞≥Ã–Ú            */
+  11          /*---------------------------------------------------------------------*/
+  12          
+  13          #include "Sensor.h"
+  14          #include "timer.h"
+  15          #include "Beep.h"
+  16          #include "Exti.h"
+  17          
+  18          #define START_SEND_STATE 0
+  19          #define WAIT_SEND_END_STATE 1
+  20          #define START_SELF_CHECK_STATE 2
+  21          #define START_METER_STATE 3
+  22          #define SENSOR_ERR_STATE 4
+  23          
+  24          bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0; sendMode = 0;
+  25          unsigned char SendContinuePlusState = 0;
+  26          unsigned int SendContinuePlusTimeCnt = 0;
+  27          unsigned int meterDistance = 0; //µ•Œª «mm
+  28          
+  29          //ªÒ»°≤‚ ‘æ‡¿Î÷µ
+  30          unsigned int Get_meterDistance(void)
+  31          {
+  32   1        return meterDistance;
+  33   1      }
+  34          
+  35          //ªÒ»°¥´∏–∆˜◊¥Ã¨
+  36          bit Get_sensorOkFlag(void)
+  37          {
+  38   1        return sensorOkFlag;
+  39   1      }
+  40          
+  41          //ªÒ»°»ŒŒÒ◊¥Ã¨
+  42          bit Get_SendOncePlusTaskFlag(void)
+  43          {
+  44   1        return SendOncePlusTaskFlag;
+  45   1      }
+  46          
+  47          //ªÒ»°¥Ê‘⁄’œ∞≠ŒÔ◊¥Ã¨
+  48          bit Get_obstaclesExistenceFlag(void)
+  49          {
+  50   1        return obstaclesExistenceFlag;
+  51   1      }
+  52          
+  53          //◊º±∏ø™ º≤‚ ‘£¨≥ı ºªØœ‡πÿ≤Œ ˝
+  54          void Start_sendOncePlusTask(void)
+C51 COMPILER V9.54   SENSOR                                                                02/20/2022 16:48:15 PAGE 2   
+
+  55          {
+  56   1        SendOncePlusTaskFlag = 1;
+  57   1        SendContinuePlusState = 0;
+  58   1      }
+  59          
+  60          //sendMode 0:◊‘ºÏƒ£ Ω 1:’˝≥£≤‚ ‘ƒ£ Ω
+  61          //µ•¥Œ∑¢ÀÕ¬ˆ≥Â»∫»ŒŒÒ
+  62          void SendOncePlusTask(void)
+  63          {
+  64   1        if (SendOncePlusTaskFlag == 0)
+  65   1          return;
+  66   1        switch (SendContinuePlusState)
+  67   1        {
+  68   2        case START_SEND_STATE:
+  69   2          Start_SendPlus(); //∑¢ÀÕ≥¨…˘≤®
+  70   2          SendContinuePlusState = 1;
+  71   2          break;
+  72   2        case WAIT_SEND_END_STATE:
+  73   2          if (Get_plusOutFlag() == 0) //µ»¥˝∑¢ÀÕÕÍ≥…
+  74   2          {
+  75   3            SendContinuePlusTimeCnt = Get_RecvPlusTimerCnt(); //µ•Œª12.5us
+  76   3            if (sendMode == 0)
+  77   3            {
+  78   4              Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
+  79   4              SendContinuePlusState = START_SELF_CHECK_STATE;
+  80   4            }
+  81   3            else
+  82   3            {
+  83   4              if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 96) //1.2ms∫Ûø™ ºº∆À„æ‡¿Î
+  84   4              {
+  85   5                Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
+  86   5                SendContinuePlusState = START_METER_STATE;
+  87   5              }
+  88   4            }
+  89   3          }
+  90   2          break;
+  91   2        case START_SELF_CHECK_STATE:
+  92   2          if (Get_recvPlusFlag() == 0) //»Áπ˚Ω” ’ÕÍ≥…£¨øœ∂® ’µΩ≤®–Œ
+  93   2          {
+  94   3            sendMode = 1;
+  95   3            sensorOkFlag = 1;
+  96   3            StartBeepAlarm(500);    //’˝≥£ ’µΩ∑µªÿ–≈∫≈  0.5S
+  97   3            SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
+  98   3          }
+  99   2          else if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 80) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–
+             -Œ£¨‘Ú≈–∂œ «∑Ò≥¨ ±
+ 100   2          {
+ 101   3            sensorOkFlag = 0;
+ 102   3            meterDistance = 0;      //π ’œ£¨÷ÿ–¬≤‚æ‡
+ 103   3            StartBeepAlarm(2000);   //√ª”– ’µΩ∑µªÿ–≈∫≈£¨π ’œ  2S
+ 104   3            SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
+ 105   3          }
+ 106   2          break;
+ 107   2        case START_METER_STATE:
+ 108   2          if (Get_recvPlusFlag() == 0) // ’µΩ≤®–Œ£¨ø™ ºº∆À„æ‡¿Î
+ 109   2          {
+ 110   3            meterDistance = get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) * 40 * 340; // ±º‰
+             -*40◊™ªØŒ¥0.5ms£¨∏’∫√ «“ª∞Î¬∑≥Ãµƒ ±º‰
+ 111   3            if (meterDistance < 250)                                     //◊Ó∂Ãæ‡¿Î0.25√◊
+ 112   3            {
+ 113   4              meterDistance = 0;
+ 114   4            }
+C51 COMPILER V9.54   SENSOR                                                                02/20/2022 16:48:15 PAGE 3   
+
+ 115   3            obstaclesExistenceFlag = 1;
+ 116   3            SendOncePlusTaskFlag = 0;
+ 117   3          }
+ 118   2          //◊Ó‘∂3√◊£¨¥Û∏≈ «17.6ms£¨‘›∂®50ms
+ 119   2          else if (get_time_escape_sec(Get_SysHalfMsTick(), SendContinuePlusTimeCnt) >= 4000) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ
+             -£¨‘Ú≈–∂œ «∑Ò≥¨ ±
+ 120   2          {
+ 121   3            //∑¢ÀÕŒﬁ’œ∞≠ŒÔ ˝æ›
+ 122   3            obstaclesExistenceFlag = 0;
+ 123   3            SendOncePlusTaskFlag = 0; //“ª¥Œ≤‚ ‘Ω· ¯£¨Œ¥ ’µΩ∑µªÿ≤®–Œ
+ 124   3          }
+ 125   2          break;
+ 126   2        default:
+ 127   2          break;
+ 128   2        }
+ 129   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    237    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

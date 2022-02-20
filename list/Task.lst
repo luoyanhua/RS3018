@@ -1,0 +1,120 @@
+C51 COMPILER V9.54   TASK                                                                  02/20/2022 16:48:15 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TASK
+OBJECT MODULE PLACED IN .\list\Task.obj
+COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE Task.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ta
+                    -sk.lst) TABS(2) OBJECT(.\list\Task.obj)
+
+line level    source
+
+   1          /*---------------------------------------------------------------------*/
+   2          /* --- STC MCU Limited ------------------------------------------------*/
+   3          /* --- STC 1T Series MCU Demo Programme -------------------------------*/
+   4          /* --- Mobile: (86)13922805190 ----------------------------------------*/
+   5          /* --- Fax: 86-0513-55012956,55012947,55012969 ------------------------*/
+   6          /* --- Tel: 86-0513-55012928,55012929,55012966 ------------------------*/
+   7          /* --- Web: www.STCMCU.com --------------------------------------------*/
+   8          /* --- Web: www.STCMCUDATA.com  ---------------------------------------*/
+   9          /* --- QQ:  800003751 -------------------------------------------------*/
+  10          /* 如果要在程序中使用此代码,请在程序中注明使用了STC的资料及程序            */
+  11          /*---------------------------------------------------------------------*/
+  12          
+  13          #include "Task.h"
+  14          #include "timer.h"
+  15          #include "Beep.h"
+  16          #include "Task.h"
+  17          #include "Sensor.h"
+  18          #include "UART.h"
+  19          #include "stdio.h"
+  20          
+  21          unsigned char appTaskState = 0;
+  22          unsigned int appTaskTimeCnt = 0;
+  23          
+  24          void AppTask(void)
+  25          {
+  26   1          switch (appTaskState)
+  27   1          {
+  28   2          case 0: //发送PWM 0.5S 用来确认位置信号
+  29   2              StartBeepAlarm(500);
+  30   2              appTaskTimeCnt = Get_SysHalfMsTick();
+  31   2              appTaskState = 1;
+  32   2              break;
+  33   2          case 1: //Sensor ID会收到自己发的信号
+  34   2              if (P10 == 0)
+  35   2              {
+  36   3            PrintString1("recv ID!\r\n"); //UART1发送一个字符串
+  37   3                  appTaskState = 2;
+  38   3              }
+  39   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) //10ms超时后继续往下进行
+  40   2              {
+  41   3                  appTaskState = 2;
+  42   3              }
+  43   2              break;
+  44   2          case 2: //开机探头自检
+  45   2              Start_sendOncePlusTask();
+  46   2              appTaskState = 3;
+  47   2              break;
+  48   2          case 3: //获取探头自检结果
+  49   2              if (Get_SendOncePlusTaskFlag() == 0)
+  50   2              {
+  51   3                  if (Get_sensorOkFlag())
+  52   3                  {
+  53   4              PrintString1("sensor is ok!\r\n"); //UART1发送一个字符串
+  54   4                      appTaskState = 4; //检测到探头
+C51 COMPILER V9.54   TASK                                                                  02/20/2022 16:48:15 PAGE 2   
+
+  55   4                  }
+  56   3                  else
+  57   3                  {
+  58   4              PrintString1("No sensor!\r\n"); //UART1发送一个字符串
+  59   4                      appTaskState = 0; //无探头从头开始
+  60   4                  }
+  61   3              }
+  62   2              break;
+  63   2          case 4: //开始测距结果
+  64   2              Start_sendOncePlusTask();
+  65   2              appTaskTimeCnt = Get_SysHalfMsTick();
+  66   2              appTaskState = 5;
+  67   2              break;
+  68   2          case 5: //判断是否有障碍物
+  69   2              if (Get_SendOncePlusTaskFlag() == 0)
+  70   2              {
+  71   3                  if (Get_obstaclesExistenceFlag()) //有障碍物
+  72   3                  {
+  73   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) //50ms测试一次
+  74   4                      {
+  75   5                PrintString1("there is obstacle!\r\n"); //UART1发送一个字符串
+  76   5                printf("d=%d mm",Get_meterDistance());
+  77   5                          appTaskState = 4;
+  78   5                      }
+  79   4                  }
+  80   3                  else //没有障碍物
+  81   3                  {
+  82   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) //200ms测试一次
+  83   4                      {
+  84   5                          //获取测试距离
+  85   5                PrintString1("No obstacles!\r\n"); //UART1发送一个字符串
+  86   5                          appTaskState = 4;
+  87   5                      }
+  88   4                  }
+  89   3              }
+  90   2              break;
+  91   2          default:
+  92   2              break;
+  93   2          }
+  94   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    223    ----
+   CONSTANT SIZE    =     85    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

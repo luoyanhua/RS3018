@@ -1,0 +1,12 @@
+".\list\delay.obj",
+".\list\main.obj",
+".\list\GPIO.obj",
+".\list\UART.obj",
+".\list\WDT.obj",
+".\list\timer.obj",
+".\list\Beep.obj",
+".\list\Exti.obj",
+".\list\Sensor.obj",
+".\list\Task.obj" 
+TO ".\list\PCA-CAP" 
+PRINT(".\list\PCA-CAP.m51") RAMSIZE(256) 

@@ -1,0 +1,65 @@
+C51 COMPILER V9.54   TEST                                                                  02/19/2022 17:09:30 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\list\Test.obj
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Test.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Te
+                    -st.lst) OBJECT(.\list\Test.obj)
+
+line level    source
+
+   1          /*---------------------------------------------------------------------*/
+   2          /* --- STC MCU Limited ------------------------------------------------*/
+   3          /* --- STC 1T Series MCU Demo Programme -------------------------------*/
+   4          /* --- Mobile: (86)13922805190 ----------------------------------------*/
+   5          /* --- Fax: 86-0513-55012956,55012947,55012969 ------------------------*/
+   6          /* --- Tel: 86-0513-55012928,55012929,55012966 ------------------------*/
+   7          /* --- Web: www.STCMCU.com --------------------------------------------*/
+   8          /* --- Web: www.STCMCUDATA.com  ---------------------------------------*/
+   9          /* --- QQ:  800003751 -------------------------------------------------*/
+  10          /* 如果要在程序中使用此代码,请在程序中注明使用了STC的资料及程序            */
+  11          /*---------------------------------------------------------------------*/
+  12          
+  13          #include        "Task.h"
+*** WARNING C318 IN LINE 13 OF Test.c: can't open file 'Task.h'
+  14          #include        "timer.h"
+  15          #include        "PCA.h"
+  16          #include        "Beep.h"
+  17          #include        "test.h"
+  18          
+  19          u8 TestState = 0;
+  20          unsigned int TestTimeCnt = 0;
+  21          
+  22          void TestTask(void)
+  23          {
+  24   1      //      switch(TestState)
+  25   1      //      {
+  26   1      //              case 0:
+  27   1      //                      TestTimeCnt = Get_SysHalfMsTick();
+  28   1      //                      TestState = 1;
+  29   1      //                      break;
+  30   1      //              case 1:
+  31   1      //                      if(get_time_escape_sec(Get_SysHalfMsTick(), TestTimeCnt)%5000 == 0)
+  32   1      //                      {
+  33   1      //                              StartSendPlus();
+  34   1      //                              TestState = 0;
+  35   1      //                      }
+  36   1      //                      break;                  
+  37   1      //              default:
+  38   1      //                      break;
+  39   1      //      }
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      1    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
