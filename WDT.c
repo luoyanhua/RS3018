@@ -10,7 +10,7 @@
 /* 如果要在程序中使用此代码,请在程序中注明使用了STC的资料及程序            */
 /*---------------------------------------------------------------------*/
 
-#include	"WDT.h"
+#include "WDT.h"
 
 //========================================================================
 // 函数: void WDT_Inilize(WDT_InitTypeDef *WDT)
@@ -21,15 +21,18 @@
 //========================================================================
 void WDT_Inilize(WDT_InitTypeDef *WDT)
 {
-	if(WDT->WDT_Enable == ENABLE)		WDT_CONTR = D_EN_WDT;	//使能看门狗
+	if (WDT->WDT_Enable == ENABLE)
+		WDT_CONTR = D_EN_WDT; //使能看门狗
 
-	WDT_PS_Set(WDT->WDT_PS);	//看门狗定时器时钟分频系数		WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
-	if(WDT->WDT_IDLE_Mode == WDT_IDLE_STOP)	WDT_CONTR &= ~0x08;	//IDLE模式停止计数
-	else									WDT_CONTR |= 0x08;	//IDLE模式继续计数
+	WDT_PS_Set(WDT->WDT_PS); //看门狗定时器时钟分频系数		WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
+	if (WDT->WDT_IDLE_Mode == WDT_IDLE_STOP)
+		WDT_CONTR &= ~0x08; //IDLE模式停止计数
+	else
+		WDT_CONTR |= 0x08; //IDLE模式继续计数
 }
 
 /********************* 清除看门狗函数 *************************/
-void WDT_Clear (void)
+void WDT_Clear(void)
 {
-	WDT_CONTR |= D_CLR_WDT;    // 喂狗
+	WDT_CONTR |= D_CLR_WDT; // 喂狗
 }

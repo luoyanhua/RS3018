@@ -15,6 +15,6 @@
 
 #include	"config.h"
 
-void  delay_ms(u8 ms);
+void Delay208us(void);
 
 #endif

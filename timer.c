@@ -26,6 +26,33 @@ unsigned char plusOutCnt = 0; //80K中断计数
 
 unsigned int recvPlusTimerCnt = 0;
 
+unsigned char plusAdjustState = 0;
+
+void PlusAdjust(void)
+{
+	switch (plusAdjustState)
+	{
+	case 0:
+		P36 = 1;
+		plusAdjustState = 1;
+		break;
+	case 1:
+		if (plusOutCnt > (PLUS_MAX * 2))
+		{
+			plusOutCnt = 0;
+			plusOutFlag = 0;
+			plusAdjustState = 0;
+		}
+		else
+		{
+			P36 = ~P36;
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 /********************* Timer0中断函数************************/
 void timer0_int(void) interrupt TIMER0_VECTOR
 {
@@ -36,20 +63,14 @@ void timer0_int(void) interrupt TIMER0_VECTOR
 	if (plusOutFlag == 0)
 		return;
 	plusOutCnt++;
-	if (plusOutCnt >= (PLUS_MAX * 2))
-	{
-		plusOutCnt = 0;
-		plusOutFlag = 0;
-	}
-	else
-	{
-		P11 = ~P11;
-	}
+	PlusAdjust();
 }
 
 void Start_SendPlus(void)
 {
 	plusOutFlag = 1;
+	plusOutCnt = 0;
+	plusAdjustState = 0;
 }
 
 bit Get_plusOutFlag(void)

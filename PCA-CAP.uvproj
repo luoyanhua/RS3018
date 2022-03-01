@@ -379,11 +379,6 @@
               <FilePath>.\GPIO.c</FilePath>
             </File>
             <File>
-              <FileName>UART.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UART.C</FilePath>
-            </File>
-            <File>
               <FileName>WDT.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\WDT.c</FilePath>
@@ -412,6 +407,11 @@
               <FileName>Task.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Task.c</FilePath>
+            </File>
+            <File>
+              <FileName>Uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Uart.c</FilePath>
             </File>
           </Files>
         </Group>

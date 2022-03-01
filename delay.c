@@ -16,7 +16,8 @@
 
 ******************************************/
 
-#include	"delay.h"
+#include "delay.h"
+#include "timer.h"
 
 //========================================================================
 // 函数: void delay_ms(u8 ms)
@@ -25,15 +26,13 @@
 // 返回: none.
 // 版本: VER1.0
 // 日期: 2021-3-9
-// 备注: 
+// 备注:
 //========================================================================
-#if 0
-void delay_ms(u8 ms)
+
+unsigned int delayCnt = 0;
+
+void Delay208us(void)		//@12.000MHz
 {
-	unsigned int i;
-	do{
-		i = MAIN_Fosc / 10000;
-		while(--i);
-	}while(--ms);
+	delayCnt = Get_RecvPlusTimerCnt();
+	while(get_time_escape_sec(Get_RecvPlusTimerCnt(),delayCnt) <= 16);			//12.5*17 = 212.5
 }
-#endif

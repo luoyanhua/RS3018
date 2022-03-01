@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   MAIN                                                                  02/20/2022 16:48:14 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  03/01/2022 19:48:48 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\list\main.obj
-COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\ma
-                    -in.lst) TABS(2) OBJECT(.\list\main.obj)
+COMPILER INVOKED BY: D:\Program Files\keil_C51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
+                    -.\list\main.lst) OBJECT(.\list\main.obj)
 
 line level    source
 
@@ -42,149 +42,120 @@ line level    source
   31          
   32          ******************************************/
   33          
-  34          /*************  ±æµÿ≥£¡ø…˘√˜  **************/
+  34          /*************  ±æµÿ≥£¡ø…˘√˜    **************/
   35          
-  36          /*************  ±æµÿ±‰¡ø…˘√˜  **************/
+  36          /*************  ±æµÿ±‰¡ø…˘√˜    **************/
   37          
-  38          /*************  ±æµÿ∫Ø ˝…˘√˜  **************/
+  38          /*************  ±æµÿ∫Ø ˝…˘√˜    **************/
   39          
   40          /*************  Õ‚≤ø∫Ø ˝∫Õ±‰¡ø…˘√˜ *****************/
   41          
   42          /******************** IOø⁄≈‰÷√ ********************/
   43          void GPIO_config(void)
   44          {
-  45   1        GPIO_InitTypeDef GPIO_InitStructure; //Ω·ππ∂®“Â
+  45   1              GPIO_InitTypeDef GPIO_InitStructure; //Ω·ππ∂®“Â
   46   1      
-  47   1        GPIO_InitStructure.Pin = GPIO_Pin_All;    //÷∏∂®“™≥ı ºªØµƒIO, GPIO_Pin_0 ~ GPIO_Pin_7, ªÚ≤Ÿ◊˜
-  48   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //÷∏∂®IOµƒ ‰»ÎªÚ ‰≥ˆ∑Ω Ω,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+  47   1              GPIO_InitStructure.Pin = GPIO_Pin_All;          //÷∏∂®“™≥ı ºªØµƒIO, GPIO_Pin_0 ~ GPIO_Pin_7, ªÚ≤Ÿ◊˜
+  48   1              GPIO_InitStructure.Mode = GPIO_PullUp;          //÷∏∂®IOµƒ ‰»ÎªÚ ‰≥ˆ∑Ω Ω,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  49   1        GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //≥ı ºªØ
+  49   1              GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //≥ı ºªØ
   50   1      
-  51   1        GPIO_InitStructure.Pin = GPIO_Pin_All;    //÷∏∂®“™≥ı ºªØµƒIO, GPIO_Pin_0 ~ GPIO_Pin_7, ªÚ≤Ÿ◊˜
-  52   1        GPIO_InitStructure.Mode = GPIO_OUT_PP;    //÷∏∂®IOµƒ ‰»ÎªÚ ‰≥ˆ∑Ω Ω,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
-C51 COMPILER V9.54   MAIN                                                                  02/20/2022 16:48:14 PAGE 2   
+  51   1              GPIO_InitStructure.Pin = GPIO_Pin_All;          //÷∏∂®“™≥ı ºªØµƒIO, GPIO_Pin_0 ~ GPIO_Pin_7, ªÚ≤Ÿ◊˜
+  52   1              GPIO_InitStructure.Mode = GPIO_PullUp;          //÷∏∂®IOµƒ ‰»ÎªÚ ‰≥ˆ∑Ω Ω,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+C51 COMPILER V9.54   MAIN                                                                  03/01/2022 19:48:48 PAGE 2   
 
              -OUT_PP
-  53   1        GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //≥ı ºªØ
+  53   1              GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //≥ı ºªØ
   54   1      }
   55          
   56          /***************  ¥Æø⁄≥ı ºªØ∫Ø ˝ *****************/
   57          void UART_config(void)
   58          {
-  59   1        COMx_InitDefine COMx_InitStructure; //Ω·ππ∂®“Â
-  60   1      
-  61   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;   //ƒ£ Ω,       UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UA
-             -RT_9bit_BRTx
-  62   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer1;  //—°‘Ò≤®Ãÿ¬ ∑¢…˙∆˜,   BRT_Timer1, BRT_Timer2 (◊¢“‚: ¥Æø⁄2π
-             -Ã∂® π”√BRT_Timer2)
-  63   1        COMx_InitStructure.UART_BaudRate = 115200UL;   //≤®Ãÿ¬ , “ª∞„ 110 ~ 115200
-  64   1        COMx_InitStructure.UART_RxEnable = ENABLE;     //Ω” ’‘ –Ì,   ENABLEªÚDISABLE
-  65   1        COMx_InitStructure.BaudRateDouble = DISABLE;   //≤®Ãÿ¬ º”±∂, ENABLEªÚDISABLE
-  66   1        COMx_InitStructure.UART_Interrupt = ENABLE;    //÷–∂œ‘ –Ì,   ENABLEªÚDISABLE
-  67   1        COMx_InitStructure.UART_Priority = Priority_0;   //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2
-             -,Priority_3
-  68   1        COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31; //«–ªª∂Àø⁄,   UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW
-             -_P16_P17,UART1_SW_P43_P44
-  69   1        UART_Configuration(UART1, &COMx_InitStructure);  //≥ı ºªØ¥Æø⁄1 UART1,UART2,UART3,UART4
-  70   1      
-  71   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;   //ƒ£ Ω,       UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UA
-             -RT_9bit_BRTx
-  72   1                                 // COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;     //—°‘Ò≤®Ãÿ¬ ∑¢…˙∆˜,   BRT_Timer1, BRT_T
-             -imer2 (◊¢“‚: ¥Æø⁄2πÃ∂® π”√BRT_Timer2)
-  73   1        COMx_InitStructure.UART_BaudRate = 4800UL;     //≤®Ãÿ¬ , “ª∞„ 110 ~ 115200
-  74   1        COMx_InitStructure.UART_RxEnable = DISABLE;    //Ω” ’‘ –Ì,   ENABLEªÚDISABLE
-  75   1        COMx_InitStructure.BaudRateDouble = DISABLE;   //≤®Ãÿ¬ º”±∂, ENABLEªÚDISABLE
-  76   1        COMx_InitStructure.UART_Interrupt = DISABLE;   //÷–∂œ‘ –Ì,   ENABLEªÚDISABLE
-  77   1        COMx_InitStructure.UART_Priority = Priority_0;   //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2
-             -,Priority_3
-  78   1        COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11; //«–ªª∂Àø⁄, UART2_SW_P10_P11,UART2_SW_P46_P47
-  79   1        UART_Configuration(UART2, &COMx_InitStructure);  //≥ı ºªØ¥Æø⁄1 UART1,UART2,UART3,UART4
-  80   1      
-  81   1        PrintString1("STC8 UART1 OK!\r\n"); //UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  82   1        PrintString2("STC8 UART2 OK!\r\n"); //UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  83   1      }
-  84          
-  85          /************************ ∂® ±∆˜≈‰÷√ ****************************/
-  86          void Timer_config(void)
-  87          {
-  88   1        TIM_InitTypeDef TIM_InitStructure;                 //Ω·ππ∂®“Â
-  89   1        TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;        //÷∏∂®π§◊˜ƒ£ Ω,   TIM_16BitAutoReload,TIM_16Bit,TI
+  59   1      }
+  60          
+  61          /************************ ∂® ±∆˜≈‰÷√ ****************************/
+  62          void Timer_config(void)
+  63          {
+  64   1              TIM_InitTypeDef TIM_InitStructure;                                                         //Ω·ππ∂®“Â
+  65   1              TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;                          //÷∏∂®π§◊˜ƒ£ Ω,   TIM_16BitAutoReload,TIM_16Bit,TI
              -M_8BitAutoReload,TIM_16BitAutoReloadNoMask
-  90   1        TIM_InitStructure.TIM_Priority = Priority_0;           //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priorit
+  66   1              TIM_InitStructure.TIM_Priority = Priority_0;                               //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priorit
              -y_2,Priority_3
-  91   1        TIM_InitStructure.TIM_Interrupt = ENABLE;            //÷–∂œ «∑Ò‘ –Ì,   ENABLEªÚDISABLE
-  92   1        TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;          //÷∏∂® ±÷”‘¥,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CL
+  67   1              TIM_InitStructure.TIM_Interrupt = ENABLE;                                          //÷–∂œ «∑Ò‘ –Ì,   ENABLEªÚDISABLE
+  68   1              TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;                            //÷∏∂® ±÷”‘¥,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CL
              -OCK_Ext
-  93   1        TIM_InitStructure.TIM_ClkOut = DISABLE;              // «∑Ò ‰≥ˆ∏ﬂÀŸ¬ˆ≥Â, ENABLEªÚDISABLE
-  94   1        TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 80000UL); //≥ı÷µ,    80KHz   12.5us÷–∂œ“ª¥Œ
-  95   1        TIM_InitStructure.TIM_Run = ENABLE;                // «∑Ò≥ı ºªØ∫Û∆Ù∂Ø∂® ±∆˜, ENABLEªÚDISABLE
-  96   1        Timer_Inilize(Timer0, &TIM_InitStructure);             //≥ı ºªØTimer0   Timer0,Timer1,Timer2,Timer3,Timer4
-  97   1      
-  98   1        TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;       //÷∏∂®π§◊˜ƒ£ Ω,   TIM_16BitAutoReload,TIM_16Bit,TIM
+  69   1              TIM_InitStructure.TIM_ClkOut = DISABLE;                                            // «∑Ò ‰≥ˆ∏ﬂÀŸ¬ˆ≥Â, ENABLEªÚDISABLE
+  70   1              TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 80000UL); //≥ı÷µ,    80KHz   12.5us÷–∂œ“ª¥Œ
+  71   1              TIM_InitStructure.TIM_Run = ENABLE;                                                        // «∑Ò≥ı ºªØ∫Û∆Ù∂Ø∂® ±∆˜, ENABLEªÚDISABLE
+  72   1              Timer_Inilize(Timer0, &TIM_InitStructure);                                         //≥ı ºªØTimer0         Timer0,Timer1,Timer2,Timer3,Timer4
+  73   1      
+  74   1              TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;                         //÷∏∂®π§◊˜ƒ£ Ω,   TIM_16BitAutoReload,TIM_16Bit,TIM
              -_8BitAutoReload,TIM_16BitAutoReloadNoMask
-  99   1        TIM_InitStructure.TIM_Priority = Priority_0;          //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority
+  75   1              TIM_InitStructure.TIM_Priority = Priority_0;                              //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority
              -_2,Priority_3
- 100   1        TIM_InitStructure.TIM_Interrupt = ENABLE;           //÷–∂œ «∑Ò‘ –Ì,   ENABLEªÚDISABLE
- 101   1        TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;         //÷∏∂® ±÷”‘¥, TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
-C51 COMPILER V9.54   MAIN                                                                  02/20/2022 16:48:14 PAGE 3   
-
+  76   1              TIM_InitStructure.TIM_Interrupt = ENABLE;                                         //÷–∂œ «∑Ò‘ –Ì,   ENABLEªÚDISABLE
+  77   1              TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;                           //÷∏∂® ±÷”‘¥, TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
              -xt
- 102   1        TIM_InitStructure.TIM_ClkOut = DISABLE;             // «∑Ò ‰≥ˆ∏ﬂÀŸ¬ˆ≥Â, ENABLEªÚDISABLE
- 103   1        TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 2000UL); //≥ı÷µ,    2KHz   0.5mS÷–∂œ“ª¥Œ
- 104   1        TIM_InitStructure.TIM_Run = ENABLE;               // «∑Ò≥ı ºªØ∫Û∆Ù∂Ø∂® ±∆˜, ENABLEªÚDISABLE
- 105   1        Timer_Inilize(Timer1, &TIM_InitStructure);            //≥ı ºªØTimer1    Timer0,Timer1,Timer2,Timer3,Timer4
- 106   1      }
- 107          
- 108          /******************** INT≈‰÷√ ********************/
- 109          void Exti_config(void)
- 110          {
- 111   1        EXTI_InitTypeDef Exti_InitStructure; //Ω·ππ∂®“Â
- 112   1      
- 113   1        Exti_InitStructure.EXTI_Interrupt = ENABLE;    //÷–∂œ πƒ‹,   ENABLEªÚDISABLE
- 114   1        Exti_InitStructure.EXTI_Mode = EXT_MODE_Fall;  //÷–∂œƒ£ Ω,   EXT_MODE_RiseFall,EXT_MODE_Fall
- 115   1        Exti_InitStructure.EXTI_Priority = Priority_0; //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2,
+  78   1              TIM_InitStructure.TIM_ClkOut = DISABLE;                                           // «∑Ò ‰≥ˆ∏ﬂÀŸ¬ˆ≥Â, ENABLEªÚDISABLE
+  79   1              TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 2000UL); //≥ı÷µ,    2KHz   0.5mS÷–∂œ“ª¥Œ
+  80   1              TIM_InitStructure.TIM_Run = ENABLE;                                                       // «∑Ò≥ı ºªØ∫Û∆Ù∂Ø∂® ±∆˜, ENABLEªÚDISABLE
+  81   1              Timer_Inilize(Timer1, &TIM_InitStructure);                                        //≥ı ºªØTimer1          Timer0,Timer1,Timer2,Timer3,Timer4
+  82   1      }
+  83          
+  84          /******************** INT≈‰÷√ ********************/
+  85          void Exti_config(void)
+  86          {
+  87   1              EXTI_InitTypeDef Exti_InitStructure; //Ω·ππ∂®“Â
+  88   1      
+  89   1              Exti_InitStructure.EXTI_Interrupt = ENABLE;        //÷–∂œ πƒ‹,   ENABLEªÚDISABLE
+  90   1              Exti_InitStructure.EXTI_Mode = EXT_MODE_Fall;  //÷–∂œƒ£ Ω,   EXT_MODE_RiseFall,EXT_MODE_Fall
+  91   1              Exti_InitStructure.EXTI_Priority = Priority_0; //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2,
              -Priority_3
- 116   1        Ext_Inilize(EXT_INT1, &Exti_InitStructure);    //≥ı ºªØ
- 117   1      }
- 118          
- 119          /******************** WDT≈‰÷√ ********************/
- 120          void WDT_config(void)
- 121          {
- 122   1        WDT_InitTypeDef WDT_InitStructure; //Ω·ππ∂®“Â
- 123   1      
- 124   1        WDT_InitStructure.WDT_Enable = ENABLE;       //÷–∂œ πƒ‹   ENABLEªÚDISABLE
- 125   1        WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; //IDLEƒ£ Ω «∑ÒÕ£÷πº∆ ˝   WDT_IDLE_STOP,WDT_IDLE_RUN
- 126   1        WDT_InitStructure.WDT_PS = WDT_SCALE_16;     //ø¥√≈π∑∂® ±∆˜ ±÷”∑÷∆µœµ ˝   WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_
+  92   1              Ext_Inilize(EXT_INT1, &Exti_InitStructure);        //≥ı ºªØ
+  93   1      }
+  94          
+  95          /******************** WDT≈‰÷√ ********************/
+  96          void WDT_config(void)
+  97          {
+  98   1              WDT_InitTypeDef WDT_InitStructure; //Ω·ππ∂®“Â
+  99   1      
+ 100   1              WDT_InitStructure.WDT_Enable = ENABLE;                   //÷–∂œ πƒ‹   ENABLEªÚDISABLE
+ 101   1              WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; //IDLEƒ£ Ω «∑ÒÕ£÷πº∆ ˝         WDT_IDLE_STOP,WDT_IDLE_RUN
+ 102   1              WDT_InitStructure.WDT_PS = WDT_SCALE_16;                 //ø¥√≈π∑∂® ±∆˜ ±÷”∑÷∆µœµ ˝             WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_
              -8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
- 127   1        WDT_Inilize(&WDT_InitStructure);         //≥ı ºªØ
- 128   1      }
- 129          
- 130          /******************** task A **************************/
- 131          void main(void)
- 132          {
- 133   1        GPIO_config();
- 134   1        UART_config();
- 135   1        Timer_config();
- 136   1        WDT_config();
- 137   1        Exti_config();
- 138   1        EA = 1;
- 139   1      
- 140   1        while (1)
- 141   1        {
- 142   2          AppTask();  //◊‹¡˜≥Ã¥¶¿Ì»ŒŒÒ
- 143   2          BeepAlarmTask();  //∑‰√˘∆˜±®æØ»ŒŒÒ
- 144   2          SendOncePlusTask(); //∑¢ÀÕ¬ˆ≥Â»∫»ŒŒÒ
- 145   2          WDT_Clear(); // Œππ∑
- 146   2        }
- 147   1      }
+ 103   1              WDT_Inilize(&WDT_InitStructure);                                 //≥ı ºªØ
+ 104   1      }
+ 105          
+C51 COMPILER V9.54   MAIN                                                                  03/01/2022 19:48:48 PAGE 3   
+
+ 106          /******************** task A **************************/
+ 107          void main(void)
+ 108          {
+ 109   1              GPIO_config();
+ 110   1              UART_config();
+ 111   1              Timer_config();
+ 112   1              WDT_config();
+ 113   1              Exti_config();
+ 114   1              EA = 1;
+ 115   1      
+ 116   1              VirtualCOM_StringSend("STC8 UART2 OK!\r\n"); //UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 117   1      
+ 118   1              while (1)
+ 119   1              {
+ 120   2                      AppTask();                      //◊‹¡˜≥Ã¥¶¿Ì»ŒŒÒ
+ 121   2                      BeepAlarmTask();        //∑‰√˘∆˜±®æØ»ŒŒÒ
+ 122   2                      SendOncePlusTask(); //∑¢ÀÕ¬ˆ≥Â»∫»ŒŒÒ
+ 123   2                      WDT_Clear();            // Œππ∑
+ 124   2              }
+ 125   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    254    ----
-   CONSTANT SIZE    =     34    ----
+   CODE SIZE        =    170    ----
+   CONSTANT SIZE    =     17    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----      28
+   DATA SIZE        =   ----      16
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

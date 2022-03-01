@@ -49,37 +49,13 @@ void GPIO_config(void)
 	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //初始化
 
 	GPIO_InitStructure.Pin = GPIO_Pin_All;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-	GPIO_InitStructure.Mode = GPIO_OUT_PP;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
 }
 
 /***************  串口初始化函数 *****************/
 void UART_config(void)
 {
-	COMx_InitDefine COMx_InitStructure; //结构定义
-
-	COMx_InitStructure.UART_Mode = UART_8bit_BRTx;	 //模式,       UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx
-	COMx_InitStructure.UART_BRT_Use = BRT_Timer1;	 //选择波特率发生器,   BRT_Timer1, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2)
-	COMx_InitStructure.UART_BaudRate = 115200UL;	 //波特率, 一般 110 ~ 115200
-	COMx_InitStructure.UART_RxEnable = ENABLE;		 //接收允许,   ENABLE或DISABLE
-	COMx_InitStructure.BaudRateDouble = DISABLE;	 //波特率加倍, ENABLE或DISABLE
-	COMx_InitStructure.UART_Interrupt = ENABLE;		 //中断允许,   ENABLE或DISABLE
-	COMx_InitStructure.UART_Priority = Priority_0;	 //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31; //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW_P16_P17,UART1_SW_P43_P44
-	UART_Configuration(UART1, &COMx_InitStructure);	 //初始化串口1 UART1,UART2,UART3,UART4
-
-	COMx_InitStructure.UART_Mode = UART_8bit_BRTx;	 //模式,       UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx
-													 //	COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;			//选择波特率发生器,   BRT_Timer1, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2)
-	COMx_InitStructure.UART_BaudRate = 4800UL;		 //波特率, 一般 110 ~ 115200
-	COMx_InitStructure.UART_RxEnable = DISABLE;		 //接收允许,   ENABLE或DISABLE
-	COMx_InitStructure.BaudRateDouble = DISABLE;	 //波特率加倍, ENABLE或DISABLE
-	COMx_InitStructure.UART_Interrupt = DISABLE;	 //中断允许,   ENABLE或DISABLE
-	COMx_InitStructure.UART_Priority = Priority_0;	 //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11; //切换端口, UART2_SW_P10_P11,UART2_SW_P46_P47
-	UART_Configuration(UART2, &COMx_InitStructure);	 //初始化串口1 UART1,UART2,UART3,UART4
-
-	PrintString1("STC8 UART1 OK!\r\n"); //UART1发送一个字符串
-	PrintString2("STC8 UART2 OK!\r\n"); //UART1发送一个字符串
 }
 
 /************************ 定时器配置 ****************************/
@@ -137,11 +113,13 @@ void main(void)
 	Exti_config();
 	EA = 1;
 
+	VirtualCOM_StringSend("STC8 UART2 OK!\r\n"); //UART1发送一个字符串
+
 	while (1)
 	{
-		AppTask();	//总流程处理任务
+		AppTask();			//总流程处理任务
 		BeepAlarmTask();	//蜂鸣器报警任务
-		SendOncePlusTask();	//发送脉冲群任务
-		WDT_Clear(); // 喂狗
+		SendOncePlusTask(); //发送脉冲群任务
+		WDT_Clear();		// 喂狗
 	}
 }
