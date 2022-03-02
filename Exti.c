@@ -22,8 +22,8 @@
 /*************  外部函数和变量声明 *****************/
 bit recvPlusFlag = 0;
 
-u8 recvPlusCnt = 0;			//脉冲个数
-u32 recvPlusTimeCnt = 0;	//连续脉冲时间
+u8 recvPlusCnt = 0;		 //脉冲个数
+u32 recvPlusTimeCnt = 0; //连续脉冲时间
 
 //开启接收超声波
 void Start_recvPlus(void)
@@ -42,23 +42,25 @@ bit Get_recvPlusFlag(void)
 /********************* INT1中断函数 *************************/
 void Ext_INT1(void) interrupt INT1_VECTOR //进中断时已经清除标志
 {
-	if (recvPlusFlag == 0)	//接收开始标志 0：接收完成或未开始，1：接收未完成
+	EX1 = 0; //禁止中断
+	if (recvPlusFlag == 0) //接收开始标志 0：接收完成或未开始，1：接收未完成
 		return;
 
-	if (get_time_escape_sec(Get_RecvPlusTimerCnt(),recvPlusTimeCnt) <= 4)			//波形连续才开始计数
+	if (get_time_escape_sec(Get_RecvPlusTimerCnt(), recvPlusTimeCnt) <= 4) //波形连续才开始计数
 	{
 		recvPlusCnt++;
-		if(recvPlusCnt >= 3)
-		{			
+		if (recvPlusCnt >= 3)
+		{
 			recvPlusFlag = 0;
 		}
 	}
 	else
 	{
-		recvPlusCnt = 0;		
+		recvPlusCnt = 0;
 	}
-	
+
 	recvPlusTimeCnt = Get_RecvPlusTimerCnt();
+	EX1 = 1; //允许中断
 }
 
 //========================================================================

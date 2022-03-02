@@ -3,8 +3,7 @@
         {
             "name": "Target 1",
             "includePath": [
-                "D:\\keil\\keil_MDK\\C51\\INC",
-                "e:\\SoftProject\\STC8G_RS3018_Test\\testGit\\RS3018"
+                "e:\\SoftProject\\STC8G_RS3018_Test"
             ],
             "defines": [
                 "__C51__",

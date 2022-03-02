@@ -30,7 +30,7 @@ void VirtualCOM_ByteSend(unsigned char val)
 
     Delay208us();
 
-    for (i = 0; i < 8; i++) //8位数据位
+    for (i = 0; i < 8; i++) // 8位数据位
 
     {
 
@@ -60,4 +60,3 @@ void VirtualCOM_StringSend(unsigned char *str)
         str++;
     }
 }
-

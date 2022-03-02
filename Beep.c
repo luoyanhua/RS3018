@@ -25,7 +25,7 @@ bit Get_beepAlarmFlag(void)
 }
 
 //开始蜂鸣器报警设定值
-void StartBeepAlarm(unsigned short time) //time单位1ms
+void StartBeepAlarm(unsigned short time) // time单位1ms
 {
 	BeepAlarmState = 0;
 	BeepAlarmTimeSet = time * 2;

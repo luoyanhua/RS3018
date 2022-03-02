@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   TIMER                                                                 03/01/2022 19:48:49 PAGE 1   
+C51 COMPILER V9.54   TIMER                                                                 03/02/2022 21:27:50 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TIMER
 OBJECT MODULE PLACED IN .\list\timer.obj
-COMPILER INVOKED BY: D:\Program Files\keil_C51\C51\BIN\C51.EXE timer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
-                    -(.\list\timer.lst) OBJECT(.\list\timer.obj)
+COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE timer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\t
+                    -imer.lst) OBJECT(.\list\timer.obj)
 
 line level    source
 
@@ -32,175 +32,145 @@ line level    source
   22          #define PLUS_MAX 12 //定义输出脉冲数
   23          
   24          bit plusOutFlag = 0;              //输出波形标志
-  25          unsigned char plusOutCnt = 0; //80K中断计数
+  25          unsigned char plusOutCnt = 0; // 80K中断计数
   26          
   27          unsigned int recvPlusTimerCnt = 0;
   28          
   29          unsigned char plusAdjustState = 0;
   30          
-  31          void PlusAdjust(void)
-  32          {
-  33   1              switch (plusAdjustState)
-  34   1              {
-  35   2              case 0:
-  36   2                      P36 = 1;
-  37   2                      plusAdjustState = 1;
-  38   2                      break;
-  39   2              case 1:
-  40   2                      if (plusOutCnt > (PLUS_MAX * 2))
-  41   2                      {
-  42   3                              plusOutCnt = 0;
-  43   3                              plusOutFlag = 0;
-  44   3                              plusAdjustState = 0;
-  45   3                      }
-  46   2                      else
-  47   2                      {
-  48   3                              P36 = ~P36;
-  49   3                      }
-  50   2                      break;
-  51   2              default:
+  31          unsigned int halfMsCnt = 0;
+  32          
+  33          void PlusAdjust(void)
+  34          {
+  35   1              switch (plusAdjustState)
+  36   1              {
+  37   2              case 0:
+  38   2                      P36 = 1;
+  39   2                      plusAdjustState = 1;
+  40   2                      break;
+  41   2              case 1:
+  42   2                      if (plusOutCnt > (PLUS_MAX * 2))
+  43   2                      {
+  44   3                              plusOutCnt = 0;
+  45   3                              plusOutFlag = 0;
+  46   3                              plusAdjustState = 0;
+  47   3                      }
+  48   2                      else
+  49   2                      {
+  50   3                              P36 = ~P36;
+  51   3                      }
   52   2                      break;
-  53   2              }
-  54   1      }
-C51 COMPILER V9.54   TIMER                                                                 03/01/2022 19:48:49 PAGE 2   
+  53   2              default:
+  54   2                      break;
+C51 COMPILER V9.54   TIMER                                                                 03/02/2022 21:27:50 PAGE 2   
 
-  55          
-  56          /********************* Timer0中断函数************************/
-  57          void timer0_int(void) interrupt TIMER0_VECTOR
-  58          {
-  59   1      
-  60   1              recvPlusTimerCnt++;
-  61   1      
-  62   1              //每次调用输出MAX个脉冲
-  63   1              if (plusOutFlag == 0)
-  64   1                      return;
-  65   1              plusOutCnt++;
-  66   1              PlusAdjust();
-  67   1      }
-  68          
-  69          void Start_SendPlus(void)
-  70          {
-  71   1              plusOutFlag = 1;
-  72   1              plusOutCnt = 0;
-  73   1              plusAdjustState = 0;
-  74   1      }
-  75          
-  76          bit Get_plusOutFlag(void)
-  77          {
-  78   1              return plusOutFlag;
-  79   1      }
-  80          
-  81          unsigned int Get_RecvPlusTimerCnt(void) //单位12.5us
-  82          {
-  83   1              return recvPlusTimerCnt;
-  84   1      }
-  85          
-  86          unsigned int halfMsCnt = 0;
-  87          /********************* Timer1中断函数************************/
-  88          void timer1_int(void) interrupt TIMER1_VECTOR
-  89          {
-  90   1              halfMsCnt++;
-  91   1              //每次调用连续输出1KHz波形
-  92   1              if (Get_beepAlarmFlag() == 0)
-  93   1                      return;
-  94   1              P35 = ~P35;
+  55   2              }
+  56   1      }
+  57          
+  58          /********************* Timer0中断函数************************/
+  59          void timer0_int(void) interrupt TIMER0_VECTOR
+  60          {
+  61   1              Timer0_InterruptDisable(); //禁止中断
+  62   1              recvPlusTimerCnt++;
+  63   1      
+  64   1              //每次调用输出MAX个脉冲
+  65   1              if (plusOutFlag == 1)
+  66   1              {
+  67   2                      plusOutCnt++;
+  68   2                      PlusAdjust();
+  69   2              }
+  70   1              if (recvPlusTimerCnt % 40 == 0)
+  71   1              {
+  72   2                      halfMsCnt++;
+  73   2                      if (Get_beepAlarmFlag() == 1)
+  74   2                      {
+  75   3                              P35 = ~P35;
+  76   3                      }
+  77   2                      else
+  78   2                      {
+  79   3                              P35 = 0;
+  80   3                      }
+  81   2              }
+  82   1              Timer0_InterruptEnable(); //允许中断
+  83   1      }
+  84          
+  85          void Start_SendPlus(void)
+  86          {
+  87   1              plusOutFlag = 1;
+  88   1              plusOutCnt = 0;
+  89   1              plusAdjustState = 0;
+  90   1      }
+  91          
+  92          bit Get_plusOutFlag(void)
+  93          {
+  94   1              return plusOutFlag;
   95   1      }
   96          
-  97          unsigned int Get_SysHalfMsTick(void) //单位是0.5ms
+  97          unsigned int Get_RecvPlusTimerCnt(void) //单位12.5us
   98          {
-  99   1              return halfMsCnt;
+  99   1              return recvPlusTimerCnt;
  100   1      }
  101          
- 102          unsigned int get_time_escape_sec(unsigned int ticks_now, unsigned int ticks_old)
+ 102          unsigned int Get_SysHalfMsTick(void) //单位是0.5ms
  103          {
- 104   1              return ((ticks_now - ticks_old) & 0xffffffff);
+ 104   1              return halfMsCnt;
  105   1      }
  106          
- 107          //========================================================================
- 108          // 函数: unsigned char  Timer_Inilize(unsigned char TIM, TIM_InitTypeDef *TIMx)
- 109          // 描述: 定时器初始化程序.
- 110          // 参数: TIMx: 结构参数,请参考timer.h里的定义.
- 111          // 返回: 成功返回0, 空操作返回1,错误返回2.
- 112          // 版本: V1.0, 2012-10-22
- 113          //========================================================================
- 114          unsigned char Timer_Inilize(unsigned char TIM, TIM_InitTypeDef *TIMx)
- 115          {
- 116   1              if (TIM == Timer0)
-C51 COMPILER V9.54   TIMER                                                                 03/01/2022 19:48:49 PAGE 3   
+ 107          unsigned int get_time_escape_sec(unsigned int ticks_now, unsigned int ticks_old)
+ 108          {
+ 109   1              return ((ticks_now - ticks_old) & 0xffffffff);
+ 110   1      }
+ 111          
+ 112          //========================================================================
+ 113          // 函数: unsigned char  Timer_Inilize(unsigned char TIM, TIM_InitTypeDef *TIMx)
+ 114          // 描述: 定时器初始化程序.
+ 115          // 参数: TIMx: 结构参数,请参考timer.h里的定义.
+ 116          // 返回: 成功返回0, 空操作返回1,错误返回2.
+C51 COMPILER V9.54   TIMER                                                                 03/02/2022 21:27:50 PAGE 3   
 
- 117   1              {
- 118   2                      Timer0_Stop(); //停止计数
- 119   2                      if (TIMx->TIM_Interrupt == ENABLE)
- 120   2                              Timer0_InterruptEnable(); //允许中断
- 121   2                      else
- 122   2                              Timer0_InterruptDisable(); //禁止中断
- 123   2                      if (TIMx->TIM_Priority > Priority_3)
- 124   2                              return 2;                                                //错误
- 125   2                      Timer0_Priority(TIMx->TIM_Priority); //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_
+ 117          // 版本: V1.0, 2012-10-22
+ 118          //========================================================================
+ 119          unsigned char Timer_Inilize(unsigned char TIM, TIM_InitTypeDef *TIMx)
+ 120          {
+ 121   1              if (TIM == Timer0)
+ 122   1              {
+ 123   2                      Timer0_Stop(); //停止计数
+ 124   2                      if (TIMx->TIM_Interrupt == ENABLE)
+ 125   2                              Timer0_InterruptEnable(); //允许中断
+ 126   2                      else
+ 127   2                              Timer0_InterruptDisable(); //禁止中断
+ 128   2                      if (TIMx->TIM_Priority > Priority_3)
+ 129   2                              return 2;                                                //错误
+ 130   2                      Timer0_Priority(TIMx->TIM_Priority); //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_
              -3
- 126   2      
- 127   2                      if (TIMx->TIM_Mode >= TIM_16BitAutoReloadNoMask)
- 128   2                              return 2;                                                       //错误
- 129   2                      TMOD = (TMOD & ~0x30) | TIMx->TIM_Mode; //工作模式,0: 16位自动重装, 1: 16位定时/计数, 2: 8位自动重装
- 130   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_12T)
- 131   2                              Timer0_12T(); //12T
- 132   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)
- 133   2                              Timer0_1T(); //1T
- 134   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext)
- 135   2                              Timer0_AsCounter(); //对外计数或分频
- 136   2                      else
- 137   2                              Timer0_AsTimer(); //定时
- 138   2                      if (TIMx->TIM_ClkOut == ENABLE)
- 139   2                              Timer0_CLKO_Enable(); //输出时钟
- 140   2                      else
- 141   2                              Timer0_CLKO_Disable(); //不输出时钟
- 142   2      
- 143   2                      T0_Load(TIMx->TIM_Value);
- 144   2                      if (TIMx->TIM_Run == ENABLE)
- 145   2                              Timer0_Run(); //开始运行
- 146   2                      return 0;                 //成功
- 147   2              }
- 148   1      
- 149   1              if (TIM == Timer1)
- 150   1              {
- 151   2                      Timer1_Stop(); //停止计数
- 152   2                      if (TIMx->TIM_Interrupt == ENABLE)
- 153   2                              Timer1_InterruptEnable(); //允许中断
- 154   2                      else
- 155   2                              Timer1_InterruptDisable(); //禁止中断
- 156   2                      if (TIMx->TIM_Priority > Priority_3)
- 157   2                              return 2;                                                //错误
- 158   2                      Timer1_Priority(TIMx->TIM_Priority); //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_
-             -3
- 159   2                      if (TIMx->TIM_Mode >= TIM_16BitAutoReloadNoMask)
- 160   2                              return 2;                                                       //错误
- 161   2                      TMOD = (TMOD & ~0x30) | TIMx->TIM_Mode; //工作模式,0: 16位自动重装, 1: 16位定时/计数, 2: 8位自动重装
- 162   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_12T)
- 163   2                              Timer1_12T(); //12T
- 164   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)
- 165   2                              Timer1_1T(); //1T
- 166   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext)
- 167   2                              Timer1_AsCounter(); //对外计数或分频
- 168   2                      else
- 169   2                              Timer1_AsTimer(); //定时
- 170   2                      if (TIMx->TIM_ClkOut == ENABLE)
- 171   2                              Timer1_CLKO_Enable(); //输出时钟
- 172   2                      else
- 173   2                              Timer1_CLKO_Disable(); //不输出时钟
- 174   2      
- 175   2                      T1_Load(TIMx->TIM_Value);
- 176   2                      if (TIMx->TIM_Run == ENABLE)
-C51 COMPILER V9.54   TIMER                                                                 03/01/2022 19:48:49 PAGE 4   
-
- 177   2                              Timer1_Run(); //开始运行
- 178   2                      return 0;                 //成功
- 179   2              }
- 180   1              return 2; //错误
- 181   1      }
+ 131   2      
+ 132   2                      if (TIMx->TIM_Mode >= TIM_16BitAutoReloadNoMask)
+ 133   2                              return 2;                                                       //错误
+ 134   2                      TMOD = (TMOD & ~0x30) | TIMx->TIM_Mode; //工作模式,0: 16位自动重装, 1: 16位定时/计数, 2: 8位自动重装
+ 135   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_12T)
+ 136   2                              Timer0_12T(); // 12T
+ 137   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)
+ 138   2                              Timer0_1T(); // 1T
+ 139   2                      if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext)
+ 140   2                              Timer0_AsCounter(); //对外计数或分频
+ 141   2                      else
+ 142   2                              Timer0_AsTimer(); //定时
+ 143   2                      if (TIMx->TIM_ClkOut == ENABLE)
+ 144   2                              Timer0_CLKO_Enable(); //输出时钟
+ 145   2                      else
+ 146   2                              Timer0_CLKO_Disable(); //不输出时钟
+ 147   2      
+ 148   2                      T0_Load(TIMx->TIM_Value);
+ 149   2                      if (TIMx->TIM_Run == ENABLE)
+ 150   2                              Timer0_Run(); //开始运行
+ 151   2                      return 0;                 //成功
+ 152   2              }
+ 153   1              return 2; //错误
+ 154   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    528    ----
+   CODE SIZE        =    355    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

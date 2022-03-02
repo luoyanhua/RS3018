@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   UART                                                                  03/01/2022 19:48:49 PAGE 1   
+C51 COMPILER V9.54   UART                                                                  03/02/2022 21:27:51 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE UART
 OBJECT MODULE PLACED IN .\list\Uart.obj
-COMPILER INVOKED BY: D:\Program Files\keil_C51\C51\BIN\C51.EXE Uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
-                    -.\list\Uart.lst) OBJECT(.\list\Uart.obj)
+COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE Uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ua
+                    -rt.lst) OBJECT(.\list\Uart.obj)
 
 line level    source
 
@@ -40,7 +40,7 @@ line level    source
   30   1      
   31   1          Delay208us();
   32   1      
-  33   1          for (i = 0; i < 8; i++) //8位数据位
+  33   1          for (i = 0; i < 8; i++) // 8位数据位
   34   1      
   35   1          {
   36   2      
@@ -62,7 +62,7 @@ line level    source
   52   1          Delay208us();
   53   1      }
   54          
-C51 COMPILER V9.54   UART                                                                  03/01/2022 19:48:49 PAGE 2   
+C51 COMPILER V9.54   UART                                                                  03/02/2022 21:27:51 PAGE 2   
 
   55          void VirtualCOM_StringSend(unsigned char *str)
   56          {
@@ -72,7 +72,6 @@ line level    source
   60   2              str++;
   61   2          }
   62   1      }
-  63          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

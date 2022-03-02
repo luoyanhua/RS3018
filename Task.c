@@ -20,10 +20,10 @@
 unsigned char appTaskState = 0;
 unsigned int appTaskTimeCnt = 0;
 
-//void serialSendTask(void)
+// void serialSendTask(void)
 //{
-//	
-//}
+//
+// }
 
 void AppTask(void)
 {
@@ -34,35 +34,35 @@ void AppTask(void)
         appTaskTimeCnt = Get_SysHalfMsTick();
         appTaskState = 1;
         break;
-    case 1: //Sensor ID会收到自己发的信号
+    case 1: // Sensor ID会收到自己发的信号
         if (P34 == 0)
         {
-			VirtualCOM_StringSend("recv ID!\r\n"); //UART1发送一个字符串
+            VirtualCOM_StringSend("recv ID!\r\n"); // UART1发送一个字符串
             appTaskState = 2;
         }
-        else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) //10ms超时后继续往下进行
+        else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms超时后继续往下进行
         {
-			VirtualCOM_StringSend("recv ID timeout!\r\n"); //UART1发送一个字符串
+            VirtualCOM_StringSend("recv ID timeout!\r\n"); // UART1发送一个字符串
             appTaskState = 2;
         }
         break;
     case 2: //开机探头自检
         Start_sendOncePlusTask();
         appTaskState = 3;
-		VirtualCOM_StringSend("sensor self check!\r\n"); //UART1发送一个字符串
+        VirtualCOM_StringSend("sensor self check!\r\n"); // UART1发送一个字符串
         break;
     case 3: //获取探头自检结果
         if (Get_SendOncePlusTaskFlag() == 0)
         {
             if (Get_sensorOkFlag())
             {
-				VirtualCOM_StringSend("sensor is ok!\r\n"); //UART1发送一个字符串
-                appTaskState = 4; //检测到探头
+                VirtualCOM_StringSend("sensor is ok!\r\n"); // UART1发送一个字符串
+                appTaskState = 4;                           //检测到探头
             }
             else
             {
-				VirtualCOM_StringSend("No sensor!\r\n"); //UART1发送一个字符串
-                appTaskState = 0; //无探头从头开始
+                VirtualCOM_StringSend("No sensor!\r\n"); // UART1发送一个字符串
+                appTaskState = 0;                        //无探头从头开始
             }
         }
         break;
@@ -76,18 +76,18 @@ void AppTask(void)
         {
             if (Get_obstaclesExistenceFlag()) //有障碍物
             {
-                if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) //50ms测试一次
+                if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms测试一次
                 {
-					VirtualCOM_StringSend("there is obstacle!\r\n"); //UART1发送一个字符串
+                    VirtualCOM_StringSend("there is obstacle!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
                 }
             }
             else //没有障碍物
             {
-                if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) //200ms测试一次
+                if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms测试一次
                 {
                     //获取测试距离
-					VirtualCOM_StringSend("No obstacles!\r\n"); //UART1发送一个字符串
+                    VirtualCOM_StringSend("No obstacles!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
                 }
             }

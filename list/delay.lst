@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   DELAY                                                                 03/01/2022 19:48:48 PAGE 1   
+C51 COMPILER V9.54   DELAY                                                                 03/02/2022 21:27:50 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\list\delay.obj
-COMPILER INVOKED BY: D:\Program Files\keil_C51\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
-                    -(.\list\delay.lst) OBJECT(.\list\delay.obj)
+COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\d
+                    -elay.lst) OBJECT(.\list\delay.obj)
 
 line level    source
 
@@ -41,11 +41,13 @@ line level    source
   31          
   32          unsigned int delayCnt = 0;
   33          
-  34          void Delay208us(void)           //@12.000MHz
+  34          void Delay208us(void) //@12.000MHz
   35          {
   36   1              delayCnt = Get_RecvPlusTimerCnt();
-  37   1              while(get_time_escape_sec(Get_RecvPlusTimerCnt(),delayCnt) <= 16);                      //12.5*17 = 212.5
-  38   1      }
+  37   1              while (get_time_escape_sec(Get_RecvPlusTimerCnt(), delayCnt) <= 16)
+  38   1              {
+  39   2              }; // 12.5*17 = 212.5
+  40   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

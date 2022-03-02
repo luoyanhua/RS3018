@@ -26,7 +26,7 @@
 本例程基于STC8G1K08-QFN20进行编写测试
 
 PCA0  使用定时器0获得40KHz输出
-捕获脉宽时间=捕捉的时钟数/PCA时钟源, 比如 捕捉的时钟数 = 256, PCA时钟源 = 20MHz(1T), 脉宽 = 256/20MHz = 12.8us. 
+捕获脉宽时间=捕捉的时钟数/PCA时钟源, 比如 捕捉的时钟数 = 256, PCA时钟源 = 20MHz(1T), 脉宽 = 256/20MHz = 12.8us.
 下载时, 选择时钟 20MHz (用户可在"config.h"修改频率).
 
 ******************************************/
@@ -53,11 +53,6 @@ void GPIO_config(void)
 	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
 }
 
-/***************  串口初始化函数 *****************/
-void UART_config(void)
-{
-}
-
 /************************ 定时器配置 ****************************/
 void Timer_config(void)
 {
@@ -67,18 +62,9 @@ void Timer_config(void)
 	TIM_InitStructure.TIM_Interrupt = ENABLE;					   //中断是否允许,   ENABLE或DISABLE
 	TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;				   //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	TIM_InitStructure.TIM_ClkOut = DISABLE;						   //是否输出高速脉冲, ENABLE或DISABLE
-	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 80000UL); //初值,    80KHz   12.5us中断一次
+	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 82000UL); //初值,    80KHz   12.5us中断一次
 	TIM_InitStructure.TIM_Run = ENABLE;							   //是否初始化后启动定时器, ENABLE或DISABLE
 	Timer_Inilize(Timer0, &TIM_InitStructure);					   //初始化Timer0	  Timer0,Timer1,Timer2,Timer3,Timer4
-
-	TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;			  //指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
-	TIM_InitStructure.TIM_Priority = Priority_0;				  //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	TIM_InitStructure.TIM_Interrupt = ENABLE;					  //中断是否允许,   ENABLE或DISABLE
-	TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;				  //指定时钟源, TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
-	TIM_InitStructure.TIM_ClkOut = DISABLE;						  //是否输出高速脉冲, ENABLE或DISABLE
-	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 2000UL); //初值,    2KHz   0.5mS中断一次
-	TIM_InitStructure.TIM_Run = ENABLE;							  //是否初始化后启动定时器, ENABLE或DISABLE
-	Timer_Inilize(Timer1, &TIM_InitStructure);					  //初始化Timer1	  Timer0,Timer1,Timer2,Timer3,Timer4
 }
 
 /******************** INT配置 ********************/
@@ -98,7 +84,7 @@ void WDT_config(void)
 	WDT_InitTypeDef WDT_InitStructure; //结构定义
 
 	WDT_InitStructure.WDT_Enable = ENABLE;			 //中断使能   ENABLE或DISABLE
-	WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; //IDLE模式是否停止计数		WDT_IDLE_STOP,WDT_IDLE_RUN
+	WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; // IDLE模式是否停止计数		WDT_IDLE_STOP,WDT_IDLE_RUN
 	WDT_InitStructure.WDT_PS = WDT_SCALE_16;		 //看门狗定时器时钟分频系数		WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
 	WDT_Inilize(&WDT_InitStructure);				 //初始化
 }
@@ -107,13 +93,12 @@ void WDT_config(void)
 void main(void)
 {
 	GPIO_config();
-	UART_config();
 	Timer_config();
 	WDT_config();
 	Exti_config();
 	EA = 1;
 
-	VirtualCOM_StringSend("STC8 UART2 OK!\r\n"); //UART1发送一个字符串
+	VirtualCOM_StringSend("STC8 UART2 OK!\r\n"); // UART1发送一个字符串
 
 	while (1)
 	{

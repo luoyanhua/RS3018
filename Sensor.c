@@ -21,7 +21,8 @@
 #define START_METER_STATE 3
 #define SENSOR_ERR_STATE 4
 
-bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0; sendMode = 0;
+bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0;
+sendMode = 0;
 unsigned char SendContinuePlusState = 0;
 unsigned int SendContinuePlusTimeCnt = 0;
 unsigned int meterDistance = 0; //单位是mm
@@ -57,7 +58,7 @@ void Start_sendOncePlusTask(void)
 	SendContinuePlusState = 0;
 }
 
-//sendMode 0:自检模式 1:正常测试模式
+// sendMode 0:自检模式 1:正常测试模式
 //单次发送脉冲群任务
 void SendOncePlusTask(void)
 {
@@ -80,7 +81,7 @@ void SendOncePlusTask(void)
 			}
 			else
 			{
-				if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 96) //1.2ms后开始计算距离
+				if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 96) // 1.2ms后开始计算距离
 				{
 					Start_recvPlus(); //开启接收返回信号
 					SendContinuePlusState = START_METER_STATE;
