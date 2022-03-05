@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   DELAY                                                                 03/02/2022 21:27:50 PAGE 1   
+C51 COMPILER V9.54   DELAY                                                                 03/05/2022 14:10:59 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\list\delay.obj
-COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\d
-                    -elay.lst) OBJECT(.\list\delay.obj)
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\d
+                    -elay.lst) TABS(2) OBJECT(.\list\delay.obj)
 
 line level    source
 
@@ -20,7 +20,7 @@ line level    source
   10          /* 如果要在程序中使用此代码,请在程序中注明使用了STC的资料及程序            */
   11          /*---------------------------------------------------------------------*/
   12          
-  13          /***************        功能说明        ****************
+  13          /***************  功能说明  ****************
   14          
   15          本文件为STC8系列的延时程序,用户几乎可以不修改这个程序.
   16          
@@ -43,10 +43,10 @@ line level    source
   33          
   34          void Delay208us(void) //@12.000MHz
   35          {
-  36   1              delayCnt = Get_RecvPlusTimerCnt();
-  37   1              while (get_time_escape_sec(Get_RecvPlusTimerCnt(), delayCnt) <= 16)
-  38   1              {
-  39   2              }; // 12.5*17 = 212.5
+  36   1        delayCnt = Get_RecvPlusTimerCnt();
+  37   1        while (get_time_escape_sec(Get_RecvPlusTimerCnt(), delayCnt) <= 16)
+  38   1        {
+  39   2        }; // 12.5*17 = 212.5
   40   1      }
 
 

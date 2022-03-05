@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   EXTI                                                                  03/02/2022 21:27:51 PAGE 1   
+C51 COMPILER V9.54   EXTI                                                                  03/05/2022 15:19:54 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE EXTI
 OBJECT MODULE PLACED IN .\list\Exti.obj
-COMPILER INVOKED BY: D:\keil\keil_MDK\C51\BIN\C51.EXE Exti.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ex
-                    -ti.lst) OBJECT(.\list\Exti.obj)
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Exti.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ex
+                    -ti.lst) TABS(2) OBJECT(.\list\Exti.obj)
 
 line level    source
 
@@ -20,7 +20,7 @@ line level    source
   10          /* 如果要在程序中使用此代码,请在程序中注明使用了STC的资料及程序            */
   11          /*---------------------------------------------------------------------*/
   12          
-  13          /*************  功能说明        **************
+  13          /*************  功能说明  **************
   14          
   15          本文件为STC8系列的外中断初始化和中断程序,用户可以在这个文件中修改自己需要的中断程序.
   16          
@@ -32,80 +32,78 @@ line level    source
   22          /*************  外部函数和变量声明 *****************/
   23          bit recvPlusFlag = 0;
   24          
-  25          u8 recvPlusCnt = 0;              //脉冲个数
+  25          u8 recvPlusCnt = 0;    //脉冲个数
   26          u32 recvPlusTimeCnt = 0; //连续脉冲时间
   27          
   28          //开启接收超声波
   29          void Start_recvPlus(void)
   30          {
-  31   1              recvPlusFlag = 1;
-  32   1              recvPlusCnt = 0;
-  33   1              recvPlusTimeCnt = 0;
+  31   1        recvPlusFlag = 1;
+  32   1        recvPlusCnt = 0;
+  33   1        recvPlusTimeCnt = 0;
   34   1      }
   35          
   36          //用于判断是否接收完成
   37          bit Get_recvPlusFlag(void)
   38          {
-  39   1              return recvPlusFlag;
+  39   1        return recvPlusFlag;
   40   1      }
   41          
   42          /********************* INT1中断函数 *************************/
   43          void Ext_INT1(void) interrupt INT1_VECTOR //进中断时已经清除标志
   44          {
-  45   1              EX1 = 0; //禁止中断
-  46   1              if (recvPlusFlag == 0) //接收开始标志 0：接收完成或未开始，1：接收未完成
-  47   1                      return;
-  48   1      
-  49   1              if (get_time_escape_sec(Get_RecvPlusTimerCnt(), recvPlusTimeCnt) <= 4) //波形连续才开始计数
-  50   1              {
-  51   2                      recvPlusCnt++;
-  52   2                      if (recvPlusCnt >= 3)
-  53   2                      {
-  54   3                              recvPlusFlag = 0;
-C51 COMPILER V9.54   EXTI                                                                  03/02/2022 21:27:51 PAGE 2   
+  45   1        if (recvPlusFlag == 0) //接收开始标志 0：接收完成或未开始，1：接收未完成
+  46   1          return;
+  47   1      
+  48   1        if (get_time_escape_sec(Get_RecvPlusTimerCnt(), recvPlusTimeCnt) <= 4) //波形连续才开始计数
+  49   1        {
+  50   2          recvPlusCnt++;
+  51   2          if (recvPlusCnt >= 3)
+  52   2          {
+  53   3            recvPlusFlag = 0;
+  54   3          }
+C51 COMPILER V9.54   EXTI                                                                  03/05/2022 15:19:54 PAGE 2   
 
-  55   3                      }
-  56   2              }
-  57   1              else
-  58   1              {
-  59   2                      recvPlusCnt = 0;
-  60   2              }
-  61   1      
-  62   1              recvPlusTimeCnt = Get_RecvPlusTimerCnt();
-  63   1              EX1 = 1; //允许中断
-  64   1      }
-  65          
-  66          //========================================================================
-  67          // 函数: u8     Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
-  68          // 描述: 外部中断初始化程序.
-  69          // 参数: INTx: 结构参数,请参考Exti.h里的定义.
-  70          // 返回: 成功返回0, 空操作返回1,错误返回2.
-  71          // 版本: V1.0, 2012-10-22
-  72          //========================================================================
-  73          u8 Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
-  74          {
-  75   1              if (EXT == EXT_INT1) //外中断1
-  76   1              {
-  77   2                      IE1 = 0; //外中断1标志位
-  78   2                      if (INTx->EXTI_Interrupt == ENABLE)
-  79   2                              EX1 = 1; //允许中断
-  80   2                      else
-  81   2                              EX1 = 0; //禁止中断
-  82   2                      if (INTx->EXTI_Priority > Priority_3)
-  83   2                              return 2;                                               //错误
-  84   2                      INT1_Priority(INTx->EXTI_Priority); //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-  85   2                      if (INTx->EXTI_Mode == EXT_MODE_Fall)
-  86   2                              IT1 = 1; //下降沿中断
-  87   2                      else
-  88   2                              IT1 = 0; //上升,下降沿中断
-  89   2                      return 0;        //成功
-  90   2              }
-  91   1              return 2; //失败
-  92   1      }
+  55   2        }
+  56   1        else
+  57   1        {
+  58   2          recvPlusCnt = 0;
+  59   2        }
+  60   1      
+  61   1        recvPlusTimeCnt = Get_RecvPlusTimerCnt();
+  62   1      }
+  63          
+  64          //========================================================================
+  65          // 函数: u8 Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
+  66          // 描述: 外部中断初始化程序.
+  67          // 参数: INTx: 结构参数,请参考Exti.h里的定义.
+  68          // 返回: 成功返回0, 空操作返回1,错误返回2.
+  69          // 版本: V1.0, 2012-10-22
+  70          //========================================================================
+  71          u8 Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
+  72          {
+  73   1        if (EXT == EXT_INT1) //外中断1
+  74   1        {
+  75   2          IE1 = 0; //外中断1标志位
+  76   2          if (INTx->EXTI_Interrupt == ENABLE)
+  77   2            EX1 = 1; //允许中断
+  78   2          else
+  79   2            EX1 = 0; //禁止中断
+  80   2          if (INTx->EXTI_Priority > Priority_3)
+  81   2            return 2;           //错误
+  82   2          INT1_Priority(INTx->EXTI_Priority); //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+  83   2          if (INTx->EXTI_Mode == EXT_MODE_Fall)
+  84   2            IT1 = 1; //下降沿中断
+  85   2          else
+  86   2            IT1 = 0; //上升,下降沿中断
+  87   2          return 0;  //成功
+  88   2        }
+  89   1        return 2; //失败
+  90   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    228    ----
+   CODE SIZE        =    224    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

@@ -42,7 +42,6 @@ bit Get_recvPlusFlag(void)
 /********************* INT1中断函数 *************************/
 void Ext_INT1(void) interrupt INT1_VECTOR //进中断时已经清除标志
 {
-	EX1 = 0; //禁止中断
 	if (recvPlusFlag == 0) //接收开始标志 0：接收完成或未开始，1：接收未完成
 		return;
 
@@ -60,7 +59,6 @@ void Ext_INT1(void) interrupt INT1_VECTOR //进中断时已经清除标志
 	}
 
 	recvPlusTimeCnt = Get_RecvPlusTimerCnt();
-	EX1 = 1; //允许中断
 }
 
 //========================================================================
