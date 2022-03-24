@@ -113,6 +113,10 @@ void SendOncePlusTask(void)
 			{
 				meterDistance = 0;
 			}
+			else if(meterDistance > 2550)
+			{
+				meterDistance = 2550;
+			}
 			obstaclesExistenceFlag = 1;
 			SendOncePlusTaskFlag = 0;
 		}

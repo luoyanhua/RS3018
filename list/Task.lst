@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TASK                                                                  03/05/2022 14:10:59 PAGE 1   
+C51 COMPILER V9.54   TASK                                                                  03/19/2022 09:43:25 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TASK
@@ -47,72 +47,74 @@ line level    source
   37   2          case 1: // Sensor ID会收到自己发的信号
   38   2              if (P34 == 0)
   39   2              {
-  40   3                  VirtualCOM_StringSend("recv ID!\r\n"); // UART1发送一个字符串
+  40   3                  VirtualCOM_StringSend(COM0,"recv ID!\r\n"); // UART1发送一个字符串
   41   3                  appTaskState = 2;
   42   3              }
   43   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms超时后继续往下进行
   44   2              {
-  45   3                  VirtualCOM_StringSend("recv ID timeout!\r\n"); // UART1发送一个字符串
+  45   3                  VirtualCOM_StringSend(COM0,"recv ID timeout!\r\n"); // UART1发送一个字符串
   46   3                  appTaskState = 2;
   47   3              }
   48   2              break;
   49   2          case 2: //开机探头自检
   50   2              Start_sendOncePlusTask();
   51   2              appTaskState = 3;
-  52   2              VirtualCOM_StringSend("sensor self check!\r\n"); // UART1发送一个字符串
+  52   2              VirtualCOM_StringSend(COM0,"sensor self check!\r\n"); // UART1发送一个字符串
   53   2              break;
   54   2          case 3: //获取探头自检结果
-C51 COMPILER V9.54   TASK                                                                  03/05/2022 14:10:59 PAGE 2   
+C51 COMPILER V9.54   TASK                                                                  03/19/2022 09:43:25 PAGE 2   
 
   55   2              if (Get_SendOncePlusTaskFlag() == 0)
   56   2              {
   57   3                  if (Get_sensorOkFlag())
   58   3                  {
-  59   4                      VirtualCOM_StringSend("sensor is ok!\r\n"); // UART1发送一个字符串
+  59   4                      VirtualCOM_StringSend(COM0,"sensor is ok!\r\n"); // UART1发送一个字符串
   60   4                      appTaskState = 4;                           //检测到探头
   61   4                  }
   62   3                  else
   63   3                  {
-  64   4                      VirtualCOM_StringSend("No sensor!\r\n"); // UART1发送一个字符串
+  64   4                      VirtualCOM_StringSend(COM0,"No sensor!\r\n"); // UART1发送一个字符串
   65   4                      appTaskState = 0;                        //无探头从头开始
   66   4                  }
-  67   3              }
-  68   2              break;
-  69   2          case 4: //开始测距结果
-  70   2              Start_sendOncePlusTask();
-  71   2              appTaskTimeCnt = Get_SysHalfMsTick();
-  72   2              appTaskState = 5;
-  73   2              break;
-  74   2          case 5: //判断是否有障碍物
-  75   2              if (Get_SendOncePlusTaskFlag() == 0)
-  76   2              {
-  77   3                  if (Get_obstaclesExistenceFlag()) //有障碍物
-  78   3                  {
-  79   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms测试一次
-  80   4                      {
-  81   5                          VirtualCOM_StringSend("there is obstacle!\r\n"); // UART1发送一个字符串
-  82   5                          appTaskState = 4;
-  83   5                      }
-  84   4                  }
-  85   3                  else //没有障碍物
-  86   3                  {
-  87   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms测试一次
-  88   4                      {
-  89   5                          //获取测试距离
-  90   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1发送一个字符串
-  91   5                          appTaskState = 4;
-  92   5                      }
-  93   4                  }
-  94   3              }
-  95   2              break;
-  96   2          default:
+  67   3                  uartSendPackage(SELF_CHECK);
+  68   3              }
+  69   2              break;
+  70   2          case 4: //开始测距结果
+  71   2              Start_sendOncePlusTask();
+  72   2              appTaskTimeCnt = Get_SysHalfMsTick();
+  73   2              appTaskState = 5;
+  74   2              break;
+  75   2          case 5: //判断是否有障碍物
+  76   2              if (Get_SendOncePlusTaskFlag() == 0)
+  77   2              {
+  78   3                  if (Get_obstaclesExistenceFlag()) //有障碍物
+  79   3                  {
+  80   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms测试一次
+  81   4                      {
+  82   5                          VirtualCOM_StringSend(COM0,"there is obstacle!\r\n"); // UART1发送一个字符串
+  83   5                          appTaskState = 4;
+  84   5                      }
+  85   4                  }
+  86   3                  else //没有障碍物
+  87   3                  {
+  88   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms测试一次
+  89   4                      {
+  90   5                          //获取测试距离
+  91   5                          VirtualCOM_StringSend(COM0,"No obstacles!\r\n"); // UART1发送一个字符串
+  92   5                          appTaskState = 4;
+  93   5                      }
+  94   4                  }
+  95   3                  uartSendPackage(NOM_WORK);
+  96   3              }
   97   2              break;
-  98   2          }
-  99   1      }
+  98   2          default:
+  99   2              break;
+ 100   2          }
+ 101   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    218    ----
+   CODE SIZE        =    248    ----
    CONSTANT SIZE    =    117    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

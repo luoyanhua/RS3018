@@ -18,15 +18,30 @@
 #include "Uart.h"
 #include "delay.h"
 
-#define IO_LOW() P11 = 0
-#define IO_HIGH() P11 = 1
+unsigned char txBuf[14];
 
-void VirtualCOM_ByteSend(unsigned char val)
+void IO_LOW(unsigned char comTemp)
+{
+    if (comTemp == COM0)
+        P10 = 0;
+    else
+        P11 = 0;
+}
+
+void IO_HIGH(unsigned char comTemp)
+{
+    if (comTemp == COM0)
+        P10 = 1;
+    else
+        P11 = 1;
+}
+
+void VirtualCOM_ByteSend(unsigned char com, unsigned char val)
 {
 
     unsigned char i;
 
-    IO_LOW(); //起始位，拉低电平
+    IO_LOW(com); //起始位，拉低电平
 
     Delay208us();
 
@@ -36,27 +51,58 @@ void VirtualCOM_ByteSend(unsigned char val)
 
         if (val & 0x01)
 
-            IO_HIGH();
+            IO_HIGH(com);
 
         else
 
-            IO_LOW();
+            IO_LOW(com);
 
         Delay208us();
 
         val >>= 1;
     }
 
-    IO_HIGH(); //停止位，拉高电平
+    IO_HIGH(com); //停止位，拉高电平
 
     Delay208us();
 }
 
-void VirtualCOM_StringSend(unsigned char *str)
+void VirtualCOM_StringSend(unsigned char com, unsigned char *str)
 {
     while (*str != 0)
     {
-        VirtualCOM_ByteSend(*str);
+        VirtualCOM_ByteSend(com, *str);
         str++;
+    }
+}
+
+void uartSendBuf(unsigned char *buf, unsigned char len)
+{
+    unsigned char i = 0;
+    for(i = 0; i < len; i++)
+    {
+        VirtualCOM_ByteSend(COM1, buf[i]);
+    }
+}
+
+void uartSendPackage(unsigned char mode)
+{
+    if (mode == RES) //预留
+    {
+        txBuf[0] = 0xAA;
+    }
+    else if (mode == SELF_CHECK) //自检
+    {
+        txBuf[0] = 0xBB;
+        txBuf[1] = Get_sensorOkFlag();
+        txBuf[2] = 0xBF;
+        uartSendBuf(txBuf,3);
+    }
+    else if (mode == NOM_WORK) //工作
+    {
+        txBuf[0] = 0xCC;
+        txBuf[12] = Get_meterDistance()/10;
+        txBuf[13] = 0xcf;
+        uartSendBuf(txBuf,14);
     }
 }

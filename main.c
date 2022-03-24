@@ -98,7 +98,7 @@ void main(void)
 	Exti_config();
 	EA = 1;
 
-	VirtualCOM_StringSend("STC8 UART2 OK!\r\n"); // UART1发送一个字符串
+	VirtualCOM_StringSend(COM0,"STC8 UART2 OK!\r\n"); // UART1发送一个字符串
 
 	while (1)
 	{

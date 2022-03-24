@@ -13,6 +13,15 @@
 #ifndef	__UART_H
 #define	__UART_H
 
-void VirtualCOM_StringSend(unsigned char *str);
+#define COM0 0
+#define COM1 1
+
+#define RES	0
+#define SELF_CHECK	1
+#define NOM_WORK	2
+
+void VirtualCOM_StringSend(unsigned char com,unsigned char *str);
+
+void uartSendPackage(unsigned char mode);
 
 #endif

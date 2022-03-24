@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   GPIO                                                                  03/05/2022 14:10:59 PAGE 1   
+C51 COMPILER V9.54   GPIO                                                                  03/19/2022 09:43:25 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE GPIO
@@ -62,7 +62,7 @@ line level    source
   52   2            P1M1 |= GPIOx->Pin, P1M0 |= GPIOx->Pin; //开漏输出
   53   2          if (GPIOx->Mode == GPIO_OUT_PP)
   54   2            P1M1 &= ~GPIOx->Pin, P1M0 |= GPIOx->Pin; //推挽输出
-C51 COMPILER V9.54   GPIO                                                                  03/05/2022 14:10:59 PAGE 2   
+C51 COMPILER V9.54   GPIO                                                                  03/19/2022 09:43:25 PAGE 2   
 
   55   2        }
   56   1        if (GPIO == GPIO_P2)
@@ -126,7 +126,7 @@ line level    source
  114   2            P7M1 &= ~GPIOx->Pin, P7M0 &= ~GPIOx->Pin; //上拉准双向口
  115   2          if (GPIOx->Mode == GPIO_HighZ)
  116   2            P7M1 |= GPIOx->Pin, P7M0 &= ~GPIOx->Pin; //浮空输入
-C51 COMPILER V9.54   GPIO                                                                  03/05/2022 14:10:59 PAGE 3   
+C51 COMPILER V9.54   GPIO                                                                  03/19/2022 09:43:25 PAGE 3   
 
  117   2          if (GPIOx->Mode == GPIO_OUT_OD)
  118   2            P7M1 |= GPIOx->Pin, P7M0 |= GPIOx->Pin; //开漏输出
