@@ -22,7 +22,7 @@
 #define SENSOR_ERR_STATE 4
 
 bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0;
-sendMode = 0;
+bit sendMode = 0;
 unsigned char SendContinuePlusState = 0;
 unsigned int SendContinuePlusTimeCnt = 0;
 unsigned int meterDistance = 0; //µ¥Î»ÊÇmm

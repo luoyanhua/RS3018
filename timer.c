@@ -39,7 +39,7 @@ void PlusAdjust(void)
 		plusAdjustState = 1;
 		break;
 	case 1:
-		if (plusOutCnt > (PLUS_MAX * 2))
+		if (plusOutCnt > (PLUS_MAX<<1))
 		{
 			plusOutCnt = 0;
 			plusOutFlag = 0;

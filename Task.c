@@ -81,6 +81,7 @@ void AppTask(void)
                 {
                     VirtualCOM_StringSend(COM0,"there is obstacle!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
+										uartSendPackage(NOM_WORK);
                 }
             }
             else //没有障碍物
@@ -90,9 +91,9 @@ void AppTask(void)
                     //获取测试距离
                     VirtualCOM_StringSend(COM0,"No obstacles!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
+										uartSendPackage(NOM_WORK);
                 }
             }
-            uartSendPackage(NOM_WORK);
         }
         break;
     default:
