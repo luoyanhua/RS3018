@@ -49,6 +49,8 @@ bit Get_plusOutFlag(void);
 
 unsigned int Get_RecvPlusTimerCnt(void); //µ¥Î»12.5us
 
+unsigned int Get_us_250Cnt(void);
+
 unsigned int Get_SysHalfMsTick(void);
 
 unsigned int get_time_escape_sec(unsigned int ticks_now, unsigned int ticks_old);

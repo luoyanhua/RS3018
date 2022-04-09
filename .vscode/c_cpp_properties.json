@@ -4,7 +4,7 @@
             "name": "Target 1",
             "includePath": [
                 "D:\\keil\\keil_C51\\C51\\INC",
-                "e:\\gitProject\\RS3018"
+                "e:\\SoftProject\\RS3018\\STC8G_RS3018_Test"
             ],
             "defines": [
                 "__C51__",

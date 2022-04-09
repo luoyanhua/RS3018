@@ -58,24 +58,22 @@ void Timer_config(void)
 {
 	TIM_InitTypeDef TIM_InitStructure;							   //结构定义
 	TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;			   //指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
-	TIM_InitStructure.TIM_Priority = Priority_0;				   //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	TIM_InitStructure.TIM_Interrupt = ENABLE;					   //中断是否允许,   ENABLE或DISABLE
+	TIM_InitStructure.TIM_Priority = Priority_1;				   //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+	TIM_InitStructure.TIM_Interrupt = DISABLE;					   //中断是否允许,   ENABLE或DISABLE
 	TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;				   //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	TIM_InitStructure.TIM_ClkOut = DISABLE;						   //是否输出高速脉冲, ENABLE或DISABLE
-	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 82000UL); //初值,    80KHz   12.5us中断一次
+	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 80000UL); //初值,    80KHz   12.5us中断一次
 	TIM_InitStructure.TIM_Run = ENABLE;							   //是否初始化后启动定时器, ENABLE或DISABLE
 	Timer_Inilize(Timer0, &TIM_InitStructure);					   //初始化Timer0	  Timer0,Timer1,Timer2,Timer3,Timer4
-}
 
-/******************** INT配置 ********************/
-void Exti_config(void)
-{
-	EXTI_InitTypeDef Exti_InitStructure; //结构定义
-
-	Exti_InitStructure.EXTI_Interrupt = ENABLE;	   //中断使能,   ENABLE或DISABLE
-	Exti_InitStructure.EXTI_Mode = EXT_MODE_Fall;  //中断模式,   EXT_MODE_RiseFall,EXT_MODE_Fall
-	Exti_InitStructure.EXTI_Priority = Priority_0; //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	Ext_Inilize(EXT_INT1, &Exti_InitStructure);	   //初始化
+	TIM_InitStructure.TIM_Mode = TIM_16BitAutoReload;			//指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
+	TIM_InitStructure.TIM_Priority = Priority_0;				//指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+	TIM_InitStructure.TIM_Interrupt = ENABLE;					//中断是否允许,   ENABLE或DISABLE
+	TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;				//指定时钟源, TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
+	TIM_InitStructure.TIM_ClkOut = DISABLE;						//是否输出高速脉冲, ENABLE或DISABLE
+	TIM_InitStructure.TIM_Value = 65536UL - (MAIN_Fosc / 4000); //初值,    250us中断一次
+	TIM_InitStructure.TIM_Run = ENABLE;							//是否初始化后启动定时器, ENABLE或DISABLE
+	Timer_Inilize(Timer1, &TIM_InitStructure);					//初始化Timer1	  Timer0,Timer1,Timer2,Timer3,Timer4
 }
 
 /******************** WDT配置 ********************/
@@ -95,10 +93,9 @@ void main(void)
 	GPIO_config();
 	Timer_config();
 	WDT_config();
-	Exti_config();
 	EA = 1;
 
-	VirtualCOM_StringSend(COM0,"STC8 UART2 OK!\r\n"); // UART1发送一个字符串
+	VirtualCOM_StringSend(COM0, "STC8 UART2 OK!\r\n"); // UART1发送一个字符串
 
 	while (1)
 	{

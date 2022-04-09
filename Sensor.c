@@ -55,7 +55,7 @@ bit Get_obstaclesExistenceFlag(void)
 void Start_sendOncePlusTask(void)
 {
 	SendOncePlusTaskFlag = 1;
-	SendContinuePlusState = 0;
+	SendContinuePlusState = START_SEND_STATE;
 }
 
 // sendMode 0:自检模式 1:正常测试模式
@@ -67,13 +67,14 @@ void SendOncePlusTask(void)
 	switch (SendContinuePlusState)
 	{
 	case START_SEND_STATE:
-		Start_SendPlus(); //发送超声波
-		SendContinuePlusState = 1;
+		SendContinuePlusTimeCnt = Get_us_250Cnt(); //单位50us
+		Start_SendPlus();							   //发送超声波
+		meterDistance = 0;							   //每次发送前距离清零
+		SendContinuePlusState = WAIT_SEND_END_STATE;
 		break;
 	case WAIT_SEND_END_STATE:
 		if (Get_plusOutFlag() == 0) //等待发送完成
 		{
-			SendContinuePlusTimeCnt = Get_RecvPlusTimerCnt(); //单位12.5us
 			if (sendMode == 0)
 			{
 				Start_recvPlus(); //开启接收返回信号
@@ -81,7 +82,7 @@ void SendOncePlusTask(void)
 			}
 			else
 			{
-				if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 96) // 1.2ms后开始计算距离
+				if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 6) // 1.5ms后开始计算距离
 				{
 					Start_recvPlus(); //开启接收返回信号
 					SendContinuePlusState = START_METER_STATE;
@@ -97,35 +98,37 @@ void SendOncePlusTask(void)
 			StartBeepAlarm(500);	  //正常收到返回信号	0.5S
 			SendOncePlusTaskFlag = 0; //自检完成后停止任务运行
 		}
-		else if (get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) >= 80) //如果未收到连续波形，则判断是否超时
+		else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //如果未收到连续波形，则判断是否超时
 		{
 			sensorOkFlag = 0;
-			meterDistance = 0;		  //故障，重新测距
 			StartBeepAlarm(2000);	  //没有收到返回信号，故障	2S
 			SendOncePlusTaskFlag = 0; //自检完成后停止任务运行
+			Stop_recvPlus();
 		}
 		break;
 	case START_METER_STATE:
 		if (Get_recvPlusFlag() == 0) //收到波形，开始计算距离
 		{
-			meterDistance = get_time_escape_sec(Get_RecvPlusTimerCnt(), SendContinuePlusTimeCnt) * 40 * 340; //时间*40转化未0.5ms，刚好是一半路程的时间
-			if (meterDistance < 250)																		 //最短距离0.25米
+			meterDistance = get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) * 2.5 * 17; // 340/2=170路程来回，1个差值代表250us
+			if (meterDistance < 250)																	//最短距离0.25米
 			{
 				meterDistance = 0;
 			}
-			else if(meterDistance > 2550)
+			else if (meterDistance > 2550)
 			{
 				meterDistance = 2550;
 			}
 			obstaclesExistenceFlag = 1;
 			SendOncePlusTaskFlag = 0;
 		}
-		//最远3米，大概是17.6ms，暂定50ms
-		else if (get_time_escape_sec(Get_SysHalfMsTick(), SendContinuePlusTimeCnt) >= 4000) //如果未收到连续波形，则判断是否超时
+		//最远3米，大概是17.6ms，暂定40ms
+		else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //如果未收到连续波形，则判断是否超时
 		{
 			//发送无障碍物数据
 			obstaclesExistenceFlag = 0;
 			SendOncePlusTaskFlag = 0; //一次测试结束，未收到返回波形
+			meterDistance = 160;	  //没探测到数据，距离上报0x10
+			Stop_recvPlus();
 		}
 		break;
 	default:

@@ -31,10 +31,23 @@
 
 unsigned int delayCnt = 0;
 
-void Delay208us(void) //@12.000MHz
+void Delay208us(void) //@24.000MHz
 {
-	delayCnt = Get_RecvPlusTimerCnt();
-	while (get_time_escape_sec(Get_RecvPlusTimerCnt(), delayCnt) <= 16)
+//	unsigned char i, j;
+
+//	i = 7;
+//	j = 121;
+//	do
+//	{
+//		while (--j);
+//	} while (--i);	
+	
+	unsigned char i, j;
+
+	i = 4;
+	j = 59;
+	do
 	{
-	}; // 12.5*17 = 212.5
+		while (--j);
+	} while (--i);
 }

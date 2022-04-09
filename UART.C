@@ -17,6 +17,7 @@
 #include "Sensor.h"
 #include "Uart.h"
 #include "delay.h"
+#include<string.h>
 
 unsigned char txBuf[14];
 
@@ -69,11 +70,11 @@ void VirtualCOM_ByteSend(unsigned char com, unsigned char val)
 
 void VirtualCOM_StringSend(unsigned char com, unsigned char *str)
 {
-    while (*str != 0)
-    {
-        VirtualCOM_ByteSend(com, *str);
-        str++;
-    }
+//    while (*str != 0)
+//    {
+//        VirtualCOM_ByteSend(com, *str);
+//        str++;
+//    }
 }
 
 void uartSendBuf(unsigned char *buf, unsigned char len)
@@ -100,6 +101,7 @@ void uartSendPackage(unsigned char mode)
     }
     else if (mode == NOM_WORK) //นคื๗
     {
+        memset(txBuf,0,14);
         txBuf[0] = 0xCC;
         txBuf[12] = Get_meterDistance()/10;
         txBuf[13] = 0xcf;

@@ -25,12 +25,35 @@ bit recvPlusFlag = 0;
 u8 recvPlusCnt = 0;		 //脉冲个数
 u32 recvPlusTimeCnt = 0; //连续脉冲时间
 
+/******************** INT配置 ********************/
+void Exti_config(void)
+{
+	EXTI_InitTypeDef Exti_InitStructure; //结构定义
+
+	Exti_InitStructure.EXTI_Interrupt = ENABLE;	   //中断使能,   ENABLE或DISABLE
+	Exti_InitStructure.EXTI_Mode = EXT_MODE_Fall;  //中断模式,   EXT_MODE_RiseFall,EXT_MODE_Fall
+	Exti_InitStructure.EXTI_Priority = Priority_0; //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+	Ext_Inilize(EXT_INT1, &Exti_InitStructure);	   //初始化
+}
+
 //开启接收超声波
 void Start_recvPlus(void)
 {
+	Exti_config();
 	recvPlusFlag = 1;
 	recvPlusCnt = 0;
 	recvPlusTimeCnt = 0;
+	Timer0_InterruptEnable(); //允许中断
+}
+
+//停止接受超声波
+void Stop_recvPlus(void)
+{
+	recvPlusFlag = 0;
+	recvPlusCnt = 0;
+	recvPlusTimeCnt = 0;
+	EX1 = 0;				   //禁止中断
+	Timer0_InterruptDisable(); //禁止中断
 }
 
 //用于判断是否接收完成
@@ -44,13 +67,12 @@ void Ext_INT1(void) interrupt INT1_VECTOR //进中断时已经清除标志
 {
 	if (recvPlusFlag == 0) //接收开始标志 0：接收完成或未开始，1：接收未完成
 		return;
-
-	if (get_time_escape_sec(Get_RecvPlusTimerCnt(), recvPlusTimeCnt) <= 4) //波形连续才开始计数
+	if (get_time_escape_sec(Get_RecvPlusTimerCnt(), recvPlusTimeCnt) <= 5) //波形连续才开始计数
 	{
-		recvPlusCnt++;
-		if (recvPlusCnt >= 3)
+		if (++recvPlusCnt >= 3)
 		{
 			recvPlusFlag = 0;
+			Stop_recvPlus();
 		}
 	}
 	else

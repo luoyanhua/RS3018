@@ -36,6 +36,9 @@ u8	Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx);
 //开启接收超声波
 void Start_recvPlus(void);
 
+//停止接受超声波
+void Stop_recvPlus(void);
+
 //用于判断是否接收完成
 bit Get_recvPlusFlag(void);
 
