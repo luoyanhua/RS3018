@@ -1,10 +1,10 @@
-C51 COMPILER V9.54   UART                                                                  04/09/2022 16:49:47 PAGE 1   
+C51 COMPILER V9.54   UART                                                                  04/16/2022 12:05:24 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE UART
-OBJECT MODULE PLACED IN .\list\Uart.obj
-COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ua
-                    -rt.lst) OBJECT(.\list\Uart.obj)
+OBJECT MODULE PLACED IN .\list\UART.obj
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE UART.C OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\UA
+                    -RT.lst) OBJECT(.\list\UART.obj)
 
 line level    source
 
@@ -25,116 +25,238 @@ line level    source
   15          #include "Beep.h"
   16          #include "Task.h"
   17          #include "Sensor.h"
-  18          #include "Uart.h"
-  19          #include "delay.h"
-  20          #include<string.h>
+  18          #include "delay.h"
+  19          #include "UART.h"
+  20          #include <string.h>
   21          
-  22          unsigned char txBuf[14];
-  23          
-  24          void IO_LOW(unsigned char comTemp)
-  25          {
-  26   1          if (comTemp == COM0)
-  27   1              P10 = 0;
-  28   1          else
-  29   1              P11 = 0;
-  30   1      }
-  31          
-  32          void IO_HIGH(unsigned char comTemp)
-  33          {
-  34   1          if (comTemp == COM0)
-  35   1              P10 = 1;
-  36   1          else
-  37   1              P11 = 1;
-  38   1      }
-  39          
-  40          void VirtualCOM_ByteSend(unsigned char com, unsigned char val)
-  41          {
-  42   1      
-  43   1          unsigned char i;
-  44   1      
-  45   1          IO_LOW(com); //∆ ºŒª£¨¿≠µÕµÁ∆Ω
-  46   1      
-  47   1          Delay208us();
-  48   1      
-  49   1          for (i = 0; i < 8; i++) // 8Œª ˝æ›Œª
-  50   1      
-  51   1          {
-  52   2      
-  53   2              if (val & 0x01)
-  54   2      
-C51 COMPILER V9.54   UART                                                                  04/09/2022 16:49:47 PAGE 2   
+  22          COMx_Define COM2;
+  23          u8 xdata TX2_Buffer[COM_TX2_Lenth]; //∑¢ÀÕª∫≥Â
+  24          u8 xdata RX2_Buffer[COM_RX2_Lenth]; //Ω” ’ª∫≥Â
+  25          
+  26          u8 UART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
+  27          {
+  28   1              u8 i;
+  29   1              u32 j;
+  30   1      
+  31   1              if (UARTx == UART2)
+  32   1              {
+  33   2                      COM2.id = 2;
+  34   2                      COM2.TX_read = 0;
+  35   2                      COM2.TX_write = 0;
+  36   2                      COM2.B_TX_busy = 0;
+  37   2                      COM2.RX_Cnt = 0;
+  38   2                      COM2.RX_TimeOut = 0;
+  39   2                      COM2.B_RX_OK = 0;
+  40   2                      for (i = 0; i < COM_TX2_Lenth; i++)
+  41   2                              TX2_Buffer[i] = 0;
+  42   2                      for (i = 0; i < COM_RX2_Lenth; i++)
+  43   2                              RX2_Buffer[i] = 0;
+  44   2      
+  45   2                      if ((COMx->UART_Mode == UART_9bit_BRTx) || (COMx->UART_Mode == UART_8bit_BRTx)) //ø…±‰≤®Ãÿ¬ 
+  46   2                      {
+  47   3                              if (COMx->UART_Priority > Priority_3)
+  48   3                                      return 2;                                                //¥ÌŒÛ
+  49   3                              UART2_Priority(COMx->UART_Priority); //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2,Priority
+             -_3
+  50   3                              if (COMx->UART_Mode == UART_9bit_BRTx)
+  51   3                                      S2CON |= (1 << 7); // 9bit
+  52   3                              else
+  53   3                                      S2CON &= ~(1 << 7);                                        // 8bit
+C51 COMPILER V9.54   UART                                                                  04/16/2022 12:05:24 PAGE 2   
 
-  55   2                  IO_HIGH(com);
-  56   2      
-  57   2              else
-  58   2      
-  59   2                  IO_LOW(com);
-  60   2      
-  61   2              Delay208us();
-  62   2      
-  63   2              val >>= 1;
-  64   2          }
-  65   1      
-  66   1          IO_HIGH(com); //Õ£÷πŒª£¨¿≠∏ﬂµÁ∆Ω
-  67   1      
-  68   1          Delay208us();
-  69   1      }
-  70          
-  71          void VirtualCOM_StringSend(unsigned char com, unsigned char *str)
-  72          {
-  73   1      //    while (*str != 0)
-  74   1      //    {
-  75   1      //        VirtualCOM_ByteSend(com, *str);
-  76   1      //        str++;
-  77   1      //    }
-  78   1      }
-*** WARNING C280 IN LINE 71 OF Uart.c: 'com': unreferenced local variable
-*** WARNING C280 IN LINE 71 OF Uart.c: 'str': unreferenced local variable
-  79          
-  80          void uartSendBuf(unsigned char *buf, unsigned char len)
-  81          {
-  82   1          unsigned char i = 0;
-  83   1          for(i = 0; i < len; i++)
-  84   1          {
-  85   2              VirtualCOM_ByteSend(COM1, buf[i]);
-  86   2          }
-  87   1      }
-  88          
-  89          void uartSendPackage(unsigned char mode)
-  90          {
-  91   1          if (mode == RES) //‘§¡Ù
-  92   1          {
-  93   2              txBuf[0] = 0xAA;
-  94   2          }
-  95   1          else if (mode == SELF_CHECK) //◊‘ºÏ
-  96   1          {
-  97   2              txBuf[0] = 0xBB;
-  98   2              txBuf[1] = Get_sensorOkFlag();
-  99   2              txBuf[2] = 0xBF;
- 100   2              uartSendBuf(txBuf,3);
- 101   2          }
- 102   1          else if (mode == NOM_WORK) //π§◊˜
- 103   1          {
- 104   2              memset(txBuf,0,14);
- 105   2              txBuf[0] = 0xCC;
- 106   2              txBuf[12] = Get_meterDistance()/10;
- 107   2              txBuf[13] = 0xcf;
- 108   2              uartSendBuf(txBuf,14);
- 109   2          }
- 110   1      }
+  54   3                              j = (MAIN_Fosc / 4) / COMx->UART_BaudRate; //∞¥1Tº∆À„
+  55   3                              if (j >= 65536UL)
+  56   3                                      return 2; //¥ÌŒÛ
+  57   3                              j = 65536UL - j;
+  58   3                              AUXR &= ~(1 << 4); // Timer stop
+  59   3                              AUXR &= ~(1 << 3); // Timer2 set As Timer
+  60   3                              AUXR |= (1 << 2);  // Timer2 set as 1T mode
+  61   3                              TH2 = (u8)(j >> 8);
+  62   3                              TL2 = (u8)j;
+  63   3                              IE2 &= ~(1 << 2); //Ω˚÷π÷–∂œ
+  64   3                              AUXR |= (1 << 4); // Timer run enable
+  65   3                      }
+  66   2                      else
+  67   2                              return 2; //ƒ£ Ω¥ÌŒÛ
+  68   2                      if (COMx->UART_Interrupt == ENABLE)
+  69   2                              IE2 |= 1; //‘ –Ì÷–∂œ
+  70   2                      else
+  71   2                              IE2 &= ~1; //Ω˚÷π÷–∂œ
+  72   2                      if (COMx->UART_RxEnable == ENABLE)
+  73   2                              S2CON |= (1 << 4); //‘ –ÌΩ” ’
+  74   2                      else
+  75   2                              S2CON &= ~(1 << 4);                                                      //Ω˚÷πΩ” ’
+  76   2                      P_SW2 = (P_SW2 & ~1) | (COMx->UART_P_SW & 0x01); //«–ªªIO
+  77   2                      return 0;
+  78   2              }
+  79   1              return 2; //¥ÌŒÛ
+  80   1      }
+  81          
+  82          /*********************************************************/
+  83          
+  84          /***************  ¥Æø⁄≥ı ºªØ∫Ø ˝ *****************/
+  85          void UART_config(void)
+  86          {
+  87   1              COMx_InitDefine COMx_InitStructure;                              //Ω·ππ∂®“Â
+  88   1              COMx_InitStructure.UART_Mode = UART_8bit_BRTx;   //ƒ£ Ω,   UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9
+             -bit_BRTx
+  89   1                                                                                                               //     COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;                 //—°‘Ò≤®Ãÿ¬ ∑¢…˙∆˜, BRT_Timer2 (◊¢“‚: ¥
+             -Æø⁄2πÃ∂® π”√BRT_Timer2, À˘“‘≤ª”√—°‘Ò)
+  90   1              COMx_InitStructure.UART_BaudRate = 9600ul;               //≤®Ãÿ¬ ,     110 ~ 115200
+  91   1              COMx_InitStructure.UART_RxEnable = ENABLE;               //Ω” ’‘ –Ì,   ENABLEªÚDISABLE
+  92   1              COMx_InitStructure.UART_Interrupt = ENABLE;              //÷–∂œ‘ –Ì,   ENABLEªÚDISABLE
+  93   1              COMx_InitStructure.UART_Priority = Priority_0;   //÷∏∂®÷–∂œ”≈œ»º∂(µÕµΩ∏ﬂ) Priority_0,Priority_1,Priority_2
+             -,Priority_3
+  94   1              COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11; //«–ªª∂Àø⁄,   UART2_SW_P10_P11,UART2_SW_P46_P47
+  95   1              UART_Configuration(UART2, &COMx_InitStructure);  //≥ı ºªØ¥Æø⁄2 UART1,UART2,UART3,UART4
+  96   1      }
+  97          
+  98          void UART2_int(void) interrupt UART2_VECTOR
+  99          {
+ 100   1              if (RI2)
+ 101   1              {
+ 102   2                      CLR_RI2();
+ 103   2                      if (COM2.B_RX_OK == 0)
+ 104   2                      {
+ 105   3                              if (COM2.RX_Cnt >= COM_RX2_Lenth)
+ 106   3                                      COM2.RX_Cnt = 0;
+ 107   3                              RX2_Buffer[COM2.RX_Cnt++] = S2BUF;
+ 108   3                              COM2.RX_TimeOut = TimeOutSet2;
+ 109   3                      }
+ 110   2              }
+ 111   1      
+ 112   1              if (TI2)
+C51 COMPILER V9.54   UART                                                                  04/16/2022 12:05:24 PAGE 3   
+
+ 113   1              {
+ 114   2                      CLR_TI2();
+ 115   2                      if (COM2.TX_read != COM2.TX_write)
+ 116   2                      {
+ 117   3                              S2BUF = TX2_Buffer[COM2.TX_read];
+ 118   3                              if (++COM2.TX_read >= COM_TX2_Lenth)
+ 119   3                                      COM2.TX_read = 0;
+ 120   3                      }
+ 121   2                      else
+ 122   2                              COM2.B_TX_busy = 0;
+ 123   2              }
+ 124   1      }
+ 125          
+ 126          /********************* UART2 ∫Ø ˝ ************************/
+ 127          void TX2_write2buff(u8 dat) //–¥»Î∑¢ÀÕª∫≥Â£¨÷∏’Î+1
+ 128          {
+ 129   1              TX2_Buffer[COM2.TX_write] = dat; //◊∞∑¢ÀÕª∫≥Â
+ 130   1              if (++COM2.TX_write >= COM_TX2_Lenth)
+ 131   1                      COM2.TX_write = 0;
+ 132   1      
+ 133   1              if (COM2.B_TX_busy == 0) //ø’œ–
+ 134   1              {
+ 135   2                      COM2.B_TX_busy = 1; //±Í÷æ√¶
+ 136   2                      SET_TI2();                      //¥•∑¢∑¢ÀÕ÷–∂œ
+ 137   2              }
+ 138   1      }
+ 139          
+ 140          void VirtualCOM_StringSend(unsigned char *str)
+ 141          {
+ 142   1              //    while (*str != 0)
+ 143   1              //    {
+ 144   1              //        TX2_write2buff(*str);
+ 145   1              //        str++;
+ 146   1              //    }
+ 147   1      }
+*** WARNING C280 IN LINE 140 OF UART.C: 'str': unreferenced local variable
+ 148          
+ 149          void clrRX2_Buffer(void)
+ 150          {
+ 151   1              COM2.id = 2;
+ 152   1              COM2.TX_read = 0;
+ 153   1              COM2.TX_write = 0;
+ 154   1              COM2.B_TX_busy = 0;
+ 155   1              COM2.RX_Cnt = 0;
+ 156   1              COM2.RX_TimeOut = 0;
+ 157   1              COM2.B_RX_OK = 0;
+ 158   1      }
+ 159          
+ 160          unsigned char getRxSensorId(void)
+ 161          {
+ 162   1              return RX2_Buffer[2];
+ 163   1      }
+ 164          
+ 165          void uartSendBuf(unsigned char *buf, unsigned char len)
+ 166          {
+ 167   1              unsigned char i = 0;
+ 168   1              for (i = 0; i < len; i++)
+ 169   1              {
+ 170   2                      TX2_write2buff(buf[i]);
+ 171   2              }
+ 172   1      }
+ 173          
+C51 COMPILER V9.54   UART                                                                  04/16/2022 12:05:24 PAGE 4   
+
+ 174          unsigned char txBuf[14];
+ 175          unsigned char currentSensorIDValue = 0;
+ 176          
+ 177          unsigned char get_currentSensorIDValue(void)
+ 178          {
+ 179   1              return currentSensorIDValue;
+ 180   1      }
+ 181          
+ 182          void uartSendPackage(unsigned char mode)
+ 183          {
+ 184   1              unsigned char temp_sendLen = 0;
+ 185   1              if (mode == RES) //‘§¡Ù
+ 186   1              {
+ 187   2                      txBuf[0] = 0xAA;
+ 188   2              }
+ 189   1              else if(mode == PWM_CHECK)      //PWMºÏ≤‚
+ 190   1              {
+ 191   2                      txBuf[0] = 0xBB;
+ 192   2                      txBuf[1] = 4;
+ 193   2                      txBuf[2] = 0xBF;                
+ 194   2                      temp_sendLen = 3;
+ 195   2                      currentSensorIDValue = txBuf[1];
+ 196   2              }
+ 197   1              else if (mode == SELF_CHECK) //◊‘ºÏ
+ 198   1              {
+ 199   2                      txBuf[0] = 0xBB;
+ 200   2                      txBuf[2] = 0xBF;
+ 201   2                      if(getRxSensorId() == 4)
+ 202   2                      {
+ 203   3                              txBuf[1] = 8;   
+ 204   3                      }
+ 205   2                      else if(getRxSensorId() == 8)
+ 206   2                      {
+ 207   3                              txBuf[1] = 2;   
+ 208   3                      }       
+ 209   2                      else if(getRxSensorId() == 2)
+ 210   2                      {
+ 211   3                              txBuf[1] = 1;   
+ 212   3                      }                               
+ 213   2                      temp_sendLen = 3;
+ 214   2                      currentSensorIDValue = txBuf[1];
+ 215   2              }
+ 216   1              else if (mode == NOM_WORK) //π§◊˜
+ 217   1              {
+ 218   2                      memset(txBuf, 0, 14);
+ 219   2                      txBuf[0] = 0xCC;
+ 220   2                      txBuf[12] = Get_meterDistance() / 10;
+ 221   2                      txBuf[13] = 0xcf;
+ 222   2                      temp_sendLen = 14;
+ 223   2              }
+ 224   1              uartSendBuf(txBuf, temp_sendLen);
+ 225   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    213    ----
-C51 COMPILER V9.54   UART                                                                  04/09/2022 16:49:47 PAGE 3   
-
+   CODE SIZE        =    690    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =    128    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     14      13
+   DATA SIZE        =     22      25
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
+C51 COMPILER V9.54   UART                                                                  04/16/2022 12:05:24 PAGE 5   
+
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

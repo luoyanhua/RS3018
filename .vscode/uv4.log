@@ -1,7 +1,48 @@
 Build target 'Target 1'
-compiling Sensor.c...
-Sensor.c(70): warning C206: 'Get_us_50Cnt': missing function-prototype
-linking...
-Program Size: data=60.7 xdata=0 code=3510
-creating hex file from ".\list\PCA-CAP"...
-".\list\PCA-CAP" - 0 Error(s), 1 Warning(s).
+compiling main.c...
+compiling Task.c...
+compiling Uart.c...
+Uart.c(140): warning C280: 'str': unreferenced local variable
+Uart.c(179): error C141: syntax error near 'if'
+Uart.c(181): error C136: invalid dimension size: [0]
+Uart.c(183): error C141: syntax error near 'else'
+Uart.c(183): error C141: syntax error near '==', expected ')'
+Uart.c(185): error C136: invalid dimension size: [0]
+Uart.c(185): error C231: 'txBuf': redefinition
+Uart.c(186): error C279: 'txBuf': multiple initialization
+Uart.c(187): error C279: 'txBuf': multiple initialization
+Uart.c(187): error C231: 'txBuf': redefinition
+Uart.c(189): error C141: syntax error near '}'
+Uart.c(190): error C141: syntax error near '==', expected ')'
+Uart.c(192): error C136: invalid dimension size: [0]
+Uart.c(192): error C279: 'txBuf': multiple initialization
+Uart.c(192): error C231: 'txBuf': redefinition
+Uart.c(193): error C279: 'txBuf': multiple initialization
+Uart.c(193): error C231: 'txBuf': redefinition
+Uart.c(194): error C141: syntax error near 'if'
+Uart.c(194): error C141: syntax error near '==', expected ')'
+Uart.c(196): error C279: 'txBuf': multiple initialization
+Uart.c(196): error C231: 'txBuf': redefinition
+Uart.c(197): error C141: syntax error near '}'
+Uart.c(198): error C141: syntax error near '==', expected ')'
+Uart.c(200): error C279: 'txBuf': multiple initialization
+Uart.c(201): error C141: syntax error near '}'
+Uart.c(202): error C141: syntax error near '==', expected ')'
+Uart.c(204): error C279: 'txBuf': multiple initialization
+Uart.c(205): error C141: syntax error near '}'
+Uart.c(206): error C279: 'temp_sendLen': multiple initialization
+Uart.c(207): error C141: syntax error near '}'
+Uart.c(208): error C141: syntax error near '==', expected ')'
+Uart.c(210): error C141: syntax error near '0'
+Uart.c(210): error C231: '_memset': redefinition
+Uart.c(211): error C136: invalid dimension size: [0]
+Uart.c(211): error C279: 'txBuf': multiple initialization
+Uart.c(212): error C279: 'txBuf': multiple initialization
+Uart.c(212): error C231: 'txBuf': redefinition
+Uart.c(213): error C279: 'txBuf': multiple initialization
+Uart.c(213): error C231: 'txBuf': redefinition
+Uart.c(214): error C279: 'temp_sendLen': multiple initialization
+Uart.c(215): error C141: syntax error near '}'
+Uart.c(216): error C231: '_uartSendBuf': redefinition
+Uart.c(217): error C141: syntax error near '}'
+Target not created.

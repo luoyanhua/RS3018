@@ -7,6 +7,6 @@
 ".\list\Exti.obj",
 ".\list\Sensor.obj",
 ".\list\Task.obj",
-".\list\Uart.obj" 
+".\list\UART.obj" 
 TO ".\list\PCA-CAP" 
 PRINT(".\list\PCA-CAP.m51") RAMSIZE(256) 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  04/09/2022 16:49:46 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   50   1      
   51   1              GPIO_InitStructure.Pin = GPIO_Pin_All;          //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
   52   1              GPIO_InitStructure.Mode = GPIO_PullUp;          //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
-C51 COMPILER V9.54   MAIN                                                                  04/09/2022 16:49:46 PAGE 2   
+C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 2   
 
              -OUT_PP
   53   1              GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
@@ -116,23 +116,21 @@ line level    source
   95   1              WDT_config();
   96   1              EA = 1;
   97   1      
-  98   1              VirtualCOM_StringSend(COM0, "STC8 UART2 OK!\r\n"); // UART1发送一个字符串
-  99   1      
- 100   1              while (1)
- 101   1              {
- 102   2                      AppTask();                      //总流程处理任务
- 103   2                      BeepAlarmTask();        //蜂鸣器报警任务
- 104   2                      SendOncePlusTask(); //发送脉冲群任务
- 105   2                      WDT_Clear();            // 喂狗
- 106   2              }
- 107   1      }
-C51 COMPILER V9.54   MAIN                                                                  04/09/2022 16:49:46 PAGE 3   
+  98   1              while (1)
+  99   1              {
+ 100   2                      AppTask();                      //总流程处理任务
+ 101   2                      BeepAlarmTask();        //蜂鸣器报警任务
+ 102   2                      SendOncePlusTask(); //发送脉冲群任务
+ 103   2                      WDT_Clear();            // 喂狗
+ 104   2              }
+ 105   1      }
 
 
+C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 3   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    146    ----
-   CONSTANT SIZE    =     17    ----
+   CODE SIZE        =    135    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----      13

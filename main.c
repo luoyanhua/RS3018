@@ -95,8 +95,6 @@ void main(void)
 	WDT_config();
 	EA = 1;
 
-	VirtualCOM_StringSend(COM0, "STC8 UART2 OK!\r\n"); // UART1发送一个字符串
-
 	while (1)
 	{
 		AppTask();			//总流程处理任务

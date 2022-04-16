@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TASK                                                                  04/09/2022 16:49:47 PAGE 1   
+C51 COMPILER V9.54   TASK                                                                  04/16/2022 12:05:24 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TASK
@@ -26,103 +26,223 @@ line level    source
   16          #include "Task.h"
   17          #include "Sensor.h"
   18          #include "UART.h"
-  19          
-  20          unsigned char appTaskState = 0;
-  21          unsigned int appTaskTimeCnt = 0;
-  22          
-  23          // void serialSendTask(void)
-  24          //{
-  25          //
-  26          // }
-  27          
-  28          void AppTask(void)
-  29          {
-  30   1          switch (appTaskState)
-  31   1          {
-  32   2          case 0: //∑¢ÀÕPWM 0.5S ”√¿¥»∑»œŒª÷√–≈∫≈
-  33   2              StartBeepAlarm(500);
-  34   2              appTaskTimeCnt = Get_SysHalfMsTick();
-  35   2              appTaskState = 1;
-  36   2              break;
-  37   2          case 1: // Sensor IDª· ’µΩ◊‘º∫∑¢µƒ–≈∫≈
-  38   2              if (P34 == 0)
-  39   2              {
-  40   3                  VirtualCOM_StringSend(COM0, "recv ID!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  41   3                  appTaskState = 2;
-  42   3              }
-  43   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms≥¨ ±∫ÛºÃ–¯Õ˘œ¬Ω¯––
-  44   2              {
-  45   3                  VirtualCOM_StringSend(COM0, "recv ID timeout!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  46   3                  appTaskState = 2;
-  47   3              }
-  48   2              break;
-  49   2          case 2: //ø™ª˙ÃΩÕ∑◊‘ºÏ
-  50   2              Start_sendOncePlusTask();
-  51   2              appTaskState = 3;
-  52   2              VirtualCOM_StringSend(COM0, "sensor self check!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  53   2              break;
-  54   2          case 3: //ªÒ»°ÃΩÕ∑◊‘ºÏΩ·π˚
-C51 COMPILER V9.54   TASK                                                                  04/09/2022 16:49:47 PAGE 2   
+  19          #include "stdio.h"
+  20          #include "string.h"
+  21          
+  22          #define SENSOR_NUM_MAX 4
+  23          
+  24          typedef struct
+  25          {
+  26              bit runFlag;                           //‘À––±Í÷æ
+  27              bit adjustOKFlag;                      //≈–∂œOK±Í÷æ
+  28              bit ioStatusSaveValue;                 // IOø⁄◊¥Ã¨±£¥Ê
+  29              bit saveTotalSensorID[SENSOR_NUM_MAX]; //µ±«∞À˘”–…Ë±∏IDŒª÷√,»Áπ˚Œ™”“≤‡¥´∏–∆˜£¨‘Ú◊‘∂®“ÂŒ™÷˜¥´∏–∆˜
+*** ERROR C168 IN LINE 29 OF Task.c: 'saveTotalSensorID': array of bit
+  30              unsigned char state;                   //‘À––◊¥Ã¨ª˙
+  31              unsigned int TimeCnt;                  //∂® ±∆˜
+  32          } sensorIdAdjustStruct_T;
+*** ERROR C150 IN LINE 32 OF Task.c: 'runFlag': bit member in struct/union
+*** ERROR C150 IN LINE 32 OF Task.c: 'adjustOKFlag': bit member in struct/union
+*** ERROR C150 IN LINE 32 OF Task.c: 'ioStatusSaveValue': bit member in struct/union
+  33          
+  34          sensorIdAdjustStruct_T sensorIdAdjustStruct;
+  35          
+  36          void sensorIdAdjustTask_init(void)
+  37          {
+  38   1          memset(&sensorIdAdjustStruct, 0, sizeof(sensorIdAdjustStruct));
+  39   1      }
+  40          
+  41          unsigned char appTaskState = 0;
+  42          unsigned int appTaskTimeCnt = 0;
+  43          
+  44          void sensorIdAdjustTask(void)
+  45          {
+  46   1          if (sensorIdAdjustStruct.runFlag == 1)
+  47   1              return;
+  48   1          switch (sensorIdAdjustStruct.state)
+  49   1          {
+  50   2          case 0: //∑¢ÀÕPWM 150ms ”√¿¥»∑»œŒª÷√–≈∫≈
+C51 COMPILER V9.54   TASK                                                                  04/16/2022 12:05:24 PAGE 2   
 
-  55   2              if (Get_SendOncePlusTaskFlag() == 0)
-  56   2              {
-  57   3                  if (Get_sensorOkFlag())
-  58   3                  {
-  59   4                      VirtualCOM_StringSend(COM0, "sensor is ok!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  60   4                      appTaskState = 4;                                 //ºÏ≤‚µΩÃΩÕ∑
-  61   4                  }
-  62   3                  else
-  63   3                  {
-  64   4                      VirtualCOM_StringSend(COM0, "No sensor!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  65   4                      appTaskState = 0;                              //ŒﬁÃΩÕ∑¥”Õ∑ø™ º
-  66   4                  }
-  67   3                  uartSendPackage(SELF_CHECK);
-  68   3              }
-  69   2              break;
-  70   2          case 4: //ø™ º≤‚æ‡Ω·π˚
-  71   2              appTaskTimeCnt = Get_SysHalfMsTick();           
-  72   2              Start_sendOncePlusTask();
-  73   2              appTaskState = 5;
-  74   2              break;
-  75   2          case 5: //≈–∂œ «∑Ò”–’œ∞≠ŒÔ
-  76   2              if (Get_SendOncePlusTaskFlag() == 0)
-  77   2              {
-  78   3                  if (Get_obstaclesExistenceFlag()) //”–’œ∞≠ŒÔ
-  79   3                  {
-  80   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms≤‚ ‘“ª¥Œ
-  81   4                      {
-  82   5                          VirtualCOM_StringSend(COM0, "obstacle!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  83   5                          appTaskState = 4;
-  84   5                          uartSendPackage(NOM_WORK);
-  85   5                      }
+  51   2              StartBeepAlarm(150);
+  52   2              sensorIdAdjustStruct.TimeCnt = Get_SysHalfMsTick(); //ø™∆Ùº∆ ±∆˜
+  53   2              sensorIdAdjustStruct.state = 1;
+  54   2              break;
+  55   2          case 1: // ≈–∂œ”“÷–ÃΩÕ∑Œª÷√£¨÷ª”–”“≤‡ÃΩÕ∑ª· ’µΩ◊‘º∫∑¢µƒ–≈∫≈
+  56   2              //ø™∆ÙP10Ω” ’PWM
+  57   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 200) // 200ms≥¨ ±∫Ûº
+             -Ã–¯Õ˘œ¬Ω¯––
+  58   2              {
+  59   3                  if (sensorIdAdjustStruct.adjustOKFlag == 1) // ’µΩPWM
+  60   3                  {
+  61   4                      sensorIdAdjustStruct.adjustOKFlag = 0;
+  62   4                      uartSendPackage(PWM_CHECK); //∂®“Â◊‘º∫Œ™”“÷–ÃΩÕ∑£¨∑¢ÀÕ”“÷–ÃΩÕ∑µƒID ∂±–≈œ¢
+  63   4                  }
+  64   3                  sensorIdAdjustStruct.state = 2;
+  65   3              }
+  66   2              else
+  67   2              {
+  68   3                  if (P10 == 1)
+  69   3                  {
+  70   4                      sensorIdAdjustStruct.ioStatusSaveValue = 1;
+  71   4                  }
+  72   3                  if (sensorIdAdjustStruct.ioStatusSaveValue == 1 && P10 == 0)
+  73   3                  {
+  74   4                      sensorIdAdjustStruct.adjustOKFlag = 1;
+  75   4                  }
+  76   3              }
+  77   2              break;
+  78   2          case 2:                                                                                // ≈–∂œ”“≤‡ÃΩÕ∑
+             -Œª÷√
+  79   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 400) // 200ms≥¨ ±∫Ûº
+             -Ã–¯Õ˘œ¬Ω¯––
+  80   2              {
+  81   3                  if (getRxSensorId() == 4) // ’µΩ”“÷–ÃΩÕ∑µƒID ∂±–≈œ¢
+  82   3                  {
+  83   4                      sensorIdAdjustStruct.ioStatusSaveValue = 1;
+  84   4                      uartSendPackage(SELF_CHECK);    //∂®“Â◊‘º∫Œ™”“≤‡ÃΩÕ∑£¨∑¢ÀÕ”“≤‡ÃΩÕ∑…Ì∑›
+  85   4                      sensorIdAdjustStruct.state = 5; //Ã¯◊™µΩµ»¥˝1Sº∆ ±ÕÍ≥…
   86   4                  }
-  87   3                  else //√ª”–’œ∞≠ŒÔ
+  87   3                  else
   88   3                  {
-  89   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms≤‚ ‘“ª¥Œ
-  90   4                      {
-  91   5                          //ªÒ»°≤‚ ‘æ‡¿Î
-  92   5                          VirtualCOM_StringSend(COM0, "No obstacles!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-  93   5                          appTaskState = 4;
-  94   5                          uartSendPackage(NOM_WORK);
-  95   5                      }
-  96   4                  }
-  97   3              }
-  98   2              break;
-  99   2          default:
- 100   2              break;
- 101   2          }
- 102   1      }
+  89   4                      sensorIdAdjustStruct.state = 3;
+  90   4                  }
+  91   3              }
+  92   2              break;
+  93   2          case 3:                                                                                // ≈–∂œ◊Û÷–ÃΩÕ∑
+             -Œª÷√
+  94   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 600) // 200ms≥¨ ±∫Ûº
+             -Ã–¯Õ˘œ¬Ω¯––
+  95   2              {
+  96   3                  if (sensorIdAdjustStruct.adjustOKFlag == 1) //≈–∂œ¡¨–¯µÕµÁ∆Ω£¨◊Û÷–
+  97   3                  {
+  98   4      
+  99   4                      uartSendPackage(SELF_CHECK);    //∂®“Â◊‘º∫Œ™◊Û÷–ÃΩÕ∑£¨∑¢ÀÕ◊Û÷–ÃΩÕ∑…Ì∑›
+ 100   4                      sensorIdAdjustStruct.state = 5; //Ã¯◊™µΩµ»¥˝1Sº∆ ±ÕÍ≥…
+ 101   4                  }
+ 102   3                  else
+ 103   3                  {
+ 104   4                      sensorIdAdjustStruct.state = 4;
+ 105   4                  }
+ 106   3              }
+ 107   2              else
+C51 COMPILER V9.54   TASK                                                                  04/16/2022 12:05:24 PAGE 3   
 
+ 108   2              {
+ 109   3                  if (P10 == 1)
+ 110   3                  {
+ 111   4                      sensorIdAdjustStruct.adjustOKFlag = 0;
+ 112   4                  }
+ 113   3              }
+ 114   2              break;
+ 115   2          case 4:                                                                                // ≈–∂œ◊Û≤‡ÃΩÕ∑
+             -Œª÷√
+ 116   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 800) // 200ms≥¨ ±∫Ûº
+             -Ã–¯Õ˘œ¬Ω¯––
+ 117   2              {
+ 118   3                  if (sensorIdAdjustStruct.adjustOKFlag == 1) //≈–∂œ¡¨–¯∏ﬂµÁ∆Ω£¨◊Û±ﬂ
+ 119   3                  {
+ 120   4                      uartSendPackage(SELF_CHECK);    //∂®“Â◊‘º∫Œ™◊Û≤‡ÃΩÕ∑£¨∑¢ÀÕ◊Û≤‡ÃΩÕ∑…Ì∑›
+ 121   4                      sensorIdAdjustStruct.state = 5; //Ã¯◊™µΩµ»¥˝1Sº∆ ±ÕÍ≥…
+ 122   4                  }
+ 123   3                  else
+ 124   3                  {
+ 125   4                      sensorIdAdjustStruct.state = 4;
+ 126   4                  }
+ 127   3              }
+ 128   2              else
+ 129   2              {
+ 130   3                  if (P10 == 0)
+ 131   3                  {
+ 132   4                      sensorIdAdjustStruct.adjustOKFlag = 0;
+ 133   4                  }
+ 134   3              }
+ 135   2              break;
+ 136   2          case 5: // ≈–∂œ◊Û≤‡ÃΩÕ∑Œª÷√
+ 137   2              sensorIdAdjustStruct.state = 0;
+ 138   2              sensorIdAdjustStruct.runFlag = 1; //ÃΩÕ∑Œª÷√ ∂±ÕÍ≥…
+ 139   2              break;
+ 140   2          }
+ 141   1      }
+ 142          
+ 143          void AppTask(void)
+ 144          {
+ 145   1          if (sensorIdAdjustStruct.runFlag == 0)
+ 146   1              return;
+ 147   1          switch (appTaskState)
+ 148   1          {
+ 149   2          case 0: //∑¢ÀÕPWM 150ms ”√¿¥»∑»œŒª÷√–≈∫≈
+ 150   2              StartBeepAlarm(150);
+ 151   2              appTaskTimeCnt = Get_SysHalfMsTick();
+ 152   2              appTaskState = 1;
+ 153   2              break;
+ 154   2          case 1: // Sensor IDª· ’µΩ◊‘º∫∑¢µƒ–≈∫≈
+ 155   2              if (P34 == 0)
+ 156   2              {
+ 157   3                  VirtualCOM_StringSend("recv ID!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 158   3                  appTaskState = 2;
+ 159   3              }
+ 160   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms≥¨ ±∫ÛºÃ–¯Õ˘œ¬Ω¯––
+ 161   2              {
+ 162   3                  VirtualCOM_StringSend("recv ID timeout!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 163   3                  appTaskState = 2;
+ 164   3              }
+ 165   2              break;
+ 166   2          case 2: //ø™ª˙ÃΩÕ∑◊‘ºÏ
+ 167   2              Start_sendOncePlusTask();
+C51 COMPILER V9.54   TASK                                                                  04/16/2022 12:05:24 PAGE 4   
 
-MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    258    ----
-   CONSTANT SIZE    =    108    ----
-   XDATA SIZE       =   ----    ----
-   PDATA SIZE       =   ----    ----
-   DATA SIZE        =      3    ----
-   IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
-END OF MODULE INFORMATION.
+ 168   2              appTaskState = 3;
+ 169   2              VirtualCOM_StringSend("sensor self check!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 170   2              break;
+ 171   2          case 3: //ªÒ»°ÃΩÕ∑◊‘ºÏΩ·π˚
+ 172   2              if (Get_SendOncePlusTaskFlag() == 0)
+ 173   2              {
+ 174   3                  if (Get_sensorOkFlag())
+ 175   3                  {
+ 176   4                      VirtualCOM_StringSend("sensor is ok!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 177   4                      appTaskState = 4;                           //ºÏ≤‚µΩÃΩÕ∑
+ 178   4                  }
+ 179   3                  else
+ 180   3                  {
+ 181   4                      VirtualCOM_StringSend("No sensor!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 182   4                      appTaskState = 0;                        //ŒﬁÃΩÕ∑¥”Õ∑ø™ º
+ 183   4                  }
+ 184   3                  uartSendPackage(SELF_CHECK);
+ 185   3              }
+ 186   2              break;
+ 187   2          case 4: //ø™ º≤‚æ‡Ω·π˚
+ 188   2              appTaskTimeCnt = Get_SysHalfMsTick();
+ 189   2              Start_sendOncePlusTask();
+ 190   2              appTaskState = 5;
+ 191   2              break;
+ 192   2          case 5: //≈–∂œ «∑Ò”–’œ∞≠ŒÔ
+ 193   2              if (Get_SendOncePlusTaskFlag() == 0)
+ 194   2              {
+ 195   3                  if (Get_obstaclesExistenceFlag()) //”–’œ∞≠ŒÔ
+ 196   3                  {
+ 197   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms≤‚ ‘“ª¥Œ
+ 198   4                      {
+ 199   5                          VirtualCOM_StringSend("obstacle!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 200   5                          appTaskState = 4;
+ 201   5                          uartSendPackage(NOM_WORK);
+ 202   5                      }
+ 203   4                  }
+ 204   3                  else //√ª”–’œ∞≠ŒÔ
+ 205   3                  {
+ 206   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms≤‚ ‘“ª¥Œ
+ 207   4                      {
+ 208   5                          //ªÒ»°≤‚ ‘æ‡¿Î
+ 209   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
+ 210   5                          appTaskState = 4;
+ 211   5                          uartSendPackage(NOM_WORK);
+ 212   5                      }
+ 213   4                  }
+ 214   3              }
+ 215   2              break;
+ 216   2          default:
+ 217   2              break;
+ 218   2          }
+ 219   1      }
 
-
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  4 ERROR(S)
