@@ -1,3 +1,4 @@
+  
 /*---------------------------------------------------------------------*/
 /* --- STC MCU Limited ------------------------------------------------*/
 /* --- STC 1T Series MCU Demo Programme -------------------------------*/
@@ -15,10 +16,14 @@
 
 #include	"config.h"
 
+#define UART_CHG_IO	P32		//1:TX 0:RX
+#define UART_TX_EN	1
+#define UART_RX_EN	0
+
 #define	UART2	2
 
-#define	COM_TX2_Lenth	64
-#define	COM_RX2_Lenth	64
+#define	COM_TX2_Lenth	32
+#define	COM_RX2_Lenth	32
 
 #define	UART_ShiftRight	0		//同步移位输出
 #define	UART_8bit_BRTx	(1<<6)	//8位数据,可变波特率
@@ -52,6 +57,9 @@
 #define PWM_CHECK 1
 #define SELF_CHECK	2
 #define NOM_WORK	3
+
+#define CMD_ID	0
+#define CMD_DISTANCE	1
 
 typedef struct
 { 
@@ -89,13 +97,17 @@ u8	UART_Configuration(u8 UARTx, COMx_InitDefine *COMx);
 
 void TX2_write2buff(u8 dat);	//写入发送缓冲，指针+1
 
-void clrRX2_Buffer(void);	//清除接收缓存
+void UART_config(void);
 
-unsigned char getRxSensorId(void);	//获取收到探头位置ID号
+void clrRX2_Buffer(void);	//清除接收缓存
 
 void VirtualCOM_StringSend(unsigned char *str);
 
-unsigned char get_currentSensorIDValue(void);	//获取当前探头位置ID号
+unsigned char getRxBuf(void);
+
+void getSensorImfo(unsigned char ch, unsigned char cmd);
+
+unsigned char analysisSensorImfo(void);
 
 void uartSendPackage(unsigned char mode);	//发送数据
 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TIMER                                                                 04/16/2022 12:05:24 PAGE 1   
+C51 COMPILER V9.54   TIMER                                                                 05/14/2022 14:52:08 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   52   3                              P36 = ~P36;
   53   3                      }
   54   2                      break;
-C51 COMPILER V9.54   TIMER                                                                 04/16/2022 12:05:24 PAGE 2   
+C51 COMPILER V9.54   TIMER                                                                 05/14/2022 14:52:08 PAGE 2   
 
   55   2              default:
   56   2                      break;
@@ -125,8 +125,8 @@ line level    source
  113   1              {
  114   2                      firstIntFlag = 1;
  115   2                      halfMsCnt++;
- 116   2                      if (Get_beepAlarmFlag() == 1)
-C51 COMPILER V9.54   TIMER                                                                 04/16/2022 12:05:24 PAGE 3   
+ 116   2                      if (Get_beepAlarmRunFlag() == 1)
+C51 COMPILER V9.54   TIMER                                                                 05/14/2022 14:52:08 PAGE 3   
 
  117   2                      {
  118   3                              P35 = ~P35;
@@ -190,7 +190,7 @@ line level    source
  175   2                      if (TIMx->TIM_Interrupt == ENABLE)
  176   2                              Timer1_InterruptEnable(); //ÔÊÐíÖÐ¶Ï
  177   2                      else
-C51 COMPILER V9.54   TIMER                                                                 04/16/2022 12:05:24 PAGE 4   
+C51 COMPILER V9.54   TIMER                                                                 05/14/2022 14:52:08 PAGE 4   
 
  178   2                              Timer1_InterruptDisable(); //½ûÖ¹ÖÐ¶Ï
  179   2                      if (TIMx->TIM_Priority > Priority_3)

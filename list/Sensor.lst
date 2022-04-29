@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   SENSOR                                                                04/16/2022 12:05:24 PAGE 1   
+C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          
   54          //◊º±∏ø™ º≤‚ ‘£¨≥ı ºªØœ‡πÿ≤Œ ˝
-C51 COMPILER V9.54   SENSOR                                                                04/16/2022 12:05:24 PAGE 2   
+C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 2   
 
   55          void Start_sendOncePlusTask(void)
   56          {
@@ -107,14 +107,14 @@ line level    source
   95   2                      {
   96   3                              sendMode = 1;
   97   3                              sensorOkFlag = 1;
-  98   3                              StartBeepAlarm(500);      //’˝≥£ ’µΩ∑µªÿ–≈∫≈    0.5S
+  98   3                              StartBeepAlarm(500,0);    //’˝≥£ ’µΩ∑µªÿ–≈∫≈    0.5S
   99   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
  100   3                      }
  101   2                      else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ£¨‘Ú≈
              -–∂œ «∑Ò≥¨ ±
  102   2                      {
  103   3                              sensorOkFlag = 0;
- 104   3                              StartBeepAlarm(2000);     //√ª”– ’µΩ∑µªÿ–≈∫≈£¨π ’œ      2S
+ 104   3                              StartBeepAlarm(2000,0);   //√ª”– ’µΩ∑µªÿ–≈∫≈£¨π ’œ      2S
  105   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
  106   3                              Stop_recvPlus();
  107   3                      }
@@ -126,7 +126,7 @@ line level    source
              -∑≥Ã¿¥ªÿ£¨1∏ˆ≤Ó÷µ¥˙±Ì250us
  113   3                              if (meterDistance < 250)                                                                                                                                        //◊Ó∂Ãæ‡¿Î0.25√◊
  114   3                              {
-C51 COMPILER V9.54   SENSOR                                                                04/16/2022 12:05:24 PAGE 3   
+C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 3   
 
  115   4                                      meterDistance = 0;
  116   4                              }
@@ -155,7 +155,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    280    ----
+   CODE SIZE        =    284    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

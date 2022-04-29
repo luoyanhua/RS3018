@@ -113,7 +113,7 @@ void timer1_int(void) interrupt TIMER1_VECTOR
 	{
 		firstIntFlag = 1;
 		halfMsCnt++;
-		if (Get_beepAlarmFlag() == 1)
+		if (Get_beepAlarmRunFlag() == 1)
 		{
 			P35 = ~P35;
 		}

@@ -15,139 +15,220 @@
 #include "Beep.h"
 #include "Task.h"
 #include "Sensor.h"
-#include "UART.h"
 #include "stdio.h"
+#include "UART.h"
 #include "string.h"
 
-#define SENSOR_NUM_MAX 4
+#define SensorCheck_0 0
+#define SensorCheck_1 1
+#define SensorCheck_2 2
+#define SensorCheck_3 3
+#define SensorCheck_4 4
+#define SensorCheck_5 5
+#define SensorCheck_6 6
+#define SensorCheck_7 7
+#define SensorCheck_8 8
+#define SensorCheck_9 9
 
-typedef struct
-{
-    bit runFlag;                           //运行标志
-    bit adjustOKFlag;                      //判断OK标志
-    bit ioStatusSaveValue;                 // IO口状态保存
-    bit saveTotalSensorID[SENSOR_NUM_MAX]; //当前所有设备ID位置,如果为右侧传感器，则自定义为主传感器
-    unsigned char state;                   //运行状态机
-    unsigned int TimeCnt;                  //定时器
-} sensorIdAdjustStruct_T;
+#define WAIT_REV_CMD 10
+#define WAIT_STATE 12
+#define GET_SENSOR_ID_CNT_MAX 3
 
-sensorIdAdjustStruct_T sensorIdAdjustStruct;
-
-void sensorIdAdjustTask_init(void)
-{
-    memset(&sensorIdAdjustStruct, 0, sizeof(sensorIdAdjustStruct));
-}
+bit sensorIdCheckRunFlag = 0;                          //运行标志
+bit sensorIdCheckOKFlag = 0;                           //判断OK标志
+bit ioStatusSaveValueOld = 0;                             // IO口状态保存
+bit ioStatusSaveValueNew = 0;                             // IO口状态保存
+unsigned char saveTotalSensorID[SENSOR_NUM_MAX] = {0}; //当前所有设备ID位置,如果为右侧传感器，则自定义为主传感器，顺序分别代表：左，左中，右中，右
+unsigned char sensorIdCheckState = 0;                  //运行状态机
+unsigned int sensorIdCheckTimeCnt = 0;                 //定时器
+unsigned char sensorIdGetCnt = 0;                      // ID 获取计数
+unsigned char currentSensorID = 0;                     //当前传感器值
 
 unsigned char appTaskState = 0;
 unsigned int appTaskTimeCnt = 0;
 
+unsigned char get_currentSensorID(void)
+{
+    return currentSensorID;
+}
+
+//判断标准
+//P35输出高电平，如果P34电压为低电平，就是左,右传感器；如果P34为高电平就是左中，右中
+//P35输出低电平，如果P34电压为低电平，就是左，右中传感器，如果P34为高电平，就是右，左中传感器。
+//两次电平相等恒高就是左中，恒低就是左；两次电平不等，但与P35电平相等就是右中，与P35电平不等就是右。
+
 void sensorIdAdjustTask(void)
 {
-    if (sensorIdAdjustStruct.runFlag == 1)
+    if (sensorIdCheckRunFlag == 1)
         return;
-    switch (sensorIdAdjustStruct.state)
+    switch (sensorIdCheckState)
     {
-    case 0: //发送PWM 150ms 用来确认位置信号
-        StartBeepAlarm(150);
-        sensorIdAdjustStruct.TimeCnt = Get_SysHalfMsTick(); //开启计时器
-        sensorIdAdjustStruct.state = 1;
+    case SensorCheck_0:
+        PWM_OUTPUT = HIGH;
+        sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //刷新计时器
+        sensorIdCheckState = SensorCheck_1;
         break;
-    case 1: // 判断右中探头位置，只有右侧探头会收到自己发的信号
-        //开启P10接收PWM
-        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 200) // 200ms超时后继续往下进行
+    case SensorCheck_1:
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 20) // 等待20ms
         {
-            if (sensorIdAdjustStruct.adjustOKFlag == 1) //收到PWM
-            {
-                sensorIdAdjustStruct.adjustOKFlag = 0;
-                uartSendPackage(PWM_CHECK); //定义自己为右中探头，发送右中探头的ID识别信息
-            }
-            sensorIdAdjustStruct.state = 2;
-        }
-        else
-        {
-            if (P10 == 1)
-            {
-                sensorIdAdjustStruct.ioStatusSaveValue = 1;
-            }
-            if (sensorIdAdjustStruct.ioStatusSaveValue == 1 && P10 == 0)
-            {
-                sensorIdAdjustStruct.adjustOKFlag = 1;
-            }
+            ioStatusSaveValueOld = SENSOR_ID_CHECK; //记录SENSOR_ID_CHECK电平             
+            sensorIdCheckState = SensorCheck_2;
         }
         break;
-    case 2:                                                                                // 判断右侧探头位置
-        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 400) // 200ms超时后继续往下进行
+    case SensorCheck_2:
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 等待30ms后再反转电平，避免电平冲突
         {
-            if (getRxSensorId() == 4) //收到右中探头的ID识别信息
+            PWM_OUTPUT = LOW;
+            sensorIdCheckState = SensorCheck_3;
+        }
+        break;
+    case SensorCheck_3:                                                      
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 100) // 50ms超时后继续往下进行
+        {
+            ioStatusSaveValueNew = SENSOR_ID_CHECK; //记录SENSOR_ID_CHECK电平
+            if (SENSOR_ID_CHECK == LOW) 
             {
-                sensorIdAdjustStruct.ioStatusSaveValue = 1;
-                uartSendPackage(SELF_CHECK);    //定义自己为右侧探头，发送右侧探头身份
-                sensorIdAdjustStruct.state = 5; //跳转到等待1S计时完成
+                if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒低
+                {
+                    currentSensorID = LEFT_SENSOR;
+                }
+                else //两次电平不等，但与P35电平相等就是右中
+                {
+                    currentSensorID = RIGHT_MID_SENSOR;
+                }
             }
             else
             {
-                sensorIdAdjustStruct.state = 3;
+                if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒高
+                {
+                    currentSensorID = LEFT_MID_SENSOR;
+                }
+                else //两次电平不等，与P35电平不等就是右
+                {
+                    currentSensorID = RIGHT_SENSOR;                   
+                }
             }
+            sensorIdCheckState = SensorCheck_4; 
+            UART_config();        
         }
         break;
-    case 3:                                                                                // 判断左中探头位置
-        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 600) // 200ms超时后继续往下进行
+    case SensorCheck_4: 
+        if(currentSensorID == RIGHT_SENSOR)//如果是右传感器需要跟其他传感器通信
         {
-            if (sensorIdAdjustStruct.adjustOKFlag == 1) //判断连续低电平，左中
+            getSensorImfo(RIGHT_MID_SENSOR, CMD_ID);
+            sensorIdCheckState = SensorCheck_5;
+            sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //刷新计时器
+        }
+        else//不是右传感器，等待接收数据
+        {
+            sensorIdCheckState = WAIT_REV_CMD;
+        }
+        break;
+    case SensorCheck_5:                                                      //判断是否收到右中探头ID信息
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms超时后继续往下进行
+        {
+            if (analysisSensorImfo())
             {
-
-                uartSendPackage(SELF_CHECK);    //定义自己为左中探头，发送左中探头身份
-                sensorIdAdjustStruct.state = 5; //跳转到等待1S计时完成
+                //收到右中探头ID信息
+                saveTotalSensorID[2] = 1;
+                sensorIdGetCnt = 0;
+                sensorIdCheckState = SensorCheck_6;
             }
             else
             {
-                sensorIdAdjustStruct.state = 4;
-            }
-        }
-        else
-        {
-            if (P10 == 1)
-            {
-                sensorIdAdjustStruct.adjustOKFlag = 0;
+                sensorIdGetCnt++;
+                sensorIdCheckState = SensorCheck_4;
+                if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+                {
+                    sensorIdGetCnt = 0;
+                    sensorIdCheckState = SensorCheck_6;
+                }
             }
         }
         break;
-    case 4:                                                                                // 判断左侧探头位置
-        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdAdjustStruct.TimeCnt) >= 800) // 200ms超时后继续往下进行
+    case SensorCheck_6:                //发送获取左侧探头信息指令
+        getSensorImfo(LEFT_SENSOR, CMD_ID); //发送获取左侧探头信息指令
+        sensorIdCheckState = SensorCheck_7;
+        sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //刷新计时器
+        break;
+    case SensorCheck_7:                                                      //判断是否收到左侧探头ID信息
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms超时后继续往下进行
         {
-            if (sensorIdAdjustStruct.adjustOKFlag == 1) //判断连续高电平，左边
+            if (analysisSensorImfo())
             {
-                uartSendPackage(SELF_CHECK);    //定义自己为左侧探头，发送左侧探头身份
-                sensorIdAdjustStruct.state = 5; //跳转到等待1S计时完成
+                //收到左侧探头ID信息
+                saveTotalSensorID[0] = 1;
+                sensorIdGetCnt = 0;
+                sensorIdCheckState = SensorCheck_8;
             }
             else
             {
-                sensorIdAdjustStruct.state = 4;
-            }
-        }
-        else
-        {
-            if (P10 == 0)
-            {
-                sensorIdAdjustStruct.adjustOKFlag = 0;
+                sensorIdGetCnt++;
+                sensorIdCheckState = SensorCheck_6;
+                if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+                {
+                    sensorIdGetCnt = 0;
+                    sensorIdCheckState = SensorCheck_8;
+                }
             }
         }
         break;
-    case 5: // 判断左侧探头位置
-        sensorIdAdjustStruct.state = 0;
-        sensorIdAdjustStruct.runFlag = 1; //探头位置识别完成
+    case SensorCheck_8:                    //发送获取左中探头信息指令
+        getSensorImfo(LEFT_MID_SENSOR, CMD_ID); //发送获取左中探头信息指令
+        sensorIdCheckState = SensorCheck_9;
+        sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //刷新计时器
+        break;
+    case SensorCheck_9:                                                      //判断是否收到左中探头ID信息
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms超时后继续往下进行
+        {
+            if (analysisSensorImfo())
+            {
+                //收到左中探头ID信息
+                saveTotalSensorID[1] = 1;
+                sensorIdGetCnt = 0;
+                sensorIdCheckState = WAIT_STATE;
+            }
+            else
+            {
+                sensorIdGetCnt++;
+                sensorIdCheckState = SensorCheck_8;
+                if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+                {
+                    sensorIdGetCnt = 0;
+                    sensorIdCheckState = WAIT_STATE;
+                }
+            }
+        }
+        break;
+    case WAIT_REV_CMD:                                                             //进入这里，必然不是右传感器
+        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 600) // 600ms超时后继续往下进行
+        {
+            sensorIdCheckState = WAIT_STATE;
+        }
+        else
+        {
+            if (analysisSensorImfo()) //是否收到获取位置信息指令
+            {
+                //解析回复数据
+                sensorIdCheckState = WAIT_STATE;
+            }
+        }
+        break;
+    case WAIT_STATE: // 判断左侧探头位置
+        sensorIdCheckState = 0;
+        sensorIdCheckRunFlag = 1; //探头位置识别完成
         break;
     }
 }
 
 void AppTask(void)
 {
-    if (sensorIdAdjustStruct.runFlag == 0)
+    if (sensorIdCheckRunFlag == 0)
         return;
     switch (appTaskState)
     {
     case 0: //发送PWM 150ms 用来确认位置信号
-        StartBeepAlarm(150);
+        StartBeepAlarm(150, 0);
         appTaskTimeCnt = Get_SysHalfMsTick();
         appTaskState = 1;
         break;

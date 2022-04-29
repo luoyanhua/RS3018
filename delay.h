@@ -15,6 +15,11 @@
 
 #include	"config.h"
 
-void Delay208us(void);
+//void Delay208us(void);
+
+//void Delay10us(unsigned char value);
+
+//void Delay3us(void);	//@24.000MHz
+
 
 #endif

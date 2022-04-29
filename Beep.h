@@ -14,10 +14,10 @@
 #define	__BEEP_H
 
 //获取蜂鸣器报警标志
-bit Get_beepAlarmFlag(void);
+bit Get_beepAlarmRunFlag(void);
 
 //开始蜂鸣器报警设定值
-void StartBeepAlarm(unsigned short time);
+void StartBeepAlarm(unsigned short time, unsigned char mode);
 
 //运行蜂鸣器报警任务
 void BeepAlarmTask(void);

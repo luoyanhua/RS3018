@@ -48,9 +48,23 @@ void GPIO_config(void)
 	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //初始化
 
+	GPIO_InitStructure.Pin = GPIO_Pin_0;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+	GPIO_InitStructure.Mode = GPIO_HighZ;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //初始化	
+
 	GPIO_InitStructure.Pin = GPIO_Pin_All;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
 	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
+
+	GPIO_InitStructure.Pin = GPIO_Pin_4;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+	GPIO_InitStructure.Mode = GPIO_HighZ;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
+	
+	GPIO_InitStructure.Pin = GPIO_Pin_5;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+	GPIO_InitStructure.Mode = GPIO_OUT_PP;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //初始化
+
+	UART_CHG_IO = UART_RX_EN;	
 }
 
 /************************ 定时器配置 ****************************/
@@ -97,7 +111,8 @@ void main(void)
 
 	while (1)
 	{
-		AppTask();			//总流程处理任务
+		sensorIdAdjustTask();	//探头位置识别任务
+		// AppTask();			//总流程处理任务
 		BeepAlarmTask();	//蜂鸣器报警任务
 		SendOncePlusTask(); //发送脉冲群任务
 		WDT_Clear();		// 喂狗

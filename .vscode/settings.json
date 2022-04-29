@@ -1,5 +1,16 @@
 {
     "files.associations": {
-        "UART.C": "cpp"
+        "UART.C": "cpp",
+        "sensor.h": "c",
+        "stdio.h": "c",
+        "uart.h": "c",
+        "task.h": "c",
+        "timer.h": "c",
+        "beep.h": "c",
+        "STC8xxxx.H": "cpp",
+        "OneWire.C": "cpp",
+        "delay.h": "c",
+        "config.h": "c",
+        "exti.h": "c"
     }
 }

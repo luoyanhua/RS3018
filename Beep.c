@@ -13,40 +13,74 @@
 #include "Beep.h"
 #include "timer.h"
 
-bit beepAlarmFlag = 0;
-u8 BeepAlarmState = 0;
-unsigned short BeepAlarmTimeSet = 0;
-unsigned int BeepAlarmTimeCnt = 0;
+bit beepStartFlag = 0;	  //控制蜂鸣器是否鸣笛
+bit beepAlarmRunFlag = 0; //控制定时器1K信号是否工作
+typedef struct
+{
+	unsigned char State;
+	unsigned char ModeSet;
+	unsigned short TimeSet;
+	unsigned int TimeCnt;
+} BeepAlarmStruct_T;
+
+BeepAlarmStruct_T BeepAlarmStruct;
 
 //获取蜂鸣器报警标志
-bit Get_beepAlarmFlag(void)
+bit Get_beepAlarmRunFlag(void)
 {
-	return beepAlarmFlag;
+	return beepAlarmRunFlag;
 }
 
 //开始蜂鸣器报警设定值
-void StartBeepAlarm(unsigned short time) // time单位1ms
+// time:持续时间
+// speed：连续鸣笛速度 0:慢速，1：快速
+// mode:鸣笛模式 0:1次 ，1：连续
+void StartBeepAlarm(unsigned short time, unsigned char mode) // time单位1ms
 {
-	BeepAlarmState = 0;
-	BeepAlarmTimeSet = time * 2;
-	beepAlarmFlag = 1;
+	BeepAlarmStruct.State = 0;
+	BeepAlarmStruct.TimeSet = time * 2;
+	BeepAlarmStruct.ModeSet = mode;
+	beepAlarmRunFlag = 1;
+	beepStartFlag = 1;
+}
+
+//清除报警
+void ClrBeepAlarm(void)
+{
+	beepStartFlag = 0;
+	beepAlarmRunFlag = 0;
 }
 
 //运行蜂鸣器报警任务
 void BeepAlarmTask(void)
 {
-	if (beepAlarmFlag == 0)
+	if (beepStartFlag == 0)
 		return;
-	switch (BeepAlarmState)
+	switch (BeepAlarmStruct.State)
 	{
 	case 0:
-		BeepAlarmTimeCnt = Get_SysHalfMsTick();
-		BeepAlarmState = 1;
+		beepAlarmRunFlag = 1;
+		BeepAlarmStruct.TimeCnt = Get_SysHalfMsTick();
+		BeepAlarmStruct.State = 1;
 		break;
 	case 1:
-		if (get_time_escape_sec(Get_SysHalfMsTick(), BeepAlarmTimeCnt) >= BeepAlarmTimeSet)
+		if (get_time_escape_sec(Get_SysHalfMsTick(), BeepAlarmStruct.TimeCnt) >= BeepAlarmStruct.TimeSet)
 		{
-			beepAlarmFlag = 0;
+			beepAlarmRunFlag = 0;
+			if (BeepAlarmStruct.ModeSet)
+			{
+				ClrBeepAlarm();
+			}
+			else
+			{
+				BeepAlarmStruct.State = 2;
+			}
+		}
+		break;
+	case 2:
+		if (get_time_escape_sec(Get_SysHalfMsTick(), BeepAlarmStruct.TimeCnt) >= BeepAlarmStruct.TimeSet * 2)
+		{
+			BeepAlarmStruct.State = 0;
 		}
 		break;
 	default:
