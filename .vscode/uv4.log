@@ -1,48 +1,37 @@
 Build target 'Target 1'
 compiling main.c...
+compiling timer.c...
+compiling Beep.c...
+compiling Sensor.c...
 compiling Task.c...
-compiling Uart.c...
-Uart.c(140): warning C280: 'str': unreferenced local variable
-Uart.c(179): error C141: syntax error near 'if'
-Uart.c(181): error C136: invalid dimension size: [0]
-Uart.c(183): error C141: syntax error near 'else'
-Uart.c(183): error C141: syntax error near '==', expected ')'
-Uart.c(185): error C136: invalid dimension size: [0]
-Uart.c(185): error C231: 'txBuf': redefinition
-Uart.c(186): error C279: 'txBuf': multiple initialization
-Uart.c(187): error C279: 'txBuf': multiple initialization
-Uart.c(187): error C231: 'txBuf': redefinition
-Uart.c(189): error C141: syntax error near '}'
-Uart.c(190): error C141: syntax error near '==', expected ')'
-Uart.c(192): error C136: invalid dimension size: [0]
-Uart.c(192): error C279: 'txBuf': multiple initialization
-Uart.c(192): error C231: 'txBuf': redefinition
-Uart.c(193): error C279: 'txBuf': multiple initialization
-Uart.c(193): error C231: 'txBuf': redefinition
-Uart.c(194): error C141: syntax error near 'if'
-Uart.c(194): error C141: syntax error near '==', expected ')'
-Uart.c(196): error C279: 'txBuf': multiple initialization
-Uart.c(196): error C231: 'txBuf': redefinition
-Uart.c(197): error C141: syntax error near '}'
-Uart.c(198): error C141: syntax error near '==', expected ')'
-Uart.c(200): error C279: 'txBuf': multiple initialization
-Uart.c(201): error C141: syntax error near '}'
-Uart.c(202): error C141: syntax error near '==', expected ')'
-Uart.c(204): error C279: 'txBuf': multiple initialization
-Uart.c(205): error C141: syntax error near '}'
-Uart.c(206): error C279: 'temp_sendLen': multiple initialization
-Uart.c(207): error C141: syntax error near '}'
-Uart.c(208): error C141: syntax error near '==', expected ')'
-Uart.c(210): error C141: syntax error near '0'
-Uart.c(210): error C231: '_memset': redefinition
-Uart.c(211): error C136: invalid dimension size: [0]
-Uart.c(211): error C279: 'txBuf': multiple initialization
-Uart.c(212): error C279: 'txBuf': multiple initialization
-Uart.c(212): error C231: 'txBuf': redefinition
-Uart.c(213): error C279: 'txBuf': multiple initialization
-Uart.c(213): error C231: 'txBuf': redefinition
-Uart.c(214): error C279: 'temp_sendLen': multiple initialization
-Uart.c(215): error C141: syntax error near '}'
-Uart.c(216): error C231: '_uartSendBuf': redefinition
-Uart.c(217): error C141: syntax error near '}'
-Target not created.
+Task.c(220): warning C209: '_StartBeepAlarm': too few actual parameters
+compiling UART.C...
+UART.C(144): warning C280: 'str': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CLRBEEPALARM?BEEP
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SENSORIDADJUSTTASK?TASK
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART_CONFIG?UART
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CLRRX2_BUFFER?UART
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GETRXBUF?UART
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _UARTSENDPACKAGE
+    MODULE:  .\list\Task.obj (TASK)
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _UARTSENDPACKAGE
+    MODULE:  .\list\Task.obj (TASK)
+    ADDRESS: 0E18H
+
+Program Size: data=91.4 xdata=110 code=5186
+creating hex file from ".\list\PCA-CAP"...
+".\list\PCA-CAP" - 0 Error(s), 9 Warning(s).

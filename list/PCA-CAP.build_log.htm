@@ -19,12 +19,13 @@ CPU DLL:         S8051.DLL V3.100.0.0
 Dialog DLL:      DP51.DLL V2.62.0.1 
 <h2>Project:</h2>
 E:\gitProject\RS3018\PCA-CAP.uvproj
-Project File Date:  02/26/2022
+Project File Date:  04/17/2022
 
 <h2>Output:</h2>
 Rebuild target 'Target 1'
 compiling delay.c...
 compiling main.c...
+main.c(115): warning C206: 'sensorIdAdjustTask': missing function-prototype
 compiling GPIO.c...
 compiling WDT.c...
 compiling timer.c...
@@ -32,13 +33,23 @@ compiling Beep.c...
 compiling Exti.c...
 compiling Sensor.c...
 compiling Task.c...
-Task.c(29): error C168: 'saveTotalSensorID': array of bit
-Task.c(32): error C150: 'runFlag': bit member in struct/union
-Task.c(32): error C150: 'adjustOKFlag': bit member in struct/union
-Task.c(32): error C150: 'ioStatusSaveValue': bit member in struct/union
 compiling UART.C...
-UART.C(140): warning C280: 'str': unreferenced local variable
-Target not created.
+UART.C(130): warning C280: 'str': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CLRRX2_BUFFER?UART
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GETRXBUF?UART
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _UARTSENDPACKAGE
+    MODULE:  .\list\Task.obj (TASK)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _UARTSENDPACKAGE
+    MODULE:  .\list\Task.obj (TASK)
+    ADDRESS: 0E19H
+Program Size: data=79.4 xdata=110 code=5195
+creating hex file from ".\list\PCA-CAP"...
+".\list\PCA-CAP" - 0 Error(s), 6 Warning(s).
 </pre>
 </body>
 </html>

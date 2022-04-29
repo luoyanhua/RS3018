@@ -95,13 +95,13 @@ void SendOncePlusTask(void)
 		{
 			sendMode = 1;
 			sensorOkFlag = 1;
-			StartBeepAlarm(500);	  //正常收到返回信号	0.5S
+			StartBeepAlarm(500,0);	  //正常收到返回信号	0.5S
 			SendOncePlusTaskFlag = 0; //自检完成后停止任务运行
 		}
 		else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //如果未收到连续波形，则判断是否超时
 		{
 			sensorOkFlag = 0;
-			StartBeepAlarm(2000);	  //没有收到返回信号，故障	2S
+			StartBeepAlarm(2000,0);	  //没有收到返回信号，故障	2S
 			SendOncePlusTaskFlag = 0; //自检完成后停止任务运行
 			Stop_recvPlus();
 		}

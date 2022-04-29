@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "UART.C": "cpp"
+        "UART.C": "cpp",
+        "sensor.h": "c",
+        "stdio.h": "c",
+        "uart.h": "c",
+        "task.h": "c",
+        "timer.h": "c",
+        "beep.h": "c"
     }
 }

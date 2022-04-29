@@ -13,6 +13,13 @@
 #ifndef	__SENSOR_H
 #define	__SENSOR_H
 
+#define SENSOR_NUM_MAX 4
+
+#define LEFT_SENSOR 0
+#define LEFT_MID_SENSOR 1
+#define RIGHT_MID_SENSOR    2
+#define RIGHT_SENSOR    3
+
 //ªÒ»°≤‚ ‘æ‡¿Î÷µ
 unsigned int Get_meterDistance(void);
 

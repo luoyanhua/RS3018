@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  04/23/2022 08:59:34 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   50   1      
   51   1              GPIO_InitStructure.Pin = GPIO_Pin_All;          //Ö¸¶¨Òª³õÊ¼»¯µÄIO, GPIO_Pin_0 ~ GPIO_Pin_7, »ò²Ù×÷
   52   1              GPIO_InitStructure.Mode = GPIO_PullUp;          //Ö¸¶¨IOµÄÊäÈë»òÊä³ö·½Ê½,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
-C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 2   
+C51 COMPILER V9.54   MAIN                                                                  04/23/2022 08:59:34 PAGE 2   
 
              -OUT_PP
   53   1              GPIO_Inilize(GPIO_P3, &GPIO_InitStructure); //³õÊ¼»¯
@@ -96,47 +96,67 @@ line level    source
   76   1              Timer_Inilize(Timer1, &TIM_InitStructure);                                      //³õÊ¼»¯Timer1    Timer0,Timer1,Timer2,Timer3,Timer4
   77   1      }
   78          
-  79          /******************** WDTÅäÖÃ ********************/
-  80          void WDT_config(void)
+  79          /***************  ´®¿Ú³õÊ¼»¯º¯Êý *****************/
+  80          void UART_config(void)
   81          {
-  82   1              WDT_InitTypeDef WDT_InitStructure; //½á¹¹¶¨Òå
-  83   1      
-  84   1              WDT_InitStructure.WDT_Enable = ENABLE;                   //ÖÐ¶ÏÊ¹ÄÜ   ENABLE»òDISABLE
-  85   1              WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; // IDLEÄ£Ê½ÊÇ·ñÍ£Ö¹¼ÆÊý                WDT_IDLE_STOP,WDT_IDLE_RUN
-  86   1              WDT_InitStructure.WDT_PS = WDT_SCALE_16;                 //¿´ÃÅ¹·¶¨Ê±Æ÷Ê±ÖÓ·ÖÆµÏµÊý             WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_
-             -8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
-  87   1              WDT_Inilize(&WDT_InitStructure);                                 //³õÊ¼»¯
-  88   1      }
-  89          
-  90          /******************** task A **************************/
-  91          void main(void)
-  92          {
-  93   1              GPIO_config();
-  94   1              Timer_config();
-  95   1              WDT_config();
-  96   1              EA = 1;
+  82   1              COMx_InitDefine COMx_InitStructure;                              //½á¹¹¶¨Òå
+  83   1              COMx_InitStructure.UART_Mode = UART_8bit_BRTx;   //Ä£Ê½,   UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9
+             -bit_BRTx
+  84   1                                                                                                               //     COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;                 //Ñ¡Ôñ²¨ÌØÂÊ·¢ÉúÆ÷, BRT_Timer2 (×¢Òâ: ´
+             -®¿Ú2¹Ì¶¨Ê¹ÓÃBRT_Timer2, ËùÒÔ²»ÓÃÑ¡Ôñ)
+  85   1              COMx_InitStructure.UART_BaudRate = 9600ul;               //²¨ÌØÂÊ,     110 ~ 115200
+  86   1              COMx_InitStructure.UART_RxEnable = ENABLE;               //½ÓÊÕÔÊÐí,   ENABLE»òDISABLE
+  87   1              COMx_InitStructure.UART_Interrupt = ENABLE;              //ÖÐ¶ÏÔÊÐí,   ENABLE»òDISABLE
+  88   1              COMx_InitStructure.UART_Priority = Priority_0;   //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶(µÍµ½¸ß) Priority_0,Priority_1,Priority_2
+             -,Priority_3
+  89   1              COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11; //ÇÐ»»¶Ë¿Ú,   UART2_SW_P10_P11,UART2_SW_P46_P47
+  90   1              UART_Configuration(UART2, &COMx_InitStructure);  //³õÊ¼»¯´®¿Ú2 UART1,UART2,UART3,UART4
+  91   1      }
+  92          
+  93          /******************** WDTÅäÖÃ ********************/
+  94          void WDT_config(void)
+  95          {
+  96   1              WDT_InitTypeDef WDT_InitStructure; //½á¹¹¶¨Òå
   97   1      
-  98   1              while (1)
-  99   1              {
- 100   2                      AppTask();                      //×ÜÁ÷³Ì´¦ÀíÈÎÎñ
- 101   2                      BeepAlarmTask();        //·äÃùÆ÷±¨¾¯ÈÎÎñ
- 102   2                      SendOncePlusTask(); //·¢ËÍÂö³åÈºÈÎÎñ
- 103   2                      WDT_Clear();            // Î¹¹·
- 104   2              }
- 105   1      }
+  98   1              WDT_InitStructure.WDT_Enable = ENABLE;                   //ÖÐ¶ÏÊ¹ÄÜ   ENABLE»òDISABLE
+  99   1              WDT_InitStructure.WDT_IDLE_Mode = WDT_IDLE_STOP; // IDLEÄ£Ê½ÊÇ·ñÍ£Ö¹¼ÆÊý                WDT_IDLE_STOP,WDT_IDLE_RUN
+ 100   1              WDT_InitStructure.WDT_PS = WDT_SCALE_16;                 //¿´ÃÅ¹·¶¨Ê±Æ÷Ê±ÖÓ·ÖÆµÏµÊý             WDT_SCALE_2,WDT_SCALE_4,WDT_SCALE_
+             -8,WDT_SCALE_16,WDT_SCALE_32,WDT_SCALE_64,WDT_SCALE_128,WDT_SCALE_256
+ 101   1              WDT_Inilize(&WDT_InitStructure);                                 //³õÊ¼»¯
+ 102   1      }
+ 103          
+ 104          /******************** task A **************************/
+C51 COMPILER V9.54   MAIN                                                                  04/23/2022 08:59:34 PAGE 3   
 
+ 105          void main(void)
+ 106          {
+ 107   1              GPIO_config();
+ 108   1              Timer_config();
+ 109   1              UART_config();
+ 110   1              WDT_config();
+ 111   1              EA = 1;
+ 112   1      
+ 113   1              while (1)
+ 114   1              {
+ 115   2                      sensorIdAdjustTask();   //Ì½Í·Î»ÖÃÊ¶±ðÈÎÎñ
+*** WARNING C206 IN LINE 115 OF main.c: 'sensorIdAdjustTask': missing function-prototype
+ 116   2                      AppTask();                      //×ÜÁ÷³Ì´¦ÀíÈÎÎñ
+ 117   2                      BeepAlarmTask();        //·äÃùÆ÷±¨¾¯ÈÎÎñ
+ 118   2                      SendOncePlusTask(); //·¢ËÍÂö³åÈºÈÎÎñ
+ 119   2                      WDT_Clear();            // Î¹¹·
+ 120   2              }
+ 121   1      }
 
-C51 COMPILER V9.54   MAIN                                                                  04/16/2022 12:05:24 PAGE 3   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    135    ----
+   CODE SIZE        =    175    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----      13
+   DATA SIZE        =   ----      25
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -19,6 +19,10 @@
 #include "UART.h"
 #include <string.h>
 
+unsigned char xdata txBuf[14];
+unsigned char xdata rxbuf[COM_RX2_Lenth];
+unsigned char rxlen = 0;
+
 COMx_Define COM2;
 u8 xdata TX2_Buffer[COM_TX2_Lenth]; //发送缓冲
 u8 xdata RX2_Buffer[COM_RX2_Lenth]; //接收缓冲
@@ -81,20 +85,6 @@ u8 UART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 
 /*********************************************************/
 
-/***************  串口初始化函数 *****************/
-void UART_config(void)
-{
-	COMx_InitDefine COMx_InitStructure;				 //结构定义
-	COMx_InitStructure.UART_Mode = UART_8bit_BRTx;	 //模式,   UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx
-													 //	COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;			//选择波特率发生器, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2, 所以不用选择)
-	COMx_InitStructure.UART_BaudRate = 9600ul;		 //波特率,     110 ~ 115200
-	COMx_InitStructure.UART_RxEnable = ENABLE;		 //接收允许,   ENABLE或DISABLE
-	COMx_InitStructure.UART_Interrupt = ENABLE;		 //中断允许,   ENABLE或DISABLE
-	COMx_InitStructure.UART_Priority = Priority_0;	 //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
-	COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11; //切换端口,   UART2_SW_P10_P11,UART2_SW_P46_P47
-	UART_Configuration(UART2, &COMx_InitStructure);	 //初始化串口2 UART1,UART2,UART3,UART4
-}
-
 void UART2_int(void) interrupt UART2_VECTOR
 {
 	if (RI2)
@@ -146,20 +136,26 @@ void VirtualCOM_StringSend(unsigned char *str)
 	//    }
 }
 
+//清除接收缓存
 void clrRX2_Buffer(void)
 {
-	COM2.id = 2;
-	COM2.TX_read = 0;
-	COM2.TX_write = 0;
-	COM2.B_TX_busy = 0;
 	COM2.RX_Cnt = 0;
 	COM2.RX_TimeOut = 0;
 	COM2.B_RX_OK = 0;
+	memset(RX2_Buffer, 0, COM_TX2_Lenth);
 }
 
-unsigned char getRxSensorId(void)
+//获取接收到的数据 0:未收到有效数据
+unsigned char getRxBuf(void)
 {
-	return RX2_Buffer[2];
+	rxlen = COM2.RX_Cnt;
+	if (rxlen == 4 || rxlen == 5) //目前只有两种协议
+	{
+		memcpy(rxbuf, RX2_Buffer, rxlen);
+		return rxlen;
+	}
+	else
+		return 0;
 }
 
 void uartSendBuf(unsigned char *buf, unsigned char len)
@@ -171,55 +167,103 @@ void uartSendBuf(unsigned char *buf, unsigned char len)
 	}
 }
 
-unsigned char txBuf[14];
-unsigned char currentSensorIDValue = 0;
-
-unsigned char get_currentSensorIDValue(void)
+void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 {
-	return currentSensorIDValue;
+	unsigned char temp_txLen = 0;
+	if(cmd == CMD_ID)
+	{
+		txBuf[0] = 0xBB;
+		txBuf[1] = cmd;
+		txBuf[2] = ch;
+		txBuf[3] = 0xBF;
+		temp_txLen = 4;
+	}
+	else
+	{
+		txBuf[0] = 0xBB;
+		txBuf[1] = cmd;
+		txBuf[2] = ch;
+		txBuf[3] = Get_meterDistance()/10;
+		txBuf[4] = 0xBF;	
+		temp_txLen = 5;	
+	}
+	uartSendBuf(txBuf,temp_txLen);
 }
 
-void uartSendPackage(unsigned char mode)
+unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //顺序分别代表：左，左中，右中，右
+
+// cmd 0:右传感器循环获取其他传感器位置信息 1:右传感器循环获取其他传感器距离信息
+// ch 根据宏定义来
+void getSensorImfo(unsigned char ch, unsigned char cmd)
 {
-	unsigned char temp_sendLen = 0;
-	if (mode == RES) //预留
+	txBuf[0] = 0xBB;
+	txBuf[1] = cmd;
+	txBuf[2] = ch;
+	txBuf[3] = 0xBF;
+	uartSendBuf(txBuf, 3);
+}
+
+//接收数据解析函数
+// buf:接收数据指针
+// len:接收数据长度
+//格式：BB + cmd + ch + distance(BYTE) + BF
+unsigned char analysisSensorImfo(void)
+{
+	unsigned char result = 0;
+	if (get_currentSensorID() == RIGHT_SENSOR)
 	{
-		txBuf[0] = 0xAA;
-	}
-	else if(mode == PWM_CHECK)	//PWM检测
-	{
-		txBuf[0] = 0xBB;
-		txBuf[1] = 4;
-		txBuf[2] = 0xBF;		
-		temp_sendLen = 3;
-		currentSensorIDValue = txBuf[1];
-	}
-	else if (mode == SELF_CHECK) //自检
-	{
-		txBuf[0] = 0xBB;
-		txBuf[2] = 0xBF;
-		if(getRxSensorId() == 4)
+		if (rxbuf[1] == CMD_ID)
 		{
-			txBuf[1] = 8;	
+			if (rxbuf[2] == LEFT_SENSOR)
+			{
+				result = 1;//传感器存在
+			}
+			else if (rxbuf[2] == LEFT_MID_SENSOR)
+			{
+				result = 1;//传感器存在
+			}
+			else if (rxbuf[2] == RIGHT_MID_SENSOR)
+			{
+				result = 1;//传感器存在
+			}
 		}
-		else if(getRxSensorId() == 8)
+		else
 		{
-			txBuf[1] = 2;	
-		}	
-		else if(getRxSensorId() == 2)
-		{
-			txBuf[1] = 1;	
-		}				
-		temp_sendLen = 3;
-		currentSensorIDValue = txBuf[1];
+			if (rxbuf[2] == LEFT_SENSOR)
+			{
+				saveTotalSensorDistance[0] = rxbuf[3] ;
+				result = 1;//解析距离
+			}
+			else if (rxbuf[2] == LEFT_MID_SENSOR)
+			{
+				saveTotalSensorDistance[1] = rxbuf[3] ;
+				result = 1;//解析距离
+			}
+			else if (rxbuf[2] == RIGHT_MID_SENSOR)
+			{
+				saveTotalSensorDistance[2] = rxbuf[3] ;
+				result = 1;//解析距离
+			}
+		}
 	}
-	else if (mode == NOM_WORK) //工作
+	else
 	{
-		memset(txBuf, 0, 14);
-		txBuf[0] = 0xCC;
-		txBuf[12] = Get_meterDistance() / 10;
-		txBuf[13] = 0xcf;
-		temp_sendLen = 14;
+		if (rxbuf[1] == CMD_ID)
+		{
+			if (rxbuf[2] == get_currentSensorID()) //判断收到的信息是否需要回复，回复必须传感器号对应
+			{
+				sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
+				result = 1;//传感器存在，需要回复信息
+			}
+		}
+		else
+		{
+			if (rxbuf[2] == get_currentSensorID()) //判断收到的信息是否需要回复，回复必须传感器号对应
+			{
+				sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
+				result = 1;//需要回复距离信息
+			}
+		}
 	}
-	uartSendBuf(txBuf, temp_sendLen);
+	return result;
 }

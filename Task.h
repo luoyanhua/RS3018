@@ -13,6 +13,15 @@
 #ifndef	__TASK_H
 #define	__TASK_H
 
+#define LOW 0
+#define HIGH 1
+
+#define SENSOR_ID_CHECK P34
+#define SENSOR_ID_IO    P11
+#define PWM_OUTPUT  P35
+
 void AppTask(void);
+
+unsigned char get_currentSensorID(void);
 
 #endif

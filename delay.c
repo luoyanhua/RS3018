@@ -31,23 +31,50 @@
 
 unsigned int delayCnt = 0;
 
-void Delay208us(void) //@24.000MHz
-{
+//void Delay208us(void) //@24.000MHz
+//{
+////	unsigned char i, j;
+
+////	i = 7;
+////	j = 121;
+////	do
+////	{
+////		while (--j);
+////	} while (--i);	
+//	
 //	unsigned char i, j;
 
-//	i = 7;
-//	j = 121;
+//	i = 4;
+//	j = 59;
 //	do
 //	{
 //		while (--j);
-//	} while (--i);	
-	
-	unsigned char i, j;
+//	} while (--i);
+//}
 
-	i = 4;
-	j = 59;
-	do
-	{
-		while (--j);
-	} while (--i);
-}
+
+//void Delay10us(unsigned char value)		//@24.000MHz
+//{
+//	unsigned char i;
+
+//	while(value--)
+//	{
+//		i = 78;
+//		while (--i);
+//	}
+//}
+
+
+//void Delay3us(void)		//@24.000MHz
+//{
+//	unsigned char i;
+
+//	i = 22;
+//	while (--i);
+//}
+
+
+
+
+
+

@@ -409,9 +409,9 @@
               <FilePath>.\Task.c</FilePath>
             </File>
             <File>
-              <FileName>Uart.c</FileName>
+              <FileName>UART.C</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Uart.c</FilePath>
+              <FilePath>.\UART.C</FilePath>
             </File>
           </Files>
         </Group>
