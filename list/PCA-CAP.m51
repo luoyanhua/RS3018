@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-BL51 BANKED LINKER/LOCATER V6.22                                                        05/17/2022  22:00:16  PAGE 1
-=======
-BL51 BANKED LINKER/LOCATER V6.22                                                        04/23/2022  08:59:35  PAGE 1
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
+BL51 BANKED LINKER/LOCATER V6.22                                                        05/17/2022  22:17:32  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -59,25 +55,14 @@ LINK MAP OF MODULE:  .\list\PCA-CAP (DELAY)
             DATA    0008H     0013H     UNIT         _DATA_GROUP_
             DATA    001BH     0005H     UNIT         ?DT?EXTI
             BIT     0020H.0   0000H.4   UNIT         ?BI?SENSOR
-<<<<<<< HEAD
             BIT     0020H.4   0000H.4   UNIT         ?BI?TASK
             BIT     0021H.0   0000H.3   UNIT         ?BI?TIMER
             BIT     0021H.3   0000H.2   UNIT         ?BI?BEEP
             BIT     0021H.5   0000H.1   UNIT         ?BI?EXTI
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 2
 
 
                     0021H.6   0000H.2                *** GAP ***
-=======
-            BIT     0020H.4   0000H.3   UNIT         ?BI?TASK
-            BIT     0020H.7   0000H.2   UNIT         ?BI?TIMER
-            BIT     0021H.1   0000H.2   UNIT         ?BI?BEEP
-            BIT     0021H.3   0000H.1   UNIT         ?BI?EXTI
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 2
-
-
-                    0021H.4   0000H.4                *** GAP ***
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
             DATA    0022H     000CH     UNIT         ?DT?TASK
             DATA    002EH     000CH     UNIT         ?DT?UART
             DATA    003AH     0008H     UNIT         ?DT?TIMER
@@ -103,7 +88,6 @@ LINK MAP OF MODULE:  .\list\PCA-CAP (DELAY)
             CODE    0043H     0003H     ABSOLUTE     
             CODE    0046H     0520H     UNIT         ?C?LIB_CODE
             CODE    0566H     0254H     UNIT         ?PR?_GPIO_INILIZE?GPIO
-<<<<<<< HEAD
             CODE    07BAH     01BCH     UNIT         ?PR?SENSORIDADJUSTTASK?TASK
             CODE    0976H     0173H     UNIT         ?PR?_TIMER_INILIZE?TIMER
             CODE    0AE9H     0140H     UNIT         ?PR?_UART_CONFIGURATION?UART
@@ -135,7 +119,7 @@ LINK MAP OF MODULE:  .\list\PCA-CAP (DELAY)
             CODE    13EFH     0012H     UNIT         ?PR?CLRRX2_BUFFER?UART
             CODE    1401H     0011H     UNIT         ?PR?WDT_CONFIG?MAIN
             CODE    1412H     000DH     UNIT         ?PR?_TX2_WRITE2BUFF?UART
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 3
 
 
             CODE    141FH     000AH     UNIT         ?PR?START_SENDPLUS?TIMER
@@ -151,56 +135,6 @@ LINK MAP OF MODULE:  .\list\PCA-CAP (DELAY)
             CODE    144EH     0003H     UNIT         ?PR?GET_SENDONCEPLUSTASKFLAG?SENSOR
             CODE    1451H     0003H     UNIT         ?PR?GET_OBSTACLESEXISTENCEFLAG?SENSOR
             CODE    1454H     0003H     UNIT         ?PR?GET_CURRENTSENSORID?TASK
-=======
-            CODE    07BAH     01AAH     UNIT         ?PR?SENSORIDADJUSTTASK?TASK
-            CODE    0964H     0173H     UNIT         ?PR?_TIMER_INILIZE?TIMER
-            CODE    0AD7H     0140H     UNIT         ?PR?_UART_CONFIGURATION?UART
-            CODE    0C17H     0108H     UNIT         ?PR?SENDONCEPLUSTASK?SENSOR
-            CODE    0D1FH     00FDH     UNIT         ?PR?APPTASK?TASK
-            CODE    0E1CH     008CH     UNIT         ?C_C51STARTUP
-            CODE    0EA8H     0084H     UNIT         ?PR?ANALYSISSENSORIMFO?UART
-            CODE    0F2CH     006FH     UNIT         ?PR?UART2_INT?UART
-            CODE    0F9BH     006DH     UNIT         ?PR?EXT_INT1?EXTI
-            CODE    1008H     006CH     UNIT         ?CO?TASK
-            CODE    1074H     0066H     UNIT         ?C_INITSEG
-            CODE    10DAH     0065H     UNIT         ?PR?_EXT_INILIZE?EXTI
-            CODE    113FH     005EH     UNIT         ?PR?BEEPALARMTASK?BEEP
-            CODE    119DH     005CH     UNIT         ?PR?TIMER1_INT?TIMER
-            CODE    11F9H     0042H     UNIT         ?PR?_SENSORREPLYPACKAGE?UART
-            CODE    123BH     003DH     UNIT         ?PR?TIMER_CONFIG?MAIN
-            CODE    1278H     0029H     UNIT         ?PR?_WDT_INILIZE?WDT
-            CODE    12A1H     0027H     UNIT         ?PR?GETRXBUF?UART
-            CODE    12C8H     0023H     UNIT         ?PR?_UARTSENDBUF?UART
-            CODE    12EBH     0022H     UNIT         ?PR?UART_CONFIG?MAIN
-            CODE    130DH     0020H     UNIT         ?PR?GPIO_CONFIG?MAIN
-            CODE    132DH     001FH     UNIT         ?PR?MAIN?MAIN
-            CODE    134CH     001DH     UNIT         ?PR?PLUSADJUST?TIMER
-            CODE    1369H     001BH     UNIT         ?PR?_GETSENSORIMFO?UART
-            CODE    1384H     0019H     UNIT         ?PR?TIMER0_INT?TIMER
-            CODE    139DH     0014H     UNIT         ?PR?CLRRX2_BUFFER?UART
-            CODE    13B1H     0013H     UNIT         ?PR?_STARTBEEPALARM?BEEP
-            CODE    13C4H     0013H     UNIT         ?PR?EXTI_CONFIG?EXTI
-            CODE    13D7H     0013H     UNIT         ?PR?START_RECVPLUS?EXTI
-            CODE    13EAH     0012H     UNIT         ?PR?STOP_RECVPLUS?EXTI
-            CODE    13FCH     0011H     UNIT         ?PR?WDT_CONFIG?MAIN
-            CODE    140DH     000AH     UNIT         ?PR?START_SENDPLUS?TIMER
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 3
-
-
-            CODE    1417H     0007H     UNIT         ?PR?_VIRTUALCOM_STRINGSEND?UART
-            CODE    141EH     0006H     UNIT         ?PR?START_SENDONCEPLUSTASK?SENSOR
-            CODE    1424H     0005H     UNIT         ?PR?GET_SYSHALFMSTICK?TIMER
-            CODE    1429H     0005H     UNIT         ?PR?CLRBEEPALARM?BEEP
-            CODE    142EH     0005H     UNIT         ?PR?GET_METERDISTANCE?SENSOR
-            CODE    1433H     0004H     UNIT         ?PR?WDT_CLEAR?WDT
-            CODE    1437H     0003H     UNIT         ?PR?GET_PLUSOUTFLAG?TIMER
-            CODE    143AH     0003H     UNIT         ?PR?GET_BEEPALARMRUNFLAG?BEEP
-            CODE    143DH     0003H     UNIT         ?PR?GET_RECVPLUSFLAG?EXTI
-            CODE    1440H     0003H     UNIT         ?PR?GET_SENSOROKFLAG?SENSOR
-            CODE    1443H     0003H     UNIT         ?PR?GET_SENDONCEPLUSTASKFLAG?SENSOR
-            CODE    1446H     0003H     UNIT         ?PR?GET_OBSTACLESEXISTENCEFLAG?SENSOR
-            CODE    1449H     0003H     UNIT         ?PR?GET_CURRENTSENSORID?TASK
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 
 
 
@@ -234,7 +168,6 @@ SEGMENT                                         DATA_GROUP
 ?PR?MAIN?MAIN                                 -----    -----
   +--> ?PR?GPIO_CONFIG?MAIN
   +--> ?PR?TIMER_CONFIG?MAIN
-  +--> ?PR?UART_CONFIG?MAIN
   +--> ?PR?WDT_CONFIG?MAIN
   +--> ?PR?SENSORIDADJUSTTASK?TASK
   +--> ?PR?APPTASK?TASK
@@ -245,33 +178,18 @@ SEGMENT                                         DATA_GROUP
 ?PR?GPIO_CONFIG?MAIN                          0008H    0002H
   +--> ?PR?_GPIO_INILIZE?GPIO
 
-<<<<<<< HEAD
 ?PR?TIMER_CONFIG?MAIN                         0008H    0008H
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 4
 
 
   +--> ?PR?_TIMER_INILIZE?TIMER
 
-=======
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 4
-
-
-?PR?TIMER_CONFIG?MAIN                         0008H    0008H
-  +--> ?PR?_TIMER_INILIZE?TIMER
-
-?PR?UART_CONFIG?MAIN                          0008H    000CH
-  +--> ?PR?_UART_CONFIGURATION?UART
-
-?PR?_UART_CONFIGURATION?UART                  0014H    0007H
-
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 ?PR?WDT_CONFIG?MAIN                           0008H    0003H
   +--> ?PR?_WDT_INILIZE?WDT
 
 ?PR?SENSORIDADJUSTTASK?TASK                   -----    -----
   +--> ?PR?GET_SYSHALFMSTICK?TIMER
   +--> ?PR?_GET_TIME_ESCAPE_SEC?TIMER
-<<<<<<< HEAD
   +--> ?PR?UART_CONFIG?UART
   +--> ?PR?_GETSENSORIMFO?UART
   +--> ?PR?ANALYSISSENSORIMFO?UART
@@ -286,15 +204,6 @@ SEGMENT                                         DATA_GROUP
 
 ?PR?_UARTSENDBUF?UART                         0009H    0004H
   +--> ?PR?CLRRX2_BUFFER?UART
-=======
-  +--> ?PR?_GETSENSORIMFO?UART
-  +--> ?PR?ANALYSISSENSORIMFO?UART
-
-?PR?_GETSENSORIMFO?UART                       -----    -----
-  +--> ?PR?_UARTSENDBUF?UART
-
-?PR?_UARTSENDBUF?UART                         0009H    0003H
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   +--> ?PR?_TX2_WRITE2BUFF?UART
 
 ?PR?ANALYSISSENSORIMFO?UART                   0008H    0001H
@@ -330,13 +239,10 @@ SEGMENT                                         DATA_GROUP
   +--> ?PR?START_RECVPLUS?EXTI
   +--> ?PR?_GET_TIME_ESCAPE_SEC?TIMER
   +--> ?PR?GET_RECVPLUSFLAG?EXTI
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 5
 
 
   +--> ?PR?_STARTBEEPALARM?BEEP
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 5
-
-
   +--> ?PR?STOP_RECVPLUS?EXTI
 
 ?PR?START_RECVPLUS?EXTI                       -----    -----
@@ -344,11 +250,6 @@ SEGMENT                                         DATA_GROUP
 
 ?PR?EXTI_CONFIG?EXTI                          0008H    0003H
   +--> ?PR?_EXT_INILIZE?EXTI
-
-
-
-UNRESOLVED EXTERNAL SYMBOLS:
-   _UARTSENDPACKAGE
 
 
 
@@ -389,44 +290,26 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   B:00A8H.7       PUBLIC        EA
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
-<<<<<<< HEAD
   C:1180H         PUBLIC        GPIO_config
-=======
-  C:130DH         PUBLIC        GPIO_config
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00A8H         PUBLIC        IE
-  C:12EBH         PUBLIC        UART_config
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
-<<<<<<< HEAD
   C:1354H         PUBLIC        main
-=======
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 6
-
-
-  C:132DH         PUBLIC        main
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:0098H         PUBLIC        SCON
   B:00B0H.2       PUBLIC        P32
   D:0088H         PUBLIC        TCON
   D:00F0H         PUBLIC        B
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 6
 
 
   D:00E0H         PUBLIC        ACC
-<<<<<<< HEAD
   C:1401H         PUBLIC        WDT_config
   C:1265H         PUBLIC        Timer_config
-=======
-  C:13FCH         PUBLIC        WDT_config
-  C:123BH         PUBLIC        Timer_config
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00D0H         PUBLIC        PSW
   -------         PROC          GPIO_CONFIG
   -------         DO            
   D:0008H         SYMBOL        GPIO_InitStructure
   -------         ENDDO         
-<<<<<<< HEAD
   C:1180H         LINE#         43
   C:1180H         LINE#         44
   C:1180H         LINE#         47
@@ -446,22 +329,11 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:11C8H         LINE#         65
   C:11D3H         LINE#         67
   C:11D5H         LINE#         68
-=======
-  C:130DH         LINE#         43
-  C:130DH         LINE#         44
-  C:130DH         LINE#         47
-  C:1310H         LINE#         48
-  C:1313H         LINE#         49
-  C:131DH         LINE#         51
-  C:1320H         LINE#         52
-  C:1323H         LINE#         53
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       GPIO_CONFIG
   -------         PROC          TIMER_CONFIG
   -------         DO            
   D:0008H         SYMBOL        TIM_InitStructure
   -------         ENDDO         
-<<<<<<< HEAD
   C:1265H         LINE#         71
   C:1265H         LINE#         72
   C:1265H         LINE#         74
@@ -480,52 +352,14 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:128FH         LINE#         88
   C:1295H         LINE#         89
   C:1298H         LINE#         90
-=======
-  C:123BH         LINE#         57
-  C:123BH         LINE#         58
-  C:123BH         LINE#         60
-  C:123EH         LINE#         61
-  C:1241H         LINE#         62
-  C:1243H         LINE#         63
-  C:1245H         LINE#         64
-  C:1247H         LINE#         65
-  C:124DH         LINE#         66
-  C:1250H         LINE#         67
-  C:1259H         LINE#         69
-  C:125CH         LINE#         70
-  C:125EH         LINE#         71
-  C:1261H         LINE#         72
-  C:1263H         LINE#         73
-  C:1265H         LINE#         74
-  C:126BH         LINE#         75
-  C:126EH         LINE#         76
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       TIMER_CONFIG
-  -------         PROC          UART_CONFIG
-  -------         DO            
-  D:0008H         SYMBOL        COMx_InitStructure
-  -------         ENDDO         
-  C:12EBH         LINE#         80
-  C:12EBH         LINE#         81
-  C:12EBH         LINE#         83
-  C:12EEH         LINE#         85
-  C:12F9H         LINE#         86
-  C:12FCH         LINE#         87
-  C:12FFH         LINE#         88
-  C:1301H         LINE#         89
-  C:1303H         LINE#         90
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 7
-
-
-  -------         ENDPROC       UART_CONFIG
   -------         PROC          WDT_CONFIG
   -------         DO            
   D:0008H         SYMBOL        WDT_InitStructure
   -------         ENDDO         
-<<<<<<< HEAD
   C:1401H         LINE#         94
   C:1401H         LINE#         95
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 7
 
 
   C:1401H         LINE#         98
@@ -548,31 +382,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1368H         LINE#         117
   C:136BH         LINE#         118
   C:136EH         LINE#         119
-=======
-  C:13FCH         LINE#         94
-  C:13FCH         LINE#         95
-  C:13FCH         LINE#         98
-  C:13FFH         LINE#         99
-  C:1402H         LINE#         100
-  C:1405H         LINE#         101
-  -------         ENDPROC       WDT_CONFIG
-  -------         PROC          MAIN
-  C:132DH         LINE#         105
-  C:132DH         LINE#         106
-  C:132DH         LINE#         107
-  C:1330H         LINE#         108
-  C:1333H         LINE#         109
-  C:1336H         LINE#         110
-  C:1339H         LINE#         111
-  C:133BH         LINE#         113
-  C:133BH         LINE#         114
-  C:133BH         LINE#         115
-  C:133EH         LINE#         116
-  C:1341H         LINE#         117
-  C:1344H         LINE#         118
-  C:1347H         LINE#         119
-  C:134AH         LINE#         120
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
@@ -602,9 +411,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00E1H         PUBLIC        P7M1
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 8
-
-
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
   D:0098H         PUBLIC        SCON
@@ -613,7 +419,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00E0H         PUBLIC        ACC
   C:0566H         PUBLIC        _GPIO_Inilize
   D:00D0H         PUBLIC        PSW
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 8
 
 
   D:0094H         PUBLIC        P0M0
@@ -665,7 +471,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:065AH         LINE#         70
   C:0665H         LINE#         71
   C:0669H         LINE#         72
-<<<<<<< HEAD
   C:0674H         LINE#         73
   C:067AH         LINE#         74
   C:0684H         LINE#         75
@@ -674,22 +479,9 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0697H         LINE#         78
   C:069CH         LINE#         79
   C:069CH         LINE#         80
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 9
 
 
-=======
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 9
-
-
-  C:0674H         LINE#         73
-  C:067AH         LINE#         74
-  C:0684H         LINE#         75
-  C:068AH         LINE#         76
-  C:0697H         LINE#         77
-  C:0697H         LINE#         78
-  C:069CH         LINE#         79
-  C:069CH         LINE#         80
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   C:06A2H         LINE#         81
   C:06ADH         LINE#         82
   C:06B1H         LINE#         83
@@ -739,9 +531,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   -------         MODULE        WDT
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 10
-
-
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
@@ -750,29 +539,21 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 10
 
 
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
-<<<<<<< HEAD
   C:12DDH         PUBLIC        _WDT_Inilize
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
   C:143EH         PUBLIC        WDT_Clear
-=======
-  C:1278H         PUBLIC        _WDT_Inilize
-  D:0098H         PUBLIC        SCON
-  D:0088H         PUBLIC        TCON
-  C:1433H         PUBLIC        WDT_Clear
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00F0H         PUBLIC        B
   D:00E0H         PUBLIC        ACC
   D:00C1H         PUBLIC        WDT_CONTR
   D:00D0H         PUBLIC        PSW
   -------         PROC          _WDT_INILIZE
   D:0001H         SYMBOL        WDT
-<<<<<<< HEAD
   C:12DDH         LINE#         22
   C:12DDH         LINE#         23
   C:12DDH         LINE#         24
@@ -788,43 +569,17 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:143EH         LINE#         36
   C:143EH         LINE#         37
   C:1441H         LINE#         38
-=======
-  C:1278H         LINE#         22
-  C:1278H         LINE#         23
-  C:1278H         LINE#         24
-  C:127EH         LINE#         25
-  C:1281H         LINE#         27
-  C:1291H         LINE#         28
-  C:1299H         LINE#         29
-  C:129DH         LINE#         31
-  C:12A0H         LINE#         32
-  -------         ENDPROC       _WDT_INILIZE
-  -------         PROC          WDT_CLEAR
-  C:1433H         LINE#         35
-  C:1433H         LINE#         36
-  C:1433H         LINE#         37
-  C:1436H         LINE#         38
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       WDT_CLEAR
   -------         ENDMOD        WDT
 
   -------         MODULE        TIMER
   C:0000H         SYMBOL        _ICE_DUMMY_
-<<<<<<< HEAD
   C:1442H         PUBLIC        Get_plusOutFlag
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
   C:138BH         PUBLIC        timer0_int
   D:00A0H         PUBLIC        P2
   C:1128H         PUBLIC        timer1_int
-=======
-  C:1437H         PUBLIC        Get_plusOutFlag
-  D:0080H         PUBLIC        P0
-  D:0090H         PUBLIC        P1
-  C:1384H         PUBLIC        timer0_int
-  D:00A0H         PUBLIC        P2
-  C:119DH         PUBLIC        timer1_int
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
@@ -835,38 +590,23 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:003EH         PUBLIC        us_250Cnt
   C:0016H         PUBLIC        Get_us_250Cnt
   D:00A8H         PUBLIC        IE
-<<<<<<< HEAD
   C:142FH         PUBLIC        Get_SysHalfMsTick
   C:001EH         PUBLIC        PlusAdjust
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
   C:141FH         PUBLIC        Start_SendPlus
   B:0021H.0       PUBLIC        firstBeepFlag
-=======
-  C:1424H         PUBLIC        Get_SysHalfMsTick
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 11
-
-
-  C:134CH         PUBLIC        PlusAdjust
-  D:00B8H         PUBLIC        IP
-  D:00D8H         PUBLIC        CCON
-  C:140DH         PUBLIC        Start_SendPlus
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:0040H         PUBLIC        plusOutCnt
   D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 11
 
 
   D:0088H         PUBLIC        TCON
   B:00B0H.5       PUBLIC        P35
   B:00B0H.6       PUBLIC        P36
   D:0041H         PUBLIC        plusAdjustState
-<<<<<<< HEAD
   C:0976H         PUBLIC        _Timer_Inilize
-=======
-  C:0964H         PUBLIC        _Timer_Inilize
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00F0H         PUBLIC        B
   D:008EH         PUBLIC        AUXR
   C:0003H         PUBLIC        _get_time_escape_sec
@@ -888,7 +628,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00D0H         PUBLIC        PSW
   B:0021H.2       PUBLIC        plusOutFlag
   -------         PROC          PLUSADJUST
-<<<<<<< HEAD
   C:001EH         LINE#         37
   C:001EH         LINE#         38
   C:001EH         LINE#         39
@@ -920,7 +659,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1424H         LINE#         65
   C:1426H         LINE#         66
   C:1428H         LINE#         67
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 12
 
 
   -------         ENDPROC       START_SENDPLUS
@@ -929,48 +668,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1442H         LINE#         70
   C:1442H         LINE#         71
   C:1444H         LINE#         72
-=======
-  C:134CH         LINE#         36
-  C:134CH         LINE#         37
-  C:134CH         LINE#         38
-  C:1354H         LINE#         39
-  C:1354H         LINE#         40
-  C:1354H         LINE#         41
-  C:1356H         LINE#         42
-  C:1359H         LINE#         43
-  C:135AH         LINE#         44
-  C:135AH         LINE#         45
-  C:1361H         LINE#         46
-  C:1361H         LINE#         47
-  C:1363H         LINE#         48
-  C:1365H         LINE#         49
-  C:1366H         LINE#         51
-  C:1366H         LINE#         52
-  C:1368H         LINE#         53
-  C:1368H         LINE#         54
-  C:1368H         LINE#         55
-  C:1368H         LINE#         56
-  C:1368H         LINE#         57
-  C:1368H         LINE#         58
-  -------         ENDPROC       PLUSADJUST
-  -------         PROC          START_SENDPLUS
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 12
-
-
-  C:140DH         LINE#         60
-  C:140DH         LINE#         61
-  C:140DH         LINE#         62
-  C:140FH         LINE#         63
-  C:1412H         LINE#         64
-  C:1414H         LINE#         65
-  C:1416H         LINE#         66
-  -------         ENDPROC       START_SENDPLUS
-  -------         PROC          GET_PLUSOUTFLAG
-  C:1437H         LINE#         68
-  C:1437H         LINE#         69
-  C:1437H         LINE#         70
-  C:1439H         LINE#         71
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       GET_PLUSOUTFLAG
   -------         PROC          GET_RECVPLUSTIMERCNT
   C:000EH         LINE#         74
@@ -985,17 +682,10 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:001AH         LINE#         82
   -------         ENDPROC       GET_US_250CNT
   -------         PROC          GET_SYSHALFMSTICK
-<<<<<<< HEAD
   C:142FH         LINE#         84
   C:142FH         LINE#         85
   C:142FH         LINE#         86
   C:1433H         LINE#         87
-=======
-  C:1424H         LINE#         83
-  C:1424H         LINE#         84
-  C:1424H         LINE#         85
-  C:1428H         LINE#         86
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       GET_SYSHALFMSTICK
   -------         PROC          _GET_TIME_ESCAPE_SEC
   D:0006H         SYMBOL        ticks_now
@@ -1006,7 +696,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:000AH         LINE#         92
   -------         ENDPROC       _GET_TIME_ESCAPE_SEC
   -------         PROC          TIMER0_INT
-<<<<<<< HEAD
   C:138BH         LINE#         95
   C:138FH         LINE#         97
   C:1397H         LINE#         100
@@ -1030,49 +719,15 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1161H         LINE#         121
   C:1163H         LINE#         123
   C:1163H         LINE#         124
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 13
 
 
   C:1165H         LINE#         125
   C:1165H         LINE#         126
-=======
-  C:1384H         LINE#         94
-  C:1388H         LINE#         96
-  C:1390H         LINE#         99
-  C:1393H         LINE#         100
-  C:1393H         LINE#         101
-  C:1395H         LINE#         102
-  C:1398H         LINE#         103
-  C:1398H         LINE#         104
-  -------         ENDPROC       TIMER0_INT
-  -------         PROC          TIMER1_INT
-  C:119DH         LINE#         109
-  C:11BAH         LINE#         111
-  C:11C2H         LINE#         112
-  C:11C5H         LINE#         113
-  C:11C5H         LINE#         114
-  C:11C7H         LINE#         115
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 13
-
-
-  C:11CFH         LINE#         116
-  C:11D4H         LINE#         117
-  C:11D4H         LINE#         118
-  C:11D6H         LINE#         119
-  C:11D8H         LINE#         121
-  C:11D8H         LINE#         122
-  C:11DAH         LINE#         123
-  C:11DAH         LINE#         124
-  C:11DCH         LINE#         126
-  C:11DCH         LINE#         127
-  C:11DEH         LINE#         128
-  C:11DEH         LINE#         129
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       TIMER1_INT
   -------         PROC          _TIMER_INILIZE
   D:0005H         SYMBOL        TIM
   D:0001H         SYMBOL        TIMx
-<<<<<<< HEAD
   C:0976H         LINE#         135
   C:0978H         LINE#         136
   C:0978H         LINE#         137
@@ -1124,7 +779,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0AB7H         LINE#         190
   C:0AC0H         LINE#         191
   C:0AC5H         LINE#         193
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 14
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 14
 
 
   C:0AC8H         LINE#         195
@@ -1134,69 +789,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0AE6H         LINE#         199
   C:0AE6H         LINE#         200
   C:0AE8H         LINE#         201
-=======
-  C:0964H         LINE#         138
-  C:0966H         LINE#         139
-  C:0966H         LINE#         140
-  C:096CH         LINE#         141
-  C:096CH         LINE#         142
-  C:096EH         LINE#         143
-  C:0977H         LINE#         144
-  C:097BH         LINE#         146
-  C:097DH         LINE#         147
-  C:0989H         LINE#         148
-  C:098CH         LINE#         149
-  C:09BAH         LINE#         151
-  C:09C3H         LINE#         152
-  C:09C6H         LINE#         153
-  C:09CDH         LINE#         154
-  C:09D7H         LINE#         155
-  C:09DAH         LINE#         156
-  C:09DDH         LINE#         157
-  C:09E0H         LINE#         158
-  C:09E4H         LINE#         159
-  C:09E9H         LINE#         161
-  C:09ECH         LINE#         162
-  C:09F5H         LINE#         163
-  C:09FAH         LINE#         165
-  C:09FDH         LINE#         167
-  C:0A0FH         LINE#         168
-  C:0A18H         LINE#         169
-  C:0A1AH         LINE#         170
-  C:0A1DH         LINE#         171
-  C:0A1DH         LINE#         172
-  C:0A25H         LINE#         173
-  C:0A25H         LINE#         174
-  C:0A27H         LINE#         175
-  C:0A30H         LINE#         176
-  C:0A34H         LINE#         178
-  C:0A36H         LINE#         179
-  C:0A42H         LINE#         180
-  C:0A45H         LINE#         181
-  C:0A73H         LINE#         182
-  C:0A7CH         LINE#         183
-  C:0A7FH         LINE#         184
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 14
-
-
-  C:0A86H         LINE#         185
-  C:0A90H         LINE#         186
-  C:0A93H         LINE#         187
-  C:0A96H         LINE#         188
-  C:0A99H         LINE#         189
-  C:0A9DH         LINE#         190
-  C:0AA2H         LINE#         192
-  C:0AA5H         LINE#         193
-  C:0AAEH         LINE#         194
-  C:0AB3H         LINE#         196
-  C:0AB6H         LINE#         198
-  C:0AC6H         LINE#         199
-  C:0ACFH         LINE#         200
-  C:0AD1H         LINE#         201
-  C:0AD4H         LINE#         202
-  C:0AD4H         LINE#         203
-  C:0AD6H         LINE#         204
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       _TIMER_INILIZE
   -------         ENDMOD        TIMER
 
@@ -1204,16 +796,11 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
-<<<<<<< HEAD
   C:13A4H         PUBLIC        _StartBeepAlarm
-=======
-  C:13B1H         PUBLIC        _StartBeepAlarm
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
-<<<<<<< HEAD
   C:10CAH         PUBLIC        BeepAlarmTask
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
@@ -1227,41 +814,18 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00F0H         PUBLIC        B
   B:0021H.4       PUBLIC        beepAlarmRunFlag
   C:1445H         PUBLIC        Get_beepAlarmRunFlag
-=======
-  C:113FH         PUBLIC        BeepAlarmTask
-  D:00E8H         PUBLIC        P6
-  D:00F8H         PUBLIC        P7
-  D:00A8H         PUBLIC        IE
-  C:1429H         PUBLIC        ClrBeepAlarm
-  D:00B8H         PUBLIC        IP
-  D:00D8H         PUBLIC        CCON
-  B:0021H.1       PUBLIC        beepStartFlag
-  D:0098H         PUBLIC        SCON
-  D:0088H         PUBLIC        TCON
-  D:00F0H         PUBLIC        B
-  B:0021H.2       PUBLIC        beepAlarmRunFlag
-  C:143AH         PUBLIC        Get_beepAlarmRunFlag
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00E0H         PUBLIC        ACC
   D:0042H         PUBLIC        BeepAlarmStruct
   D:00D0H         PUBLIC        PSW
   -------         PROC          GET_BEEPALARMRUNFLAG
-<<<<<<< HEAD
   C:1445H         LINE#         29
   C:1445H         LINE#         30
   C:1445H         LINE#         31
   C:1447H         LINE#         32
-=======
-  C:143AH         LINE#         29
-  C:143AH         LINE#         30
-  C:143AH         LINE#         31
-  C:143CH         LINE#         32
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       GET_BEEPALARMRUNFLAG
   -------         PROC          _STARTBEEPALARM
   D:0006H         SYMBOL        time
   D:0005H         SYMBOL        mode
-<<<<<<< HEAD
   C:13A4H         LINE#         38
   C:13A4H         LINE#         39
   C:13A4H         LINE#         40
@@ -1275,7 +839,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1434H         LINE#         48
   C:1434H         LINE#         49
   C:1434H         LINE#         50
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 15
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 15
 
 
   C:1436H         LINE#         51
@@ -1315,61 +879,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1127H         LINE#         87
   C:1127H         LINE#         88
   C:1127H         LINE#         89
-=======
-  C:13B1H         LINE#         38
-  C:13B1H         LINE#         39
-  C:13B1H         LINE#         40
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 15
-
-
-  C:13B4H         LINE#         41
-  C:13BDH         LINE#         42
-  C:13BFH         LINE#         43
-  C:13C1H         LINE#         44
-  C:13C3H         LINE#         45
-  -------         ENDPROC       _STARTBEEPALARM
-  -------         PROC          CLRBEEPALARM
-  C:1429H         LINE#         48
-  C:1429H         LINE#         49
-  C:1429H         LINE#         50
-  C:142BH         LINE#         51
-  C:142DH         LINE#         52
-  -------         ENDPROC       CLRBEEPALARM
-  -------         PROC          BEEPALARMTASK
-  C:113FH         LINE#         55
-  C:113FH         LINE#         56
-  C:113FH         LINE#         57
-  C:1142H         LINE#         59
-  C:114EH         LINE#         60
-  C:114EH         LINE#         61
-  C:114EH         LINE#         62
-  C:1150H         LINE#         63
-  C:1157H         LINE#         64
-  C:115AH         LINE#         65
-  C:115BH         LINE#         66
-  C:115BH         LINE#         67
-  C:116EH         LINE#         68
-  C:116EH         LINE#         69
-  C:1170H         LINE#         70
-  C:1174H         LINE#         71
-  C:1174H         LINE#         72
-  C:1177H         LINE#         73
-  C:1177H         LINE#         75
-  C:1177H         LINE#         76
-  C:117AH         LINE#         77
-  C:117AH         LINE#         78
-  C:117AH         LINE#         79
-  C:117BH         LINE#         80
-  C:117BH         LINE#         81
-  C:1199H         LINE#         82
-  C:1199H         LINE#         83
-  C:119CH         LINE#         84
-  C:119CH         LINE#         85
-  C:119CH         LINE#         86
-  C:119CH         LINE#         87
-  C:119CH         LINE#         88
-  C:119CH         LINE#         89
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       BEEPALARMTASK
   -------         ENDMOD        BEEP
 
@@ -1380,9 +889,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 16
-
-
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
   D:00E8H         PUBLIC        P6
@@ -1391,13 +897,9 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:001CH         PUBLIC        recvPlusTimeCnt
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
-<<<<<<< HEAD
   C:0F22H         PUBLIC        Ext_INT1
-=======
-  C:0F9BH         PUBLIC        Ext_INT1
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:0098H         PUBLIC        SCON
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 16
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 16
 
 
   D:0088H         PUBLIC        TCON
@@ -1405,7 +907,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00F0H         PUBLIC        B
   D:00E0H         PUBLIC        ACC
   B:00A8H.1       PUBLIC        ET0
-<<<<<<< HEAD
   C:13CAH         PUBLIC        Start_recvPlus
   B:00A8H.2       PUBLIC        EX1
   B:0088H.2       PUBLIC        IT1
@@ -1416,24 +917,11 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:13DDH         PUBLIC        Stop_recvPlus
   C:1065H         PUBLIC        _Ext_Inilize
   C:13B7H         PUBLIC        Exti_config
-=======
-  C:13D7H         PUBLIC        Start_recvPlus
-  B:00A8H.2       PUBLIC        EX1
-  B:0088H.2       PUBLIC        IT1
-  B:0021H.3       PUBLIC        recvPlusFlag
-  C:143DH         PUBLIC        Get_recvPlusFlag
-  B:00B8H.2       PUBLIC        PX1
-  D:00B7H         PUBLIC        IPH
-  C:13EAH         PUBLIC        Stop_recvPlus
-  C:10DAH         PUBLIC        _Ext_Inilize
-  C:13C4H         PUBLIC        Exti_config
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00D0H         PUBLIC        PSW
   -------         PROC          EXTI_CONFIG
   -------         DO            
   D:0008H         SYMBOL        Exti_InitStructure
   -------         ENDDO         
-<<<<<<< HEAD
   C:13B7H         LINE#         29
   C:13B7H         LINE#         30
   C:13B7H         LINE#         33
@@ -1460,40 +948,8 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:13EAH         LINE#         55
   C:13ECH         LINE#         56
   C:13EEH         LINE#         57
-=======
-  C:13C4H         LINE#         29
-  C:13C4H         LINE#         30
-  C:13C4H         LINE#         33
-  C:13C7H         LINE#         34
-  C:13CAH         LINE#         35
-  C:13CDH         LINE#         36
-  -------         ENDPROC       EXTI_CONFIG
-  -------         PROC          START_RECVPLUS
-  C:13D7H         LINE#         40
-  C:13D7H         LINE#         41
-  C:13D7H         LINE#         42
-  C:13DAH         LINE#         43
-  C:13DCH         LINE#         44
-  C:13DFH         LINE#         45
-  C:13E7H         LINE#         46
-  C:13E9H         LINE#         47
-  -------         ENDPROC       START_RECVPLUS
-  -------         PROC          STOP_RECVPLUS
-  C:13EAH         LINE#         50
-  C:13EAH         LINE#         51
-  C:13EAH         LINE#         52
-  C:13ECH         LINE#         53
-  C:13EFH         LINE#         54
-  C:13F7H         LINE#         55
-  C:13F9H         LINE#         56
-  C:13FBH         LINE#         57
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       STOP_RECVPLUS
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 17
-
-
   -------         PROC          GET_RECVPLUSFLAG
-<<<<<<< HEAD
   C:1448H         LINE#         60
   C:1448H         LINE#         61
   C:1448H         LINE#         62
@@ -1503,7 +959,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0F22H         LINE#         66
   C:0F3FH         LINE#         68
   C:0F42H         LINE#         70
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 17
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 17
 
 
   C:0F55H         LINE#         71
@@ -1518,34 +974,10 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0F68H         LINE#         81
   C:0F68H         LINE#         83
   C:0F74H         LINE#         84
-=======
-  C:143DH         LINE#         60
-  C:143DH         LINE#         61
-  C:143DH         LINE#         62
-  C:143FH         LINE#         63
-  -------         ENDPROC       GET_RECVPLUSFLAG
-  -------         PROC          EXT_INT1
-  C:0F9BH         LINE#         66
-  C:0FB8H         LINE#         68
-  C:0FBBH         LINE#         70
-  C:0FCEH         LINE#         71
-  C:0FCEH         LINE#         72
-  C:0FD7H         LINE#         73
-  C:0FD7H         LINE#         74
-  C:0FD9H         LINE#         75
-  C:0FDCH         LINE#         76
-  C:0FDCH         LINE#         77
-  C:0FDEH         LINE#         79
-  C:0FDEH         LINE#         80
-  C:0FE1H         LINE#         81
-  C:0FE1H         LINE#         83
-  C:0FEDH         LINE#         84
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       EXT_INT1
   -------         PROC          _EXT_INILIZE
   D:0007H         SYMBOL        EXT
   D:0001H         SYMBOL        INTx
-<<<<<<< HEAD
   C:1065H         LINE#         93
   C:1065H         LINE#         94
   C:1065H         LINE#         95
@@ -1564,26 +996,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:10C7H         LINE#         110
   C:10C7H         LINE#         111
   C:10C9H         LINE#         112
-=======
-  C:10DAH         LINE#         93
-  C:10DAH         LINE#         94
-  C:10DAH         LINE#         95
-  C:10DFH         LINE#         96
-  C:10DFH         LINE#         97
-  C:10E1H         LINE#         98
-  C:10EAH         LINE#         99
-  C:10EEH         LINE#         101
-  C:10F0H         LINE#         102
-  C:10FCH         LINE#         103
-  C:10FFH         LINE#         104
-  C:112DH         LINE#         105
-  C:1133H         LINE#         106
-  C:1137H         LINE#         108
-  C:1139H         LINE#         109
-  C:113CH         LINE#         110
-  C:113CH         LINE#         111
-  C:113EH         LINE#         112
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       _EXT_INILIZE
   -------         ENDMOD        EXTI
 
@@ -1597,9 +1009,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
   D:00E8H         PUBLIC        P6
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 18
-
-
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
@@ -1610,11 +1019,10 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:0049H         PUBLIC        SendContinuePlusTimeCnt
   D:00F0H         PUBLIC        B
   D:00E0H         PUBLIC        ACC
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 18
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 18
 
 
   B:0020H.1       PUBLIC        SendOncePlusTaskFlag
-<<<<<<< HEAD
   C:144EH         PUBLIC        Get_SendOncePlusTaskFlag
   D:004BH         PUBLIC        meterDistance
   C:0C29H         PUBLIC        SendOncePlusTask
@@ -1671,7 +1079,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0C57H         LINE#         75
   C:0C57H         LINE#         76
   C:0C5FH         LINE#         77
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 19
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 19
 
 
   C:0C5FH         LINE#         78
@@ -1731,130 +1139,9 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0D30H         LINE#         135
   C:0D30H         LINE#         136
   C:0D30H         LINE#         137
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 20
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 20
 
 
-=======
-  C:1443H         PUBLIC        Get_SendOncePlusTaskFlag
-  D:004BH         PUBLIC        meterDistance
-  C:0C17H         PUBLIC        SendOncePlusTask
-  C:142EH         PUBLIC        Get_meterDistance
-  B:0020H.2       PUBLIC        sensorOkFlag
-  C:1440H         PUBLIC        Get_sensorOkFlag
-  C:141EH         PUBLIC        Start_sendOncePlusTask
-  B:0020H.3       PUBLIC        obstaclesExistenceFlag
-  C:1446H         PUBLIC        Get_obstaclesExistenceFlag
-  D:00D0H         PUBLIC        PSW
-  -------         PROC          GET_METERDISTANCE
-  C:142EH         LINE#         31
-  C:142EH         LINE#         32
-  C:142EH         LINE#         33
-  C:1432H         LINE#         34
-  -------         ENDPROC       GET_METERDISTANCE
-  -------         PROC          GET_SENSOROKFLAG
-  C:1440H         LINE#         37
-  C:1440H         LINE#         38
-  C:1440H         LINE#         39
-  C:1442H         LINE#         40
-  -------         ENDPROC       GET_SENSOROKFLAG
-  -------         PROC          GET_SENDONCEPLUSTASKFLAG
-  C:1443H         LINE#         43
-  C:1443H         LINE#         44
-  C:1443H         LINE#         45
-  C:1445H         LINE#         46
-  -------         ENDPROC       GET_SENDONCEPLUSTASKFLAG
-  -------         PROC          GET_OBSTACLESEXISTENCEFLAG
-  C:1446H         LINE#         49
-  C:1446H         LINE#         50
-  C:1446H         LINE#         51
-  C:1448H         LINE#         52
-  -------         ENDPROC       GET_OBSTACLESEXISTENCEFLAG
-  -------         PROC          START_SENDONCEPLUSTASK
-  C:141EH         LINE#         55
-  C:141EH         LINE#         56
-  C:141EH         LINE#         57
-  C:1420H         LINE#         58
-  C:1423H         LINE#         59
-  -------         ENDPROC       START_SENDONCEPLUSTASK
-  -------         PROC          SENDONCEPLUSTASK
-  C:0C17H         LINE#         63
-  C:0C17H         LINE#         64
-  C:0C17H         LINE#         65
-  C:0C1DH         LINE#         67
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 19
-
-
-  C:0C32H         LINE#         68
-  C:0C32H         LINE#         69
-  C:0C32H         LINE#         70
-  C:0C39H         LINE#         71
-  C:0C3CH         LINE#         72
-  C:0C41H         LINE#         73
-  C:0C44H         LINE#         74
-  C:0C45H         LINE#         75
-  C:0C45H         LINE#         76
-  C:0C4DH         LINE#         77
-  C:0C4DH         LINE#         78
-  C:0C50H         LINE#         79
-  C:0C50H         LINE#         80
-  C:0C53H         LINE#         81
-  C:0C56H         LINE#         82
-  C:0C57H         LINE#         84
-  C:0C57H         LINE#         85
-  C:0C6DH         LINE#         86
-  C:0C6DH         LINE#         87
-  C:0C70H         LINE#         88
-  C:0C73H         LINE#         89
-  C:0C73H         LINE#         90
-  C:0C73H         LINE#         91
-  C:0C73H         LINE#         92
-  C:0C74H         LINE#         93
-  C:0C74H         LINE#         94
-  C:0C79H         LINE#         95
-  C:0C79H         LINE#         96
-  C:0C7BH         LINE#         97
-  C:0C7DH         LINE#         98
-  C:0C86H         LINE#         99
-  C:0C88H         LINE#         100
-  C:0C89H         LINE#         101
-  C:0C9FH         LINE#         102
-  C:0C9FH         LINE#         103
-  C:0CA1H         LINE#         104
-  C:0CAAH         LINE#         105
-  C:0CACH         LINE#         106
-  C:0CACH         LINE#         107
-  C:0CACH         LINE#         108
-  C:0CAEH         LINE#         109
-  C:0CAEH         LINE#         110
-  C:0CB3H         LINE#         111
-  C:0CB3H         LINE#         112
-  C:0CD6H         LINE#         113
-  C:0CE1H         LINE#         114
-  C:0CE1H         LINE#         115
-  C:0CE6H         LINE#         116
-  C:0CE8H         LINE#         117
-  C:0CF3H         LINE#         118
-  C:0CF3H         LINE#         119
-  C:0CF9H         LINE#         120
-  C:0CF9H         LINE#         121
-  C:0CFBH         LINE#         122
-  C:0CFDH         LINE#         123
-  C:0CFEH         LINE#         125
-  C:0D11H         LINE#         126
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 20
-
-
-  C:0D11H         LINE#         128
-  C:0D13H         LINE#         129
-  C:0D15H         LINE#         130
-  C:0D1BH         LINE#         131
-  C:0D1EH         LINE#         132
-  C:0D1EH         LINE#         133
-  C:0D1EH         LINE#         134
-  C:0D1EH         LINE#         135
-  C:0D1EH         LINE#         136
-  C:0D1EH         LINE#         137
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       SENDONCEPLUSTASK
   -------         ENDMOD        SENSOR
 
@@ -1872,19 +1159,14 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:0022H         PUBLIC        appTaskTimeCnt
   D:0024H         PUBLIC        currentSensorID
   D:0025H         PUBLIC        sensorIdGetCnt
-<<<<<<< HEAD
   B:0020H.4       PUBLIC        ioStatusSaveValueOld
   D:00B8H         PUBLIC        IP
   B:0020H.5       PUBLIC        ioStatusSaveValueNew
-=======
-  D:00B8H         PUBLIC        IP
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00D8H         PUBLIC        CCON
   D:0026H         PUBLIC        sensorIdCheckState
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
   B:00B0H.4       PUBLIC        P34
-<<<<<<< HEAD
   C:1454H         PUBLIC        get_currentSensorID
   B:00B0H.5       PUBLIC        P35
   C:0D31H         PUBLIC        AppTask
@@ -1898,519 +1180,258 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:002CH         PUBLIC        sensorIdCheckTimeCnt
   D:00D0H         PUBLIC        PSW
   -------         PROC          GET_CURRENTSENSORID
-  C:1454H         LINE#         50
-  C:1454H         LINE#         51
   C:1454H         LINE#         52
-  C:1456H         LINE#         53
+  C:1454H         LINE#         53
+  C:1454H         LINE#         54
+  C:1456H         LINE#         55
   -------         ENDPROC       GET_CURRENTSENSORID
   -------         PROC          SENSORIDADJUSTTASK
-  C:07BAH         LINE#         60
-  C:07BAH         LINE#         61
-  C:07BAH         LINE#         62
-  C:07C0H         LINE#         64
-  C:07F8H         LINE#         65
-  C:07F8H         LINE#         66
-  C:07F8H         LINE#         67
-  C:07FAH         LINE#         68
-  C:0801H         LINE#         69
-  C:0804H         LINE#         70
-  C:0805H         LINE#         71
-  C:0805H         LINE#         72
-  C:081BH         LINE#         73
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 21
+  C:07BAH         LINE#         63
+  C:07BAH         LINE#         64
+  C:07BAH         LINE#         65
+  C:07C0H         LINE#         67
+  C:07F8H         LINE#         68
+  C:07F8H         LINE#         70
+  C:07F8H         LINE#         71
+  C:07FAH         LINE#         72
+  C:0801H         LINE#         73
+  C:0804H         LINE#         74
+  C:0805H         LINE#         75
+  C:0805H         LINE#         76
+  C:081BH         LINE#         77
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 21
 
 
-  C:081BH         LINE#         74
-  C:081FH         LINE#         75
-  C:0822H         LINE#         76
-  C:0822H         LINE#         77
-  C:0823H         LINE#         78
-  C:0823H         LINE#         79
-  C:0839H         LINE#         80
-  C:0839H         LINE#         81
-  C:083BH         LINE#         82
-  C:083EH         LINE#         83
-  C:083EH         LINE#         84
-  C:083FH         LINE#         85
-  C:083FH         LINE#         86
-  C:0855H         LINE#         87
-  C:0855H         LINE#         88
-  C:0859H         LINE#         89
-  C:085CH         LINE#         90
-  C:085CH         LINE#         91
-  C:0864H         LINE#         92
-  C:0864H         LINE#         93
-  C:0867H         LINE#         94
-  C:0869H         LINE#         96
-  C:0869H         LINE#         97
-  C:086CH         LINE#         98
-  C:086CH         LINE#         99
-  C:086EH         LINE#         101
-  C:086EH         LINE#         102
-  C:0876H         LINE#         103
-  C:0876H         LINE#         104
-  C:0879H         LINE#         105
-  C:087BH         LINE#         107
-  C:087BH         LINE#         108
-  C:087EH         LINE#         109
-  C:087EH         LINE#         110
-  C:087EH         LINE#         111
-  C:0881H         LINE#         112
-  C:0884H         LINE#         113
-  C:0884H         LINE#         114
-  C:0884H         LINE#         115
-  C:0884H         LINE#         116
-  C:0889H         LINE#         117
-  C:0889H         LINE#         118
-  C:0890H         LINE#         119
-  C:0893H         LINE#         120
-  C:0893H         LINE#         121
-  C:0896H         LINE#         123
-  C:0896H         LINE#         124
-  C:0899H         LINE#         125
-  C:0899H         LINE#         126
-  C:089AH         LINE#         127
-  C:089AH         LINE#         128
-  C:08B0H         LINE#         129
-  C:08B0H         LINE#         130
-  C:08B6H         LINE#         131
-  C:08B6H         LINE#         133
-  C:08B9H         LINE#         134
-  C:08B9H         LINE#         135
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 22
+  C:081BH         LINE#         78
+  C:081FH         LINE#         79
+  C:0822H         LINE#         80
+  C:0822H         LINE#         81
+  C:0823H         LINE#         82
+  C:0823H         LINE#         83
+  C:0839H         LINE#         84
+  C:0839H         LINE#         85
+  C:083BH         LINE#         86
+  C:083EH         LINE#         87
+  C:083EH         LINE#         88
+  C:083FH         LINE#         89
+  C:083FH         LINE#         90
+  C:0855H         LINE#         91
+  C:0855H         LINE#         92
+  C:0859H         LINE#         93
+  C:085CH         LINE#         94
+  C:085CH         LINE#         95
+  C:0864H         LINE#         96
+  C:0864H         LINE#         97
+  C:0867H         LINE#         98
+  C:0869H         LINE#         100
+  C:0869H         LINE#         101
+  C:086CH         LINE#         102
+  C:086CH         LINE#         103
+  C:086EH         LINE#         105
+  C:086EH         LINE#         106
+  C:0876H         LINE#         107
+  C:0876H         LINE#         108
+  C:0879H         LINE#         109
+  C:087BH         LINE#         111
+  C:087BH         LINE#         112
+  C:087EH         LINE#         113
+  C:087EH         LINE#         114
+  C:087EH         LINE#         115
+  C:0881H         LINE#         116
+  C:0884H         LINE#         117
+  C:0884H         LINE#         118
+  C:0884H         LINE#         119
+  C:0884H         LINE#         120
+  C:0889H         LINE#         121
+  C:0889H         LINE#         122
+  C:0890H         LINE#         123
+  C:0893H         LINE#         124
+  C:0893H         LINE#         125
+  C:0896H         LINE#         127
+  C:0896H         LINE#         128
+  C:0899H         LINE#         129
+  C:0899H         LINE#         130
+  C:089AH         LINE#         131
+  C:089AH         LINE#         132
+  C:08B0H         LINE#         133
+  C:08B0H         LINE#         134
+  C:08B6H         LINE#         135
+  C:08B6H         LINE#         137
+  C:08B9H         LINE#         138
+  C:08B9H         LINE#         139
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 22
 
 
-  C:08B9H         LINE#         136
-  C:08BBH         LINE#         138
-  C:08BBH         LINE#         139
-  C:08BDH         LINE#         140
-  C:08C0H         LINE#         141
-  C:08CAH         LINE#         142
-  C:08CAH         LINE#         143
-  C:08CDH         LINE#         144
-  C:08D0H         LINE#         145
-  C:08D0H         LINE#         146
-  C:08D0H         LINE#         147
-  C:08D0H         LINE#         148
-  C:08D1H         LINE#         149
-  C:08D1H         LINE#         150
-  C:08D7H         LINE#         151
-  C:08DAH         LINE#         152
-  C:08DAH         LINE#         153
-  C:08DCH         LINE#         154
-  C:08DCH         LINE#         155
-  C:08F2H         LINE#         156
-  C:08F2H         LINE#         157
-  C:08F8H         LINE#         158
-  C:08F8H         LINE#         160
-  C:08FBH         LINE#         161
-  C:08FBH         LINE#         162
-  C:08FBH         LINE#         163
-  C:08FDH         LINE#         165
-  C:08FDH         LINE#         166
-  C:08FFH         LINE#         167
-  C:0902H         LINE#         168
-  C:0909H         LINE#         169
-  C:0909H         LINE#         170
-  C:090CH         LINE#         171
-  C:090FH         LINE#         172
-  C:090FH         LINE#         173
-  C:090FH         LINE#         174
-  C:090FH         LINE#         175
-  C:0910H         LINE#         176
-  C:0910H         LINE#         177
-  C:0917H         LINE#         178
-  C:091AH         LINE#         179
-  C:0921H         LINE#         180
-  C:0922H         LINE#         181
-  C:0922H         LINE#         182
-  C:0935H         LINE#         183
-  C:0935H         LINE#         184
-  C:093BH         LINE#         185
-  C:093BH         LINE#         187
-  C:093EH         LINE#         188
-  C:093EH         LINE#         189
-  C:093EH         LINE#         190
-  C:0940H         LINE#         192
-  C:0940H         LINE#         193
-  C:0942H         LINE#         194
-  C:0945H         LINE#         195
-  C:094CH         LINE#         196
-  C:094CH         LINE#         197
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 23
+  C:08B9H         LINE#         140
+  C:08BBH         LINE#         142
+  C:08BBH         LINE#         143
+  C:08BDH         LINE#         144
+  C:08C0H         LINE#         145
+  C:08CAH         LINE#         146
+  C:08CAH         LINE#         147
+  C:08CDH         LINE#         148
+  C:08D0H         LINE#         149
+  C:08D0H         LINE#         150
+  C:08D0H         LINE#         151
+  C:08D0H         LINE#         152
+  C:08D1H         LINE#         153
+  C:08D1H         LINE#         154
+  C:08D7H         LINE#         155
+  C:08DAH         LINE#         156
+  C:08DAH         LINE#         157
+  C:08DCH         LINE#         158
+  C:08DCH         LINE#         159
+  C:08F2H         LINE#         160
+  C:08F2H         LINE#         161
+  C:08F8H         LINE#         162
+  C:08F8H         LINE#         164
+  C:08FBH         LINE#         165
+  C:08FBH         LINE#         166
+  C:08FBH         LINE#         167
+  C:08FDH         LINE#         169
+  C:08FDH         LINE#         170
+  C:08FFH         LINE#         171
+  C:0902H         LINE#         172
+  C:0909H         LINE#         173
+  C:0909H         LINE#         174
+  C:090CH         LINE#         175
+  C:090FH         LINE#         176
+  C:090FH         LINE#         177
+  C:090FH         LINE#         178
+  C:090FH         LINE#         179
+  C:0910H         LINE#         180
+  C:0910H         LINE#         181
+  C:0917H         LINE#         182
+  C:091AH         LINE#         183
+  C:0921H         LINE#         184
+  C:0922H         LINE#         185
+  C:0922H         LINE#         186
+  C:0935H         LINE#         187
+  C:0935H         LINE#         188
+  C:093BH         LINE#         189
+  C:093BH         LINE#         191
+  C:093EH         LINE#         192
+  C:093EH         LINE#         193
+  C:093EH         LINE#         194
+  C:0940H         LINE#         196
+  C:0940H         LINE#         197
+  C:0942H         LINE#         198
+  C:0945H         LINE#         199
+  C:094CH         LINE#         200
+  C:094CH         LINE#         201
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 23
 
 
-  C:094FH         LINE#         198
-  C:094FH         LINE#         199
-  C:094FH         LINE#         200
-  C:094FH         LINE#         201
   C:094FH         LINE#         202
-  C:0951H         LINE#         203
-  C:0951H         LINE#         204
-  C:0964H         LINE#         205
-  C:0964H         LINE#         206
-  C:0964H         LINE#         207
-  C:0966H         LINE#         209
-  C:0966H         LINE#         210
-  C:096CH         LINE#         211
-  C:096CH         LINE#         213
-  C:096FH         LINE#         214
-  C:096FH         LINE#         215
-  C:096FH         LINE#         216
-  C:0970H         LINE#         217
-  C:0970H         LINE#         218
-  C:0973H         LINE#         219
-  C:0975H         LINE#         220
-  C:0975H         LINE#         221
-  C:0975H         LINE#         222
+  C:094FH         LINE#         203
+  C:094FH         LINE#         204
+  C:094FH         LINE#         205
+  C:094FH         LINE#         206
+  C:0951H         LINE#         207
+  C:0951H         LINE#         208
+  C:0964H         LINE#         209
+  C:0964H         LINE#         210
+  C:0964H         LINE#         211
+  C:0966H         LINE#         213
+  C:0966H         LINE#         214
+  C:096CH         LINE#         215
+  C:096CH         LINE#         217
+  C:096FH         LINE#         218
+  C:096FH         LINE#         219
+  C:096FH         LINE#         220
+  C:0970H         LINE#         221
+  C:0970H         LINE#         222
+  C:0973H         LINE#         223
+  C:0975H         LINE#         224
+  C:0975H         LINE#         225
+  C:0975H         LINE#         226
   -------         ENDPROC       SENSORIDADJUSTTASK
   -------         PROC          APPTASK
-  C:0D31H         LINE#         224
-  C:0D31H         LINE#         225
-  C:0D31H         LINE#         226
-  C:0D37H         LINE#         228
-  C:0D52H         LINE#         229
-  C:0D52H         LINE#         230
-  C:0D52H         LINE#         231
-  C:0D5AH         LINE#         232
-  C:0D61H         LINE#         233
-  C:0D64H         LINE#         234
-  C:0D65H         LINE#         235
-  C:0D65H         LINE#         236
-  C:0D68H         LINE#         237
-  C:0D68H         LINE#         238
-  C:0D6EH         LINE#         239
-  C:0D6EH         LINE#         240
-  C:0D70H         LINE#         241
-  C:0D86H         LINE#         242
-  C:0D86H         LINE#         243
-  C:0D8FH         LINE#         244
-  C:0D92H         LINE#         245
-  C:0D92H         LINE#         246
-  C:0D93H         LINE#         247
-  C:0D93H         LINE#         248
-  C:0D96H         LINE#         249
-  C:0D99H         LINE#         250
-  C:0DA2H         LINE#         251
-  C:0DA2H         LINE#         252
-  C:0DA2H         LINE#         253
-  C:0DA7H         LINE#         254
-  C:0DA7H         LINE#         255
-  C:0DAEH         LINE#         256
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 24
+  C:0D31H         LINE#         228
+  C:0D31H         LINE#         229
+  C:0D31H         LINE#         230
+  C:0D37H         LINE#         232
+  C:0D52H         LINE#         233
+  C:0D52H         LINE#         234
+  C:0D52H         LINE#         235
+  C:0D5AH         LINE#         236
+  C:0D61H         LINE#         237
+  C:0D64H         LINE#         238
+  C:0D65H         LINE#         239
+  C:0D65H         LINE#         240
+  C:0D68H         LINE#         241
+  C:0D68H         LINE#         242
+  C:0D6EH         LINE#         243
+  C:0D6EH         LINE#         244
+  C:0D70H         LINE#         245
+  C:0D86H         LINE#         246
+  C:0D86H         LINE#         247
+  C:0D8FH         LINE#         248
+  C:0D92H         LINE#         249
+  C:0D92H         LINE#         250
+  C:0D93H         LINE#         251
+  C:0D93H         LINE#         252
+  C:0D96H         LINE#         253
+  C:0D99H         LINE#         254
+  C:0DA2H         LINE#         255
+  C:0DA2H         LINE#         256
+  C:0DA2H         LINE#         257
+  C:0DA7H         LINE#         258
+  C:0DA7H         LINE#         259
+  C:0DAEH         LINE#         260
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 24
 
 
-  C:0DAEH         LINE#         257
-  C:0DB2H         LINE#         258
-  C:0DB2H         LINE#         259
-  C:0DB4H         LINE#         261
-  C:0DB4H         LINE#         262
-  C:0DBBH         LINE#         263
-  C:0DBEH         LINE#         264
-  C:0DBEH         LINE#         266
-  C:0DBEH         LINE#         267
-  C:0DBFH         LINE#         268
-  C:0DBFH         LINE#         269
-  C:0DC6H         LINE#         270
-  C:0DC9H         LINE#         271
-  C:0DCCH         LINE#         272
-  C:0DCDH         LINE#         273
-  C:0DCDH         LINE#         274
-  C:0DD2H         LINE#         275
-  C:0DD2H         LINE#         276
-  C:0DD7H         LINE#         277
-  C:0DD7H         LINE#         278
-  C:0DEAH         LINE#         279
-  C:0DEAH         LINE#         280
-  C:0DF0H         LINE#         281
-  C:0DF0H         LINE#         283
-  C:0DF0H         LINE#         284
-  C:0DF2H         LINE#         286
-  C:0DF2H         LINE#         287
-  C:0E05H         LINE#         288
-  C:0E05H         LINE#         290
-  C:0E0EH         LINE#         291
-  C:0E11H         LINE#         293
-  C:0E11H         LINE#         294
-  C:0E11H         LINE#         295
-  C:0E11H         LINE#         296
+  C:0DAEH         LINE#         261
+  C:0DB2H         LINE#         262
+  C:0DB2H         LINE#         263
+  C:0DB4H         LINE#         265
+  C:0DB4H         LINE#         266
+  C:0DBBH         LINE#         267
+  C:0DBEH         LINE#         268
+  C:0DBEH         LINE#         270
+  C:0DBEH         LINE#         271
+  C:0DBFH         LINE#         272
+  C:0DBFH         LINE#         273
+  C:0DC6H         LINE#         274
+  C:0DC9H         LINE#         275
+  C:0DCCH         LINE#         276
+  C:0DCDH         LINE#         277
+  C:0DCDH         LINE#         278
+  C:0DD2H         LINE#         279
+  C:0DD2H         LINE#         280
+  C:0DD7H         LINE#         281
+  C:0DD7H         LINE#         282
+  C:0DEAH         LINE#         283
+  C:0DEAH         LINE#         284
+  C:0DF0H         LINE#         285
+  C:0DF0H         LINE#         287
+  C:0DF0H         LINE#         288
+  C:0DF2H         LINE#         290
+  C:0DF2H         LINE#         291
+  C:0E05H         LINE#         292
+  C:0E05H         LINE#         294
+  C:0E0EH         LINE#         295
   C:0E11H         LINE#         297
   C:0E11H         LINE#         298
   C:0E11H         LINE#         299
   C:0E11H         LINE#         300
-=======
-  C:1449H         PUBLIC        get_currentSensorID
-  B:00B0H.5       PUBLIC        P35
-  C:0D1FH         PUBLIC        AppTask
-  D:00F0H         PUBLIC        B
-  D:0027H         PUBLIC        saveTotalSensorID
-  B:0020H.4       PUBLIC        sensorIdCheckOKFlag
-  D:00E0H         PUBLIC        ACC
-  C:07BAH         PUBLIC        sensorIdAdjustTask
-  D:002BH         PUBLIC        appTaskState
-  B:0020H.5       PUBLIC        sensorIdCheckRunFlag
-  D:002CH         PUBLIC        sensorIdCheckTimeCnt
-  B:0020H.6       PUBLIC        ioStatusSaveValue
-  D:00D0H         PUBLIC        PSW
-  -------         PROC          GET_CURRENTSENSORID
-  C:1449H         LINE#         50
-  C:1449H         LINE#         51
-  C:1449H         LINE#         52
-  C:144BH         LINE#         53
-  -------         ENDPROC       GET_CURRENTSENSORID
-  -------         PROC          SENSORIDADJUSTTASK
-  C:07BAH         LINE#         55
-  C:07BAH         LINE#         56
-  C:07BAH         LINE#         57
-  C:07C0H         LINE#         59
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 21
-
-
-  C:07F8H         LINE#         60
-  C:07F8H         LINE#         61
-  C:07F8H         LINE#         62
-  C:07FAH         LINE#         63
-  C:0801H         LINE#         64
-  C:0804H         LINE#         65
-  C:0805H         LINE#         66
-  C:0805H         LINE#         67
-  C:081BH         LINE#         68
-  C:081BH         LINE#         69
-  C:081EH         LINE#         70
-  C:081EH         LINE#         71
-  C:0822H         LINE#         72
-  C:0825H         LINE#         73
-  C:0826H         LINE#         75
-  C:0826H         LINE#         76
-  C:0829H         LINE#         77
-  C:0829H         LINE#         78
-  C:0829H         LINE#         79
-  C:0829H         LINE#         80
-  C:082BH         LINE#         81
-  C:082BH         LINE#         82
-  C:0841H         LINE#         83
-  C:0841H         LINE#         84
-  C:0843H         LINE#         85
-  C:0846H         LINE#         86
-  C:0846H         LINE#         87
-  C:0847H         LINE#         88
-  C:0847H         LINE#         89
-  C:085DH         LINE#         90
-  C:085DH         LINE#         91
-  C:0860H         LINE#         92
-  C:0860H         LINE#         93
-  C:0868H         LINE#         94
-  C:0868H         LINE#         95
-  C:086BH         LINE#         96
-  C:086EH         LINE#         97
-  C:086FH         LINE#         99
-  C:086FH         LINE#         100
-  C:0872H         LINE#         101
-  C:0872H         LINE#         102
-  C:0872H         LINE#         103
-  C:0874H         LINE#         105
-  C:0874H         LINE#         106
-  C:0877H         LINE#         107
-  C:087AH         LINE#         108
-  C:087AH         LINE#         109
-  C:087AH         LINE#         110
-  C:087BH         LINE#         111
-  C:087BH         LINE#         112
-  C:0882H         LINE#         113
-  C:0885H         LINE#         114
-  C:0885H         LINE#         115
-  C:0888H         LINE#         116
-  C:0888H         LINE#         117
-  C:089EH         LINE#         118
-  C:089EH         LINE#         119
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 22
-
-
-  C:08A4H         LINE#         120
-  C:08A4H         LINE#         122
-  C:08A7H         LINE#         123
-  C:08A7H         LINE#         124
-  C:08A7H         LINE#         125
-  C:08A9H         LINE#         127
-  C:08A9H         LINE#         128
-  C:08ABH         LINE#         129
-  C:08AEH         LINE#         130
-  C:08B8H         LINE#         131
-  C:08B8H         LINE#         132
-  C:08BBH         LINE#         133
-  C:08BEH         LINE#         134
-  C:08BEH         LINE#         135
-  C:08BEH         LINE#         136
-  C:08BEH         LINE#         137
-  C:08BFH         LINE#         138
-  C:08BFH         LINE#         139
-  C:08C5H         LINE#         140
-  C:08C8H         LINE#         141
-  C:08C8H         LINE#         142
-  C:08CAH         LINE#         143
-  C:08CAH         LINE#         144
-  C:08E0H         LINE#         145
-  C:08E0H         LINE#         146
-  C:08E6H         LINE#         147
-  C:08E6H         LINE#         149
-  C:08E9H         LINE#         150
-  C:08E9H         LINE#         151
-  C:08E9H         LINE#         152
-  C:08EBH         LINE#         154
-  C:08EBH         LINE#         155
-  C:08EDH         LINE#         156
-  C:08F0H         LINE#         157
-  C:08F7H         LINE#         158
-  C:08F7H         LINE#         159
-  C:08FAH         LINE#         160
-  C:08FDH         LINE#         161
-  C:08FDH         LINE#         162
-  C:08FDH         LINE#         163
-  C:08FDH         LINE#         164
-  C:08FEH         LINE#         165
-  C:08FEH         LINE#         166
-  C:0905H         LINE#         167
-  C:0908H         LINE#         168
-  C:090FH         LINE#         169
-  C:0910H         LINE#         170
-  C:0910H         LINE#         171
-  C:0923H         LINE#         172
-  C:0923H         LINE#         173
-  C:0929H         LINE#         174
-  C:0929H         LINE#         176
-  C:092CH         LINE#         177
-  C:092CH         LINE#         178
-  C:092CH         LINE#         179
-  C:092EH         LINE#         181
-  C:092EH         LINE#         182
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 23
-
-
-  C:0930H         LINE#         183
-  C:0933H         LINE#         184
-  C:093AH         LINE#         185
-  C:093AH         LINE#         186
-  C:093DH         LINE#         187
-  C:093DH         LINE#         188
-  C:093DH         LINE#         189
-  C:093DH         LINE#         190
-  C:093DH         LINE#         191
-  C:093FH         LINE#         192
-  C:093FH         LINE#         193
-  C:0952H         LINE#         194
-  C:0952H         LINE#         195
-  C:0952H         LINE#         196
-  C:0954H         LINE#         198
-  C:0954H         LINE#         199
-  C:095AH         LINE#         200
-  C:095AH         LINE#         202
-  C:095DH         LINE#         203
-  C:095DH         LINE#         204
-  C:095DH         LINE#         205
-  C:095EH         LINE#         206
-  C:095EH         LINE#         207
-  C:0961H         LINE#         208
-  C:0963H         LINE#         209
-  C:0963H         LINE#         210
-  C:0963H         LINE#         211
-  -------         ENDPROC       SENSORIDADJUSTTASK
-  -------         PROC          APPTASK
-  C:0D1FH         LINE#         213
-  C:0D1FH         LINE#         214
-  C:0D1FH         LINE#         215
-  C:0D25H         LINE#         217
-  C:0D43H         LINE#         218
-  C:0D43H         LINE#         219
-  C:0D43H         LINE#         220
-  C:0D4BH         LINE#         221
-  C:0D52H         LINE#         222
-  C:0D55H         LINE#         223
-  C:0D56H         LINE#         224
-  C:0D56H         LINE#         225
-  C:0D59H         LINE#         226
-  C:0D59H         LINE#         227
-  C:0D5FH         LINE#         228
-  C:0D5FH         LINE#         229
-  C:0D61H         LINE#         230
-  C:0D77H         LINE#         231
-  C:0D77H         LINE#         232
-  C:0D80H         LINE#         233
-  C:0D83H         LINE#         234
-  C:0D83H         LINE#         235
-  C:0D84H         LINE#         236
-  C:0D84H         LINE#         237
-  C:0D87H         LINE#         238
-  C:0D8AH         LINE#         239
-  C:0D93H         LINE#         240
-  C:0D93H         LINE#         241
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 24
-
-
-  C:0D93H         LINE#         242
-  C:0D9BH         LINE#         243
-  C:0D9BH         LINE#         244
-  C:0DA2H         LINE#         245
-  C:0DA2H         LINE#         246
-  C:0DA9H         LINE#         247
-  C:0DACH         LINE#         248
-  C:0DAEH         LINE#         250
-  C:0DAEH         LINE#         251
-  C:0DB5H         LINE#         252
-  C:0DB8H         LINE#         253
-  C:0DB8H         LINE#         254
-  C:0DBAH         LINE#         255
-  C:0DBAH         LINE#         256
-  C:0DBCH         LINE#         257
-  C:0DBCH         LINE#         258
-  C:0DC3H         LINE#         259
-  C:0DC6H         LINE#         260
-  C:0DC9H         LINE#         261
-  C:0DCAH         LINE#         262
-  C:0DCAH         LINE#         263
-  C:0DCFH         LINE#         264
-  C:0DCFH         LINE#         265
-  C:0DD4H         LINE#         266
-  C:0DD4H         LINE#         267
-  C:0DE7H         LINE#         268
-  C:0DE7H         LINE#         269
-  C:0DF0H         LINE#         270
-  C:0DF3H         LINE#         271
-  C:0DF5H         LINE#         272
-  C:0DF5H         LINE#         273
-  C:0DF7H         LINE#         275
-  C:0DF7H         LINE#         276
-  C:0E0AH         LINE#         277
-  C:0E0AH         LINE#         279
-  C:0E13H         LINE#         280
-  C:0E16H         LINE#         281
-  C:0E1BH         LINE#         282
-  C:0E1BH         LINE#         283
-  C:0E1BH         LINE#         284
-  C:0E1BH         LINE#         285
-  C:0E1BH         LINE#         286
-  C:0E1BH         LINE#         287
-  C:0E1BH         LINE#         288
-  C:0E1BH         LINE#         289
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
+  C:0E11H         LINE#         301
+  C:0E11H         LINE#         302
+  C:0E11H         LINE#         303
+  C:0E11H         LINE#         304
   -------         ENDPROC       APPTASK
   -------         ENDMOD        TASK
 
   -------         MODULE        UART
   C:0000H         SYMBOL        _ICE_DUMMY_
-<<<<<<< HEAD
   C:0AE9H         PUBLIC        _UART_Configuration
-=======
-  C:0AD7H         PUBLIC        _UART_Configuration
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 25
-
-
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
   X:0000H         PUBLIC        txBuf
@@ -2418,33 +1439,21 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:00A8H         PUBLIC        IE
   D:002EH         PUBLIC        COM2
   D:00B6H         PUBLIC        IP2H
-<<<<<<< HEAD
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 25
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 25
 
 
   C:1306H         PUBLIC        UART_config
   D:00B8H         PUBLIC        IP
   X:000EH         PUBLIC        RX2_Buffer
   C:11D6H         PUBLIC        UART2_int
-=======
-  D:00B8H         PUBLIC        IP
-  X:000EH         PUBLIC        RX2_Buffer
-  C:0F2CH         PUBLIC        UART2_int
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   X:002EH         PUBLIC        TX2_Buffer
   D:00D8H         PUBLIC        CCON
   X:004EH         PUBLIC        rxbuf
   D:0035H         PUBLIC        rxlen
-<<<<<<< HEAD
   C:132DH         PUBLIC        getRxBuf
   D:0098H         PUBLIC        SCON
   C:003BH         PUBLIC        _VirtualCOM_StringSend
   B:00B0H.2       PUBLIC        P32
-=======
-  C:12A1H         PUBLIC        getRxBuf
-  D:0098H         PUBLIC        SCON
-  C:1417H         PUBLIC        _VirtualCOM_StringSend
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:0088H         PUBLIC        TCON
   D:00AFH         PUBLIC        IE2
   D:00F0H         PUBLIC        B
@@ -2452,7 +1461,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1412H         PUBLIC        _TX2_write2buff
   D:00E0H         PUBLIC        ACC
   D:00B5H         PUBLIC        IP2
-<<<<<<< HEAD
   C:1370H         PUBLIC        _getSensorImfo
   D:00D6H         PUBLIC        TH2
   D:00D7H         PUBLIC        TL2
@@ -2463,18 +1471,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:0036H         PUBLIC        saveTotalSensorDistance
   C:12A2H         PUBLIC        _uartSendBuf
   C:0E9EH         PUBLIC        analysisSensorImfo
-=======
-  C:1369H         PUBLIC        _getSensorImfo
-  D:00D6H         PUBLIC        TH2
-  D:00D7H         PUBLIC        TL2
-  C:139DH         PUBLIC        clrRX2_Buffer
-  C:11F9H         PUBLIC        _sensorReplyPackage
-  D:009BH         PUBLIC        S2BUF
-  D:009AH         PUBLIC        S2CON
-  D:0036H         PUBLIC        saveTotalSensorDistance
-  C:12C8H         PUBLIC        _uartSendBuf
-  C:0EA8H         PUBLIC        analysisSensorImfo
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   D:00D0H         PUBLIC        PSW
   -------         PROC          _UART_CONFIGURATION
   D:0007H         SYMBOL        UARTx
@@ -2483,7 +1479,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   D:0007H         SYMBOL        i
   D:0017H         SYMBOL        j
   -------         ENDDO         
-<<<<<<< HEAD
   C:0AE9H         LINE#         30
   C:0AEFH         LINE#         31
   C:0AEFH         LINE#         35
@@ -2504,7 +1499,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0B30H         LINE#         51
   C:0B3CH         LINE#         52
   C:0B3FH         LINE#         53
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 26
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 26
 
 
   C:0B71H         LINE#         54
@@ -2564,7 +1559,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1419H         LINE#         115
   C:141BH         LINE#         116
   C:141EH         LINE#         117
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 27
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 27
 
 
   -------         ENDPROC       _TX2_WRITE2BUFF
@@ -2573,107 +1568,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:003BH         LINE#         119
   C:0041H         LINE#         120
   C:0041H         LINE#         122
-=======
-  C:0AD7H         LINE#         30
-  C:0ADDH         LINE#         31
-  C:0ADDH         LINE#         35
-  C:0AE5H         LINE#         36
-  C:0AE5H         LINE#         37
-  C:0AE8H         LINE#         38
-  C:0AEAH         LINE#         39
-  C:0AECH         LINE#         40
-  C:0AEEH         LINE#         41
-  C:0AF0H         LINE#         42
-  C:0AF2H         LINE#         43
-  C:0AF4H         LINE#         44
-  C:0AF4H         LINE#         45
-  C:0AFEH         LINE#         46
-  C:0AFEH         LINE#         47
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 26
-
-
-  C:0B08H         LINE#         49
-  C:0B1EH         LINE#         50
-  C:0B1EH         LINE#         51
-  C:0B2AH         LINE#         52
-  C:0B2DH         LINE#         53
-  C:0B5FH         LINE#         54
-  C:0B65H         LINE#         55
-  C:0B6AH         LINE#         57
-  C:0B6DH         LINE#         58
-  C:0B86H         LINE#         59
-  C:0B9AH         LINE#         60
-  C:0B9DH         LINE#         61
-  C:0BB3H         LINE#         62
-  C:0BB6H         LINE#         63
-  C:0BB9H         LINE#         64
-  C:0BBCH         LINE#         65
-  C:0BCBH         LINE#         66
-  C:0BCEH         LINE#         67
-  C:0BD1H         LINE#         68
-  C:0BD4H         LINE#         69
-  C:0BD6H         LINE#         71
-  C:0BD9H         LINE#         72
-  C:0BE8H         LINE#         73
-  C:0BEDH         LINE#         75
-  C:0BF0H         LINE#         76
-  C:0BF9H         LINE#         77
-  C:0BFEH         LINE#         79
-  C:0C01H         LINE#         80
-  C:0C11H         LINE#         81
-  C:0C14H         LINE#         82
-  C:0C14H         LINE#         83
-  C:0C16H         LINE#         84
-  -------         ENDPROC       _UART_CONFIGURATION
-  -------         PROC          UART2_INT
-  C:0F2CH         LINE#         88
-  C:0F39H         LINE#         90
-  C:0F3EH         LINE#         91
-  C:0F3EH         LINE#         92
-  C:0F41H         LINE#         93
-  C:0F45H         LINE#         94
-  C:0F45H         LINE#         95
-  C:0F4CH         LINE#         96
-  C:0F4FH         LINE#         97
-  C:0F60H         LINE#         98
-  C:0F63H         LINE#         99
-  C:0F63H         LINE#         100
-  C:0F63H         LINE#         102
-  C:0F68H         LINE#         103
-  C:0F68H         LINE#         104
-  C:0F6BH         LINE#         105
-  C:0F71H         LINE#         106
-  C:0F71H         LINE#         107
-  C:0F7FH         LINE#         108
-  C:0F88H         LINE#         109
-  C:0F8BH         LINE#         110
-  C:0F8DH         LINE#         112
-  C:0F90H         LINE#         113
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 27
-
-
-  C:0F90H         LINE#         114
-  -------         ENDPROC       UART2_INT
-  -------         PROC          _TX2_WRITE2BUFF
-  D:0007H         SYMBOL        dat
-  C:001EH         LINE#         117
-  C:001EH         LINE#         118
-  C:001EH         LINE#         119
-  C:002BH         LINE#         120
-  C:0034H         LINE#         121
-  C:0037H         LINE#         123
-  C:003BH         LINE#         124
-  C:003BH         LINE#         125
-  C:003EH         LINE#         126
-  C:0041H         LINE#         127
-  C:0041H         LINE#         128
-  -------         ENDPROC       _TX2_WRITE2BUFF
-  -------         PROC          _VIRTUALCOM_STRINGSEND
-  D:0008H         SYMBOL        str
-  C:1417H         LINE#         130
-  C:141DH         LINE#         131
-  C:141DH         LINE#         137
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       _VIRTUALCOM_STRINGSEND
   -------         PROC          UART_CONFIG
   -------         DO            
@@ -2692,7 +1586,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:132CH         LINE#         138
   -------         ENDPROC       UART_CONFIG
   -------         PROC          CLRRX2_BUFFER
-<<<<<<< HEAD
   C:13EFH         LINE#         141
   C:13EFH         LINE#         142
   C:13EFH         LINE#         143
@@ -2726,7 +1619,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:12B2H         LINE#         167
   C:12B3H         LINE#         168
   C:12B4H         LINE#         169
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 28
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 28
 
 
   C:12B5H         LINE#         170
@@ -2741,52 +1634,12 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:12DAH         LINE#         179
   C:12DCH         LINE#         180
   -------         ENDPROC       _UARTSENDBUF
-=======
-  C:139DH         LINE#         140
-  C:139DH         LINE#         141
-  C:139DH         LINE#         142
-  C:13A0H         LINE#         143
-  C:13A2H         LINE#         144
-  C:13A4H         LINE#         145
-  -------         ENDPROC       CLRRX2_BUFFER
-  -------         PROC          GETRXBUF
-  C:12A1H         LINE#         149
-  C:12A1H         LINE#         150
-  C:12A1H         LINE#         151
-  C:12A4H         LINE#         152
-  C:12AFH         LINE#         153
-  C:12AFH         LINE#         154
-  C:12C2H         LINE#         155
-  C:12C5H         LINE#         156
-  C:12C5H         LINE#         158
-  C:12C7H         LINE#         159
-  -------         ENDPROC       GETRXBUF
-  -------         PROC          _UARTSENDBUF
-  D:0009H         SYMBOL        buf
-  D:0005H         SYMBOL        len
-  -------         DO            
-  D:0006H         SYMBOL        i
-  -------         ENDDO         
-  C:12C8H         LINE#         161
-  C:12CEH         LINE#         162
-  C:12CEH         LINE#         163
-  C:12D0H         LINE#         164
-  C:12D5H         LINE#         165
-  C:12D5H         LINE#         166
-  C:12E7H         LINE#         167
-  C:12EAH         LINE#         168
-  -------         ENDPROC       _UARTSENDBUF
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 28
-
-
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         PROC          _SENSORREPLYPACKAGE
   D:0007H         SYMBOL        ch
   D:0006H         SYMBOL        cmd
   -------         DO            
   D:0005H         SYMBOL        temp_txLen
   -------         ENDDO         
-<<<<<<< HEAD
   C:1223H         LINE#         182
   C:1225H         LINE#         183
   C:1225H         LINE#         184
@@ -2807,33 +1660,10 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:125AH         LINE#         200
   C:125CH         LINE#         201
   C:125CH         LINE#         202
-=======
-  C:11F9H         LINE#         170
-  C:11FBH         LINE#         171
-  C:11FBH         LINE#         172
-  C:11FDH         LINE#         173
-  C:1203H         LINE#         174
-  C:1203H         LINE#         175
-  C:1206H         LINE#         176
-  C:1209H         LINE#         177
-  C:120CH         LINE#         178
-  C:1210H         LINE#         179
-  C:1212H         LINE#         180
-  C:1214H         LINE#         182
-  C:1214H         LINE#         183
-  C:1217H         LINE#         184
-  C:121AH         LINE#         185
-  C:121DH         LINE#         186
-  C:122CH         LINE#         187
-  C:1230H         LINE#         188
-  C:1232H         LINE#         189
-  C:1232H         LINE#         190
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       _SENSORREPLYPACKAGE
   -------         PROC          _GETSENSORIMFO
   D:0007H         SYMBOL        ch
   D:0005H         SYMBOL        cmd
-<<<<<<< HEAD
   C:1370H         LINE#         209
   C:1370H         LINE#         210
   C:1370H         LINE#         211
@@ -2841,25 +1671,15 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:1379H         LINE#         213
   C:137CH         LINE#         214
   C:1380H         LINE#         215
-=======
-  C:1369H         LINE#         197
-  C:1369H         LINE#         198
-  C:1369H         LINE#         199
-  C:136FH         LINE#         200
-  C:1372H         LINE#         201
-  C:1375H         LINE#         202
-  C:1379H         LINE#         203
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       _GETSENSORIMFO
   -------         PROC          ANALYSISSENSORIMFO
   -------         DO            
   D:0008H         SYMBOL        result
   -------         ENDDO         
-<<<<<<< HEAD
   C:0E9EH         LINE#         222
   C:0E9EH         LINE#         223
   C:0E9EH         LINE#         224
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 29
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 29
 
 
   C:0EA1H         LINE#         225
@@ -2916,72 +1736,10 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   C:0F1FH         LINE#         279
   C:0F1FH         LINE#         280
   C:0F21H         LINE#         281
-=======
-  C:0EA8H         LINE#         210
-  C:0EA8H         LINE#         211
-  C:0EA8H         LINE#         212
-  C:0EABH         LINE#         213
-  C:0EB3H         LINE#         214
-  C:0EB3H         LINE#         215
-  C:0EB9H         LINE#         216
-  C:0EB9H         LINE#         217
-  C:0EBEH         LINE#         218
-  C:0EBEH         LINE#         219
-  C:0EBEH         LINE#         220
-  C:0EC0H         LINE#         221
-  C:0EC4H         LINE#         222
-  C:0EC4H         LINE#         223
-  C:0EC4H         LINE#         224
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 29
-
-
-  C:0EC6H         LINE#         225
-  C:0ECBH         LINE#         226
-  C:0ECBH         LINE#         227
-  C:0ECBH         LINE#         228
-  C:0ECBH         LINE#         229
-  C:0ECDH         LINE#         231
-  C:0ECDH         LINE#         232
-  C:0ED4H         LINE#         233
-  C:0ED4H         LINE#         234
-  C:0ED8H         LINE#         235
-  C:0ED8H         LINE#         236
-  C:0EDAH         LINE#         237
-  C:0EDEH         LINE#         238
-  C:0EDEH         LINE#         239
-  C:0EE4H         LINE#         240
-  C:0EE4H         LINE#         241
-  C:0EE6H         LINE#         242
-  C:0EEEH         LINE#         243
-  C:0EEEH         LINE#         244
-  C:0EF2H         LINE#         245
-  C:0EF2H         LINE#         246
-  C:0EF2H         LINE#         247
-  C:0EF2H         LINE#         248
-  C:0EF4H         LINE#         250
-  C:0EF4H         LINE#         251
-  C:0EFAH         LINE#         252
-  C:0EFAH         LINE#         253
-  C:0F07H         LINE#         254
-  C:0F07H         LINE#         255
-  C:0F0FH         LINE#         256
-  C:0F0FH         LINE#         257
-  C:0F0FH         LINE#         258
-  C:0F11H         LINE#         260
-  C:0F11H         LINE#         261
-  C:0F1EH         LINE#         262
-  C:0F1EH         LINE#         263
-  C:0F26H         LINE#         264
-  C:0F29H         LINE#         265
-  C:0F29H         LINE#         266
-  C:0F29H         LINE#         267
-  C:0F29H         LINE#         268
-  C:0F2BH         LINE#         269
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
   -------         ENDPROC       ANALYSISSENSORIMFO
   -------         ENDMOD        UART
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 30
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 30
 
 
   -------         MODULE        ?C?FPMUL
@@ -2996,9 +1754,6 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
 
   -------         MODULE        ?C?CASTF
   C:018AH         PUBLIC        ?C?CASTF
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 30
-
-
   -------         ENDMOD        ?C?CASTF
 
   -------         MODULE        ?C?COPY
@@ -3044,7 +1799,7 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   -------         MODULE        ?C?MEMSET
   C:0504H         PUBLIC        ?C?MEMSET
   -------         ENDMOD        ?C?MEMSET
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:00:16  PAGE 31
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/17/2022  22:17:32  PAGE 31
 
 
 
@@ -3059,35 +1814,13 @@ SYMBOL TABLE OF MODULE:  .\list\PCA-CAP (DELAY)
   -------         MODULE        ?C?LLDPDATA0
   C:0549H         PUBLIC        ?C?LLDPDATA0
   -------         ENDMOD        ?C?LLDPDATA0
-BL51 BANKED LINKER/LOCATER V6.22                                                      04/23/2022  08:59:35  PAGE 31
-
-
 
   -------         MODULE        ?C?LLDCODE0
   C:0556H         PUBLIC        ?C?LLDCODE0
   -------         ENDMOD        ?C?LLDCODE0
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-<<<<<<< HEAD
     SEGMENT: ?PR?GETRXBUF?UART
 
 Program Size: data=79.6 xdata=110 code=5206
 LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
-=======
-    SEGMENT: ?PR?CLRRX2_BUFFER?UART
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?GETRXBUF?UART
-
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  _UARTSENDPACKAGE
-    MODULE:  .\list\Task.obj (TASK)
-
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  _UARTSENDPACKAGE
-    MODULE:  .\list\Task.obj (TASK)
-    ADDRESS: 0E19H
-
-Program Size: data=79.4 xdata=110 code=5195
-LINK/LOCATE RUN COMPLETE.  4 WARNING(S),  0 ERROR(S)
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8

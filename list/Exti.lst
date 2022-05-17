@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:00:16 PAGE 1   
-=======
-C51 COMPILER V9.54   EXTI                                                                  04/23/2022 08:59:35 PAGE 1   
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
+C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:17:32 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE EXTI
@@ -66,11 +62,7 @@ line level    source
   51          {
   52   1              recvPlusFlag = 0;
   53   1              recvPlusCnt = 0;
-<<<<<<< HEAD
-C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:00:16 PAGE 2   
-=======
-C51 COMPILER V9.54   EXTI                                                                  04/23/2022 08:59:35 PAGE 2   
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
+C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:17:32 PAGE 2   
 
   54   1              recvPlusTimeCnt = 0;
   55   1              EX1 = 0;                                   //½ûÖ¹ÖÐ¶Ï
@@ -134,11 +126,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-<<<<<<< HEAD
-C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:00:16 PAGE 3   
-=======
-C51 COMPILER V9.54   EXTI                                                                  04/23/2022 08:59:35 PAGE 3   
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
+C51 COMPILER V9.54   EXTI                                                                  05/17/2022 22:17:32 PAGE 3   
 
    CODE SIZE        =    269    ----
    CONSTANT SIZE    =   ----    ----

@@ -99,11 +99,7 @@ void TX2_write2buff(u8 dat);	//写入发送缓冲，指针+1
 
 void UART_config(void);
 
-<<<<<<< HEAD
 void clrRX2_Buffer(void);	//清除接收缓存
-
-=======
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 void VirtualCOM_StringSend(unsigned char *str);
 
 unsigned char getRxBuf(void);

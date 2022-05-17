@@ -20,11 +20,7 @@
 #define SENSOR_ID_IO    P11
 #define PWM_OUTPUT  P35
 
-<<<<<<< HEAD
 void sensorIdAdjustTask(void);
-
-=======
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 void AppTask(void);
 
 unsigned char get_currentSensorID(void);
