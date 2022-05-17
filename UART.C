@@ -102,38 +102,23 @@ void UART2_int(void) interrupt UART2_VECTOR
 	if (TI2)
 	{
 		CLR_TI2();
-		if (COM2.TX_read != COM2.TX_write)
-		{
-			S2BUF = TX2_Buffer[COM2.TX_read];
-			if (++COM2.TX_read >= COM_TX2_Lenth)
-				COM2.TX_read = 0;
-		}
-		else
-			COM2.B_TX_busy = 0;
+		COM2.B_TX_busy = 0;
 	}
 }
 
 /********************* UART2 函数 ************************/
 void TX2_write2buff(u8 dat) //写入发送缓冲，指针+1
 {
-	TX2_Buffer[COM2.TX_write] = dat; //装发送缓冲
-	if (++COM2.TX_write >= COM_TX2_Lenth)
-		COM2.TX_write = 0;
-
-	if (COM2.B_TX_busy == 0) //空闲
-	{
-		COM2.B_TX_busy = 1; //标志忙
-		SET_TI2();			//触发发送中断
-	}
+	
+	while(COM2.B_TX_busy){};
+	COM2.B_TX_busy = 1; //标志忙	
+	S2BUF = dat; //装发送缓冲
+	CLR_TI2();
 }
 
 void VirtualCOM_StringSend(unsigned char *str)
 {
-	//    while (*str != 0)
-	//    {
-	//        TX2_write2buff(*str);
-	//        str++;
-	//    }
+
 }
 
 /***************  串口初始化函数 *****************/
@@ -156,7 +141,6 @@ void UART_config(void)
 void clrRX2_Buffer(void)
 {
 	COM2.RX_Cnt = 0;
-	COM2.RX_TimeOut = 0;
 	COM2.B_RX_OK = 0;
 	memset(RX2_Buffer, 0, COM_TX2_Lenth);
 }
@@ -182,15 +166,16 @@ void uartSendBuf(unsigned char *buf, unsigned char len)
 	_nop_();
 	_nop_();
 	_nop_();
-	_nop_();
+	_nop_();	
 	for (i = 0; i < len; i++)
 	{
 		TX2_write2buff(buf[i]);
 	}
+	while(COM2.B_TX_busy){};
 	_nop_();
 	_nop_();
 	_nop_();
-	_nop_();
+	_nop_();	
 	UART_CHG_IO = UART_RX_EN;
 }
 
@@ -227,7 +212,7 @@ void getSensorImfo(unsigned char ch, unsigned char cmd)
 	txBuf[1] = cmd;
 	txBuf[2] = ch;
 	txBuf[3] = 0xBF;
-	uartSendBuf(txBuf, 3);
+	uartSendBuf(txBuf, 4);
 }
 
 //接收数据解析函数

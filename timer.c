@@ -23,6 +23,7 @@
 
 bit plusOutFlag = 0;		  //输出波形标志
 bit firstIntFlag = 0;
+bit firstBeepFlag = 0;
 unsigned char plusOutCnt = 0; // 80K中断计数
 
 unsigned int recvPlusTimerCnt = 0;
@@ -116,10 +117,6 @@ void timer1_int(void) interrupt TIMER1_VECTOR
 		if (Get_beepAlarmRunFlag() == 1)
 		{
 			P35 = ~P35;
-		}
-		else
-		{
-			P35 = 0;
 		}
 	}
 	else

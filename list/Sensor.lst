@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 1   
+C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:00:16 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          
   54          //×¼±¸¿ªÊ¼²âÊÔ£¬³õÊ¼»¯Ïà¹Ø²ÎÊý
-C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 2   
+C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:00:16 PAGE 2   
 
   55          void Start_sendOncePlusTask(void)
   56          {
@@ -126,7 +126,7 @@ line level    source
              -·³ÌÀ´»Ø£¬1¸ö²îÖµ´ú±í250us
  113   3                              if (meterDistance < 250)                                                                                                                                        //×î¶Ì¾àÀë0.25Ã×
  114   3                              {
-C51 COMPILER V9.54   SENSOR                                                                05/14/2022 14:52:08 PAGE 3   
+C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:00:16 PAGE 3   
 
  115   4                                      meterDistance = 0;
  116   4                              }

@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 1   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TASK
@@ -62,13 +62,13 @@ line level    source
   51          {
   52   1          return currentSensorID;
   53   1      }
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 2   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 2   
 
   54          
   55          //判断标准
   56          //P35输出高电平，如果P34电压为低电平，就是左,右传感器；如果P34为高电平就是左中，右中
   57          //P35输出低电平，如果P34电压为低电平，就是左，右中传感器，如果P34为高电平，就是右，左中传感器。
-  58          //两次电平相等恒高就是左中，恒低就是左；两次电平不等，但与P35电平相等就是右中，与P35电平不等就是右。
+  58          //两次电平相等恒低就是左中，恒高就是左；两次电平不等，但与P35电平相等就是右中，与P35电平不等就是右。
   59          
   60          void sensorIdAdjustTask(void)
   61          {
@@ -105,7 +105,7 @@ line level    source
   90   3                  {
   91   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒低
   92   4                      {
-  93   5                          currentSensorID = LEFT_SENSOR;
+  93   5                          currentSensorID = LEFT_MID_SENSOR;
   94   5                      }
   95   4                      else //两次电平不等，但与P35电平相等就是右中
   96   4                      {
@@ -116,7 +116,7 @@ line level    source
  101   3                  {
  102   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒高
  103   4                      {
- 104   5                          currentSensorID = LEFT_MID_SENSOR;
+ 104   5                          currentSensorID = LEFT_SENSOR;
  105   5                      }
  106   4                      else //两次电平不等，与P35电平不等就是右
  107   4                      {
@@ -126,7 +126,7 @@ line level    source
  111   3                  sensorIdCheckState = SensorCheck_4; 
  112   3                  UART_config();        
  113   3              }
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 3   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 3   
 
  114   2              break;
  115   2          case SensorCheck_4: 
@@ -190,7 +190,7 @@ line level    source
  171   5                          sensorIdCheckState = SensorCheck_8;
  172   5                      }
  173   4                  }
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 4   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 4   
 
  174   3              }
  175   2              break;
@@ -254,12 +254,12 @@ line level    source
  230   2          case 0: //发送PWM 150ms 用来确认位置信号
  231   2              StartBeepAlarm(150, 0);
  232   2              appTaskTimeCnt = Get_SysHalfMsTick();
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 5   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 5   
 
  233   2              appTaskState = 1;
  234   2              break;
  235   2          case 1: // Sensor ID会收到自己发的信号
- 236   2              if (P34 == 0)
+ 236   2              if (SENSOR_ID_CHECK == 0)
  237   2              {
  238   3                  VirtualCOM_StringSend("recv ID!\r\n"); // UART1发送一个字符串
  239   3                  appTaskState = 2;
@@ -288,7 +288,7 @@ line level    source
  262   4                      VirtualCOM_StringSend("No sensor!\r\n"); // UART1发送一个字符串
  263   4                      appTaskState = 0;                        //无探头从头开始
  264   4                  }
- 265   3                  uartSendPackage(SELF_CHECK);
+ 265   3      //            uartSendPackage(SELF_CHECK);
  266   3              }
  267   2              break;
  268   2          case 4: //开始测距结果
@@ -305,7 +305,7 @@ line level    source
  279   4                      {
  280   5                          VirtualCOM_StringSend("obstacle!\r\n"); // UART1发送一个字符串
  281   5                          appTaskState = 4;
- 282   5                          uartSendPackage(NOM_WORK);
+ 282   5      //                    uartSendPackage(NOM_WORK);
  283   5                      }
  284   4                  }
  285   3                  else //没有障碍物
@@ -315,10 +315,10 @@ line level    source
  289   5                          //获取测试距离
  290   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1发送一个字符串
  291   5                          appTaskState = 4;
- 292   5                          uartSendPackage(NOM_WORK);
+ 292   5      //                    uartSendPackage(NOM_WORK);
  293   5                      }
  294   4                  }
-C51 COMPILER V9.54   TASK                                                                  05/14/2022 14:52:08 PAGE 6   
+C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:00:16 PAGE 6   
 
  295   3              }
  296   2              break;
@@ -329,7 +329,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    700    ----
+   CODE SIZE        =    672    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

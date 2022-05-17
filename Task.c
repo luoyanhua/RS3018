@@ -55,7 +55,7 @@ unsigned char get_currentSensorID(void)
 //判断标准
 //P35输出高电平，如果P34电压为低电平，就是左,右传感器；如果P34为高电平就是左中，右中
 //P35输出低电平，如果P34电压为低电平，就是左，右中传感器，如果P34为高电平，就是右，左中传感器。
-//两次电平相等恒高就是左中，恒低就是左；两次电平不等，但与P35电平相等就是右中，与P35电平不等就是右。
+//两次电平相等恒低就是左中，恒高就是左；两次电平不等，但与P35电平相等就是右中，与P35电平不等就是右。
 
 void sensorIdAdjustTask(void)
 {
@@ -90,7 +90,7 @@ void sensorIdAdjustTask(void)
             {
                 if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒低
                 {
-                    currentSensorID = LEFT_SENSOR;
+                    currentSensorID = LEFT_MID_SENSOR;
                 }
                 else //两次电平不等，但与P35电平相等就是右中
                 {
@@ -101,7 +101,7 @@ void sensorIdAdjustTask(void)
             {
                 if (ioStatusSaveValueNew == ioStatusSaveValueOld) //两次SENSOR_ID_CHECK电平相等恒高
                 {
-                    currentSensorID = LEFT_MID_SENSOR;
+                    currentSensorID = LEFT_SENSOR;
                 }
                 else //两次电平不等，与P35电平不等就是右
                 {
@@ -233,7 +233,7 @@ void AppTask(void)
         appTaskState = 1;
         break;
     case 1: // Sensor ID会收到自己发的信号
-        if (P34 == 0)
+        if (SENSOR_ID_CHECK == 0)
         {
             VirtualCOM_StringSend("recv ID!\r\n"); // UART1发送一个字符串
             appTaskState = 2;
@@ -262,7 +262,7 @@ void AppTask(void)
                 VirtualCOM_StringSend("No sensor!\r\n"); // UART1发送一个字符串
                 appTaskState = 0;                        //无探头从头开始
             }
-            uartSendPackage(SELF_CHECK);
+//            uartSendPackage(SELF_CHECK);
         }
         break;
     case 4: //开始测距结果
@@ -279,7 +279,7 @@ void AppTask(void)
                 {
                     VirtualCOM_StringSend("obstacle!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
-                    uartSendPackage(NOM_WORK);
+//                    uartSendPackage(NOM_WORK);
                 }
             }
             else //没有障碍物
@@ -289,7 +289,7 @@ void AppTask(void)
                     //获取测试距离
                     VirtualCOM_StringSend("No obstacles!\r\n"); // UART1发送一个字符串
                     appTaskState = 4;
-                    uartSendPackage(NOM_WORK);
+//                    uartSendPackage(NOM_WORK);
                 }
             }
         }
