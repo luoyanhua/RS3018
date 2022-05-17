@@ -6,11 +6,15 @@
         "uart.h": "c",
         "task.h": "c",
         "timer.h": "c",
+<<<<<<< HEAD
         "beep.h": "c",
         "STC8xxxx.H": "cpp",
         "OneWire.C": "cpp",
         "delay.h": "c",
         "config.h": "c",
         "exti.h": "c"
+=======
+        "beep.h": "c"
+>>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
     }
 }

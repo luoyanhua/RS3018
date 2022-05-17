@@ -1,7 +1,30 @@
 Build target 'Target 1'
+<<<<<<< HEAD
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?APPTASK?TASK
+=======
+compiling main.c...
+compiling timer.c...
+compiling Beep.c...
+compiling Sensor.c...
+compiling Task.c...
+Task.c(220): warning C209: '_StartBeepAlarm': too few actual parameters
+compiling UART.C...
+UART.C(144): warning C280: 'str': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CLRBEEPALARM?BEEP
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SENSORIDADJUSTTASK?TASK
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART_CONFIG?UART
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CLRRX2_BUFFER?UART
+>>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?GETRXBUF?UART
@@ -13,8 +36,16 @@ linking...
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  _UARTSENDPACKAGE
     MODULE:  .\list\Task.obj (TASK)
+<<<<<<< HEAD
     ADDRESS: 0E2BH
 
 Program Size: data=82.6 xdata=110 code=5231
 creating hex file from ".\list\PCA-CAP"...
 ".\list\PCA-CAP" - 0 Error(s), 4 Warning(s).
+=======
+    ADDRESS: 0E18H
+
+Program Size: data=91.4 xdata=110 code=5186
+creating hex file from ".\list\PCA-CAP"...
+".\list\PCA-CAP" - 0 Error(s), 9 Warning(s).
+>>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
