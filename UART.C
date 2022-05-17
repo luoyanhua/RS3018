@@ -121,7 +121,6 @@ void VirtualCOM_StringSend(unsigned char *str)
 
 }
 
-<<<<<<< HEAD
 /***************  串口初始化函数 *****************/
 void UART_config(void)
 {
@@ -138,8 +137,6 @@ void UART_config(void)
 	UART_CHG_IO = UART_RX_EN;
 }
 
-=======
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 //清除接收缓存
 void clrRX2_Buffer(void)
 {
@@ -215,11 +212,7 @@ void getSensorImfo(unsigned char ch, unsigned char cmd)
 	txBuf[1] = cmd;
 	txBuf[2] = ch;
 	txBuf[3] = 0xBF;
-<<<<<<< HEAD
 	uartSendBuf(txBuf, 4);
-=======
-	uartSendBuf(txBuf, 3);
->>>>>>> ac9b71b636d5bf0dc7d832531626a13307726cd8
 }
 
 //接收数据解析函数
