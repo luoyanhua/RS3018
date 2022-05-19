@@ -104,7 +104,13 @@ void VirtualCOM_StringSend(unsigned char *str);
 
 unsigned char getRxBuf(void);
 
+bit get_uartUsedFlag(void);
+
+void uartBuffSenfTask(void);
+
 void getSensorImfo(unsigned char ch, unsigned char cmd);
+
+void sensorTotalPackage(void);
 
 unsigned char analysisSensorImfo(void);
 

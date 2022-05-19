@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:17:32 PAGE 1   
+C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
@@ -24,138 +24,142 @@ line level    source
   14          #include "timer.h"
   15          #include "Beep.h"
   16          #include "Exti.h"
-  17          
-  18          #define START_SEND_STATE 0
-  19          #define WAIT_SEND_END_STATE 1
-  20          #define START_SELF_CHECK_STATE 2
-  21          #define START_METER_STATE 3
-  22          #define SENSOR_ERR_STATE 4
-  23          
-  24          bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0;
-  25          bit sendMode = 0;
-  26          unsigned char SendContinuePlusState = 0;
-  27          unsigned int SendContinuePlusTimeCnt = 0;
-  28          unsigned int meterDistance = 0; //µ•Œª «mm
-  29          
-  30          //ªÒ»°≤‚ ‘æ‡¿Î÷µ
-  31          unsigned int Get_meterDistance(void)
-  32          {
-  33   1              return meterDistance;
-  34   1      }
-  35          
-  36          //ªÒ»°¥´∏–∆˜◊¥Ã¨
-  37          bit Get_sensorOkFlag(void)
-  38          {
-  39   1              return sensorOkFlag;
-  40   1      }
-  41          
-  42          //ªÒ»°»ŒŒÒ◊¥Ã¨
-  43          bit Get_SendOncePlusTaskFlag(void)
-  44          {
-  45   1              return SendOncePlusTaskFlag;
-  46   1      }
-  47          
-  48          //ªÒ»°¥Ê‘⁄’œ∞≠ŒÔ◊¥Ã¨
-  49          bit Get_obstaclesExistenceFlag(void)
-  50          {
-  51   1              return obstaclesExistenceFlag;
-  52   1      }
-  53          
-  54          //◊º±∏ø™ º≤‚ ‘£¨≥ı ºªØœ‡πÿ≤Œ ˝
-C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:17:32 PAGE 2   
+  17          #include "uart.h"
+  18          
+  19          #define START_SEND_STATE 0
+  20          #define WAIT_SEND_END_STATE 1
+  21          #define START_SELF_CHECK_STATE 2
+  22          #define START_METER_STATE 3
+  23          #define SENSOR_ERR_STATE 4
+  24          
+  25          bit SendOncePlusTaskFlag = 0, sensorOkFlag = 0, obstaclesExistenceFlag = 0;
+  26          bit sendMode = 0;
+  27          unsigned char SendContinuePlusState = 0;
+  28          unsigned int SendContinuePlusTimeCnt = 0;
+  29          unsigned int meterDistance = 0; //µ•Œª «mm
+  30          
+  31          //ªÒ»°≤‚ ‘æ‡¿Î÷µ
+  32          unsigned int Get_meterDistance(void)
+  33          {
+  34   1              return meterDistance;
+  35   1      }
+  36          
+  37          //ªÒ»°¥´∏–∆˜◊¥Ã¨
+  38          bit Get_sensorOkFlag(void)
+  39          {
+  40   1              return sensorOkFlag;
+  41   1      }
+  42          
+  43          //ªÒ»°»ŒŒÒ◊¥Ã¨
+  44          bit Get_SendOncePlusTaskFlag(void)
+  45          {
+  46   1              return SendOncePlusTaskFlag;
+  47   1      }
+  48          
+  49          //ªÒ»°¥Ê‘⁄’œ∞≠ŒÔ◊¥Ã¨
+  50          bit Get_obstaclesExistenceFlag(void)
+  51          {
+  52   1              return obstaclesExistenceFlag;
+  53   1      }
+  54          
+C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 2   
 
-  55          void Start_sendOncePlusTask(void)
-  56          {
-  57   1              SendOncePlusTaskFlag = 1;
-  58   1              SendContinuePlusState = START_SEND_STATE;
-  59   1      }
-  60          
-  61          // sendMode 0:◊‘ºÏƒ£ Ω 1:’˝≥£≤‚ ‘ƒ£ Ω
-  62          //µ•¥Œ∑¢ÀÕ¬ˆ≥Â»∫»ŒŒÒ
-  63          void SendOncePlusTask(void)
-  64          {
-  65   1              if (SendOncePlusTaskFlag == 0)
-  66   1                      return;
-  67   1              switch (SendContinuePlusState)
-  68   1              {
-  69   2              case START_SEND_STATE:
-  70   2                      SendContinuePlusTimeCnt = Get_us_250Cnt(); //µ•Œª50us
-  71   2                      Start_SendPlus();                                                          //∑¢ÀÕ≥¨…˘≤®
-  72   2                      meterDistance = 0;                                                         //√ø¥Œ∑¢ÀÕ«∞æ‡¿Î«Â¡„
-  73   2                      SendContinuePlusState = WAIT_SEND_END_STATE;
-  74   2                      break;
-  75   2              case WAIT_SEND_END_STATE:
-  76   2                      if (Get_plusOutFlag() == 0) //µ»¥˝∑¢ÀÕÕÍ≥…
-  77   2                      {
-  78   3                              if (sendMode == 0)
-  79   3                              {
-  80   4                                      Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
-  81   4                                      SendContinuePlusState = START_SELF_CHECK_STATE;
-  82   4                              }
-  83   3                              else
-  84   3                              {
-  85   4                                      if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 6) // 1.5ms∫Ûø™ ºº∆À„æ‡¿Î
-  86   4                                      {
-  87   5                                              Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
-  88   5                                              SendContinuePlusState = START_METER_STATE;
-  89   5                                      }
-  90   4                              }
-  91   3                      }
-  92   2                      break;
-  93   2              case START_SELF_CHECK_STATE:
-  94   2                      if (Get_recvPlusFlag() == 0) //»Áπ˚Ω” ’ÕÍ≥…£¨øœ∂® ’µΩ≤®–Œ
-  95   2                      {
-  96   3                              sendMode = 1;
-  97   3                              sensorOkFlag = 1;
-  98   3                              StartBeepAlarm(500,0);    //’˝≥£ ’µΩ∑µªÿ–≈∫≈    0.5S
-  99   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
- 100   3                      }
- 101   2                      else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ£¨‘Ú≈
+  55          //◊º±∏ø™ º≤‚ ‘£¨≥ı ºªØœ‡πÿ≤Œ ˝
+  56          void Start_sendOncePlusTask(void)
+  57          {
+  58   1              SendOncePlusTaskFlag = 1;
+  59   1              SendContinuePlusState = START_SEND_STATE;
+  60   1      }
+  61          
+  62          // sendMode 0:◊‘ºÏƒ£ Ω 1:’˝≥£≤‚ ‘ƒ£ Ω
+  63          //µ•¥Œ∑¢ÀÕ¬ˆ≥Â»∫»ŒŒÒ
+  64          void SendOncePlusTask(void)
+  65          {
+  66   1              if (SendOncePlusTaskFlag == 0)
+  67   1                      return;
+  68   1              switch (SendContinuePlusState)
+  69   1              {
+  70   2              case START_SEND_STATE:
+  71   2                      if(get_uartUsedFlag() == 0)             //±‹√‚¥Æø⁄∫Õ∏ﬂÀŸ∂® ±∆˜Õ¨ ±π§◊˜£¨”∞œÏ¥Æø⁄ ˝æ›
+  72   2                      {
+  73   3                              SendContinuePlusTimeCnt = Get_us_250Cnt(); //µ•Œª50us
+  74   3                              Start_SendPlus();                                                          //∑¢ÀÕ≥¨…˘≤®
+  75   3                              meterDistance = 0;                                                         //√ø¥Œ∑¢ÀÕ«∞æ‡¿Î«Â¡„
+  76   3                              SendContinuePlusState = WAIT_SEND_END_STATE;
+  77   3                      }
+  78   2                      break;
+  79   2              case WAIT_SEND_END_STATE:
+  80   2                      if (Get_plusOutFlag() == 0) //µ»¥˝∑¢ÀÕÕÍ≥…
+  81   2                      {
+  82   3                              if (sendMode == 0)
+  83   3                              {
+  84   4                                      Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
+  85   4                                      SendContinuePlusState = START_SELF_CHECK_STATE;
+  86   4                              }
+  87   3                              else
+  88   3                              {
+  89   4                                      if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 6) // 1.5ms∫Ûø™ ºº∆À„æ‡¿Î
+  90   4                                      {
+  91   5                                              Start_recvPlus(); //ø™∆ÙΩ” ’∑µªÿ–≈∫≈
+  92   5                                              SendContinuePlusState = START_METER_STATE;
+  93   5                                      }
+  94   4                              }
+  95   3                      }
+  96   2                      break;
+  97   2              case START_SELF_CHECK_STATE:
+  98   2                      if (Get_recvPlusFlag() == 0) //»Áπ˚Ω” ’ÕÍ≥…£¨øœ∂® ’µΩ≤®–Œ
+  99   2                      {
+ 100   3                              sendMode = 1;
+ 101   3                              sensorOkFlag = 1;
+ 102   3                              StartBeepAlarm(500,0);    //’˝≥£ ’µΩ∑µªÿ–≈∫≈    0.5S
+ 103   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
+ 104   3                      }
+ 105   2                      else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ£¨‘Ú≈
              -–∂œ «∑Ò≥¨ ±
- 102   2                      {
- 103   3                              sensorOkFlag = 0;
- 104   3                              StartBeepAlarm(2000,0);   //√ª”– ’µΩ∑µªÿ–≈∫≈£¨π ’œ      2S
- 105   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
- 106   3                              Stop_recvPlus();
- 107   3                      }
- 108   2                      break;
- 109   2              case START_METER_STATE:
- 110   2                      if (Get_recvPlusFlag() == 0) // ’µΩ≤®–Œ£¨ø™ ºº∆À„æ‡¿Î
- 111   2                      {
- 112   3                              meterDistance = get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) * 2.5 * 17; // 340/2=170¬
+ 106   2                      {
+ 107   3                              sensorOkFlag = 0;
+ 108   3                              StartBeepAlarm(2000,0);   //√ª”– ’µΩ∑µªÿ–≈∫≈£¨π ’œ      2S
+ 109   3                              SendOncePlusTaskFlag = 0; //◊‘ºÏÕÍ≥…∫ÛÕ£÷π»ŒŒÒ‘À––
+ 110   3                              Stop_recvPlus();
+ 111   3                      }
+ 112   2                      break;
+ 113   2              case START_METER_STATE:
+ 114   2                      if (Get_recvPlusFlag() == 0) // ’µΩ≤®–Œ£¨ø™ ºº∆À„æ‡¿Î
+ 115   2                      {
+C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 3   
+
+ 116   3                              meterDistance = get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) * 2.5 * 17; // 340/2=170¬
              -∑≥Ã¿¥ªÿ£¨1∏ˆ≤Ó÷µ¥˙±Ì250us
- 113   3                              if (meterDistance < 250)                                                                                                                                        //◊Ó∂Ãæ‡¿Î0.25√◊
- 114   3                              {
-C51 COMPILER V9.54   SENSOR                                                                05/17/2022 22:17:32 PAGE 3   
-
- 115   4                                      meterDistance = 0;
- 116   4                              }
- 117   3                              else if (meterDistance > 2550)
+ 117   3                              if (meterDistance < 250)                                                                                                                                        //◊Ó∂Ãæ‡¿Î0.25√◊
  118   3                              {
- 119   4                                      meterDistance = 2550;
+ 119   4                                      meterDistance = 0;
  120   4                              }
- 121   3                              obstaclesExistenceFlag = 1;
- 122   3                              SendOncePlusTaskFlag = 0;
- 123   3                      }
- 124   2                      //◊Ó‘∂3√◊£¨¥Û∏≈ «17.6ms£¨‘›∂®40ms
- 125   2                      else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ£¨‘Ú≈
+ 121   3                              else if (meterDistance > 2550)
+ 122   3                              {
+ 123   4                                      meterDistance = 2550;
+ 124   4                              }
+ 125   3                              obstaclesExistenceFlag = 1;
+ 126   3                              SendOncePlusTaskFlag = 0;
+ 127   3                      }
+ 128   2                      //◊Ó‘∂3√◊£¨¥Û∏≈ «17.6ms£¨‘›∂®40ms
+ 129   2                      else if (get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) >= 160) //»Áπ˚Œ¥ ’µΩ¡¨–¯≤®–Œ£¨‘Ú≈
              -–∂œ «∑Ò≥¨ ±
- 126   2                      {
- 127   3                              //∑¢ÀÕŒﬁ’œ∞≠ŒÔ ˝æ›
- 128   3                              obstaclesExistenceFlag = 0;
- 129   3                              SendOncePlusTaskFlag = 0; //“ª¥Œ≤‚ ‘Ω· ¯£¨Œ¥ ’µΩ∑µªÿ≤®–Œ
- 130   3                              meterDistance = 160;      //√ªÃΩ≤‚µΩ ˝æ›£¨æ‡¿Î…œ±®0x10
- 131   3                              Stop_recvPlus();
- 132   3                      }
- 133   2                      break;
- 134   2              default:
- 135   2                      break;
- 136   2              }
- 137   1      }
+ 130   2                      {
+ 131   3                              //∑¢ÀÕŒﬁ’œ∞≠ŒÔ ˝æ›
+ 132   3                              obstaclesExistenceFlag = 0;
+ 133   3                              SendOncePlusTaskFlag = 0; //“ª¥Œ≤‚ ‘Ω· ¯£¨Œ¥ ’µΩ∑µªÿ≤®–Œ
+ 134   3                              meterDistance = 160;      //√ªÃΩ≤‚µΩ ˝æ›£¨æ‡¿Î…œ±®0x10
+ 135   3                              Stop_recvPlus();
+ 136   3                      }
+ 137   2                      break;
+ 138   2              default:
+ 139   2                      break;
+ 140   2              }
+ 141   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    284    ----
+   CODE SIZE        =    292    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

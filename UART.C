@@ -158,25 +158,90 @@ unsigned char getRxBuf(void)
 		return 0;
 }
 
+bit uartUsedFlag = 0;
+
+bit get_uartUsedFlag(void)
+{
+	return uartUsedFlag;
+}
+
+void uartBuffSenfTask(void)
+{
+	if(Get_plusOutFlag() == 0)	//避免串口和高速定时器同时工作，影响串口数据
+	{
+		unsigned char i = 0;
+		uartUsedFlag = 1;
+		clrRX2_Buffer();
+		UART_CHG_IO = UART_TX_EN;
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();	
+		for (i = 0; i < COM2.TX_write; i++)
+		{
+			TX2_write2buff(TX2_Buffer[i]);
+		}
+		while(COM2.B_TX_busy){};
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		COM2.TX_write = 0;			
+		UART_CHG_IO = UART_RX_EN;
+		uartUsedFlag = 0;
+	}
+}
+
 void uartSendBuf(unsigned char *buf, unsigned char len)
 {
-	unsigned char i = 0;
-	clrRX2_Buffer();
-	UART_CHG_IO = UART_TX_EN;
-	_nop_();
-	_nop_();
-	_nop_();
-	_nop_();	
-	for (i = 0; i < len; i++)
+	COM2.TX_write = 0;
+	if(len == 0) return;
+	memcpy(TX2_Buffer,buf,len);
+	COM2.TX_write = len;
+}
+
+unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //顺序分别代表：左，左中，右中，右
+
+unsigned char get_distanceLevel(unsigned char value)
+{
+	unsigned char temp_distanceLevel;
+	if(value > 200)
 	{
-		TX2_write2buff(buf[i]);
+		temp_distanceLevel = 5;
 	}
-	while(COM2.B_TX_busy){};
-	_nop_();
-	_nop_();
-	_nop_();
-	_nop_();	
-	UART_CHG_IO = UART_RX_EN;
+	else if(value > 155)
+	{
+		temp_distanceLevel = 4;
+	}
+	else if(value > 110)
+	{
+		temp_distanceLevel = 3;
+	}
+	else if(value > 60)
+	{
+		temp_distanceLevel = 2;
+	}
+	else
+	{
+		temp_distanceLevel = 1;
+	}
+	return temp_distanceLevel;
+}
+
+void sensorTotalPackage(void)
+{
+	txBuf[0] = 0xAA;
+	txBuf[1] = 4;
+	txBuf[2] = get_distanceLevel(saveTotalSensorDistance[0]);
+	txBuf[3] = saveTotalSensorDistance[0];
+	txBuf[4] = get_distanceLevel(saveTotalSensorDistance[1]);
+	txBuf[5] = saveTotalSensorDistance[1];
+	txBuf[6] = get_distanceLevel(saveTotalSensorDistance[2]);
+	txBuf[7] = saveTotalSensorDistance[2];
+	txBuf[8] = get_distanceLevel(Get_meterDistance()/10);
+	txBuf[9] = Get_meterDistance()/10;	
+	txBuf[10] = 0xAF;	
+	uartSendBuf(txBuf,11);	
 }
 
 void sensorReplyPackage(unsigned char ch, unsigned char cmd)
@@ -202,7 +267,6 @@ void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 	uartSendBuf(txBuf,temp_txLen);
 }
 
-unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //顺序分别代表：左，左中，右中，右
 
 // cmd 0:右传感器循环获取其他传感器位置信息 1:右传感器循环获取其他传感器距离信息
 // ch 根据宏定义来
@@ -222,6 +286,8 @@ void getSensorImfo(unsigned char ch, unsigned char cmd)
 unsigned char analysisSensorImfo(void)
 {
 	unsigned char result = 0;
+	if(getRxBuf() ==  0) return 0;
+	
 	if (get_currentSensorID() == RIGHT_SENSOR)
 	{
 		if (rxbuf[1] == CMD_ID)

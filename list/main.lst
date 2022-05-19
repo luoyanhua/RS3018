@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  05/17/2022 22:17:31 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  05/19/2022 21:29:15 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   50   1      
   51   1              GPIO_InitStructure.Pin = GPIO_Pin_0;            //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
   52   1              GPIO_InitStructure.Mode = GPIO_HighZ;           //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_O
-C51 COMPILER V9.54   MAIN                                                                  05/17/2022 22:17:31 PAGE 2   
+C51 COMPILER V9.54   MAIN                                                                  05/19/2022 21:29:15 PAGE 2   
 
              -UT_PP
   53   1              GPIO_Inilize(GPIO_P1, &GPIO_InitStructure); //初始化    
@@ -126,7 +126,7 @@ line level    source
  102   1      }
  103          
  104          /******************** task A **************************/
-C51 COMPILER V9.54   MAIN                                                                  05/17/2022 22:17:31 PAGE 3   
+C51 COMPILER V9.54   MAIN                                                                  05/19/2022 21:29:15 PAGE 3   
 
  105          void main(void)
  106          {
@@ -139,15 +139,17 @@ line level    source
  113   1              {
  114   2                      sensorIdAdjustTask();   //探头位置识别任务
  115   2                      AppTask();                      //总流程处理任务
- 116   2                      BeepAlarmTask();        //蜂鸣器报警任务
- 117   2                      SendOncePlusTask(); //发送脉冲群任务
- 118   2                      WDT_Clear();            // 喂狗
- 119   2              }
- 120   1      }
+ 116   2                      uartBuffSenfTask();
+ 117   2                      BeepAlarmTask();        //蜂鸣器报警任务
+ 118   2                      SendOncePlusTask(); //发送脉冲群任务
+ 119   2                      sensorDistanceGetTask();
+ 120   2                      WDT_Clear();            // 喂狗
+ 121   2              }
+ 122   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    192    ----
+   CODE SIZE        =    198    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

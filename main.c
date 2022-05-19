@@ -113,8 +113,10 @@ void main(void)
 	{
 		sensorIdAdjustTask();	//探头位置识别任务
 		AppTask();			//总流程处理任务
+		uartBuffSenfTask();
 		BeepAlarmTask();	//蜂鸣器报警任务
 		SendOncePlusTask(); //发送脉冲群任务
+		sensorDistanceGetTask();
 		WDT_Clear();		// 喂狗
 	}
 }

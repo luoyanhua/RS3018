@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 1   
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TASK
@@ -29,316 +29,425 @@ line level    source
   19          #include "UART.h"
   20          #include "string.h"
   21          
-  22          
-  23          #define SensorCheck_0 0
-  24          #define SensorCheck_1 1
-  25          #define SensorCheck_2 2
-  26          #define SensorCheck_3 3
-  27          #define SensorCheck_4 4
-  28          #define SensorCheck_5 5
-  29          #define SensorCheck_6 6
-  30          #define SensorCheck_7 7
-  31          #define SensorCheck_8 8
-  32          #define SensorCheck_9 9
-  33          
-  34          #define WAIT_REV_CMD 10
-  35          #define WAIT_STATE 12
-  36          #define GET_SENSOR_ID_CNT_MAX 3
-  37          
-  38          bit sensorIdCheckRunFlag = 0;                          //ÔËÐÐ±êÖ¾
-  39          bit sensorIdCheckOKFlag = 0;                           //ÅÐ¶ÏOK±êÖ¾
-  40          bit ioStatusSaveValueOld = 0;                             // IO¿Ú×´Ì¬±£´æ
-  41          bit ioStatusSaveValueNew = 0;                             // IO¿Ú×´Ì¬±£´æ
-  42          
-  43          unsigned char saveTotalSensorID[SENSOR_NUM_MAX] = {0}; //µ±Ç°ËùÓÐÉè±¸IDÎ»ÖÃ,Èç¹ûÎªÓÒ²à´«¸ÐÆ÷£¬Ôò×Ô¶¨ÒåÎªÖ÷
+  22          #define SensorCheck_0 0
+  23          #define SensorCheck_1 1
+  24          #define SensorCheck_2 2
+  25          #define SensorCheck_3 3
+  26          #define SensorCheck_4 4
+  27          #define SensorCheck_5 5
+  28          #define SensorCheck_6 6
+  29          #define SensorCheck_7 7
+  30          #define SensorCheck_8 8
+  31          #define SensorCheck_9 9
+  32          
+  33          #define WAIT_REV_CMD 10
+  34          #define WAIT_STATE 12
+  35          #define GET_SENSOR_ID_CNT_MAX 3
+  36          
+  37          bit sensorIdCheckRunFlag = 0; //ÔËÐÐ±êÖ¾
+  38          bit sensorIdCheckOKFlag = 0;  //ÅÐ¶ÏOK±êÖ¾
+  39          bit ioStatusSaveValueOld = 0; // IO¿Ú×´Ì¬±£´æ
+  40          bit ioStatusSaveValueNew = 0; // IO¿Ú×´Ì¬±£´æ
+  41          
+  42          unsigned char saveTotalSensorID[SENSOR_NUM_MAX] = {0}; //µ±Ç°ËùÓÐÉè±¸IDÎ»ÖÃ,Èç¹ûÎªÓÒ²à´«¸ÐÆ÷£¬Ôò×Ô¶¨ÒåÎªÖ÷
              -´«¸ÐÆ÷£¬Ë³Ðò·Ö±ð´ú±í£º×ó£¬×óÖÐ£¬ÓÒÖÐ£¬ÓÒ
-  44          unsigned char sensorIdCheckState = 0;                  //ÔËÐÐ×´Ì¬»ú
-  45          unsigned int sensorIdCheckTimeCnt = 0;                 //¶¨Ê±Æ÷
-  46          unsigned char sensorIdGetCnt = 0;                      // ID »ñÈ¡¼ÆÊý
-  47          unsigned char currentSensorID = 0;                     //µ±Ç°´«¸ÐÆ÷Öµ
-  48          
-  49          unsigned char appTaskState = 0;
-  50          unsigned int appTaskTimeCnt = 0;
-  51          
-  52          unsigned char get_currentSensorID(void)
-  53          {
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 2   
+  43          unsigned char sensorIdCheckState = 0;                  //ÔËÐÐ×´Ì¬»ú
+  44          unsigned int sensorIdCheckTimeCnt = 0;                 //¶¨Ê±Æ÷
+  45          unsigned char sensorIdGetCnt = 0;                      // ID »ñÈ¡¼ÆÊý
+  46          unsigned char currentSensorID = 0;                     //µ±Ç°´«¸ÐÆ÷Öµ
+  47          
+  48          unsigned char get_currentSensorID(void)
+  49          {
+  50   1          return currentSensorID;
+  51   1      }
+  52          
+  53          //ÅÐ¶Ï±ê×¼
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 2   
 
-  54   1          return currentSensorID;
-  55   1      }
-  56          
-  57          //ÅÐ¶Ï±ê×¼
-  58          //P35Êä³ö¸ßµçÆ½£¬Èç¹ûP34µçÑ¹ÎªµÍµçÆ½£¬¾ÍÊÇ×ó,ÓÒ´«¸ÐÆ÷£»Èç¹ûP34Îª¸ßµçÆ½¾ÍÊÇ×óÖÐ£¬ÓÒÖÐ
-  59          //P35Êä³öµÍµçÆ½£¬Èç¹ûP34µçÑ¹ÎªµÍµçÆ½£¬¾ÍÊÇ×ó£¬ÓÒÖÐ´«¸ÐÆ÷£¬Èç¹ûP34Îª¸ßµçÆ½£¬¾ÍÊÇÓÒ£¬×óÖÐ´«¸ÐÆ÷¡£
-  60          //Á½´ÎµçÆ½ÏàµÈºãµÍ¾ÍÊÇ×óÖÐ£¬ºã¸ß¾ÍÊÇ×ó£»Á½´ÎµçÆ½²»µÈ£¬µ«ÓëP35µçÆ½ÏàµÈ¾ÍÊÇÓÒÖÐ£¬ÓëP35µçÆ½²»µÈ¾ÍÊÇÓÒ¡£
-  61          
-  62          
-  63          void sensorIdAdjustTask(void)
-  64          {
-  65   1          if (sensorIdCheckRunFlag == 1)
-  66   1              return;
-  67   1          switch (sensorIdCheckState)
-  68   1          {
-  69   2      
-  70   2          case SensorCheck_0:
-  71   2              PWM_OUTPUT = HIGH;
-  72   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
-  73   2              sensorIdCheckState = SensorCheck_1;
-  74   2              break;
-  75   2          case SensorCheck_1:
-  76   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 20) // µÈ´ý20ms
-  77   2              {
-  78   3                  ioStatusSaveValueOld = SENSOR_ID_CHECK; //¼ÇÂ¼SENSOR_ID_CHECKµçÆ½             
-  79   3                  sensorIdCheckState = SensorCheck_2;
-  80   3              }
-  81   2              break;
-  82   2          case SensorCheck_2:
-  83   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // µÈ´ý30msºóÔÙ·´×ªµçÆ½£
+  54          // P35Êä³ö¸ßµçÆ½£¬Èç¹ûP34µçÑ¹ÎªµÍµçÆ½£¬¾ÍÊÇ×ó,ÓÒ´«¸ÐÆ÷£»Èç¹ûP34Îª¸ßµçÆ½¾ÍÊÇ×óÖÐ£¬ÓÒÖÐ
+  55          // P35Êä³öµÍµçÆ½£¬Èç¹ûP34µçÑ¹ÎªµÍµçÆ½£¬¾ÍÊÇ×ó£¬ÓÒÖÐ´«¸ÐÆ÷£¬Èç¹ûP34Îª¸ßµçÆ½£¬¾ÍÊÇÓÒ£¬×óÖÐ´«¸ÐÆ÷¡£
+  56          //Á½´ÎµçÆ½ÏàµÈºãµÍ¾ÍÊÇ×óÖÐ£¬ºã¸ß¾ÍÊÇ×ó£»Á½´ÎµçÆ½²»µÈ£¬µ«ÓëP35µçÆ½ÏàµÈ¾ÍÊÇÓÒÖÐ£¬ÓëP35µçÆ½²»µÈ¾ÍÊÇÓÒ¡£
+  57          
+  58          void sensorIdAdjustTask(void)
+  59          {
+  60   1          if (sensorIdCheckRunFlag == 1)
+  61   1              return;
+  62   1          switch (sensorIdCheckState)
+  63   1          {
+  64   2      
+  65   2          case SensorCheck_0:
+  66   2              PWM_OUTPUT = HIGH;
+  67   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
+  68   2              sensorIdCheckState = SensorCheck_1;
+  69   2              break;
+  70   2          case SensorCheck_1:
+  71   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 20) // µÈ´ý20ms
+  72   2              {
+  73   3                  ioStatusSaveValueOld = SENSOR_ID_CHECK; //¼ÇÂ¼SENSOR_ID_CHECKµçÆ½
+  74   3                  sensorIdCheckState = SensorCheck_2;
+  75   3              }
+  76   2              break;
+  77   2          case SensorCheck_2:
+  78   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // µÈ´ý30msºóÔÙ·´×ªµçÆ½£
              -¬±ÜÃâµçÆ½³åÍ»
-  84   2              {
-  85   3                  PWM_OUTPUT = LOW;
-  86   3                  sensorIdCheckState = SensorCheck_3;
-  87   3              }
-  88   2              break;
-  89   2          case SensorCheck_3:                                                      
-  90   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 100) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½ø
+  79   2              {
+  80   3                  PWM_OUTPUT = LOW;
+  81   3                  sensorIdCheckState = SensorCheck_3;
+  82   3              }
+  83   2              break;
+  84   2          case SensorCheck_3:
+  85   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 100) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½ø
              -ÐÐ
-  91   2              {
-  92   3                  ioStatusSaveValueNew = SENSOR_ID_CHECK; //¼ÇÂ¼SENSOR_ID_CHECKµçÆ½
-  93   3                  if (SENSOR_ID_CHECK == LOW) 
-  94   3                  {
-  95   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //Á½´ÎSENSOR_ID_CHECKµçÆ½ÏàµÈºãµÍ
-  96   4                      {
-  97   5                          currentSensorID = LEFT_MID_SENSOR;
-  98   5                      }
-  99   4                      else //Á½´ÎµçÆ½²»µÈ£¬µ«ÓëP35µçÆ½ÏàµÈ¾ÍÊÇÓÒÖÐ
- 100   4                      {
- 101   5                          currentSensorID = RIGHT_MID_SENSOR;
- 102   5                      }
- 103   4                  }
- 104   3                  else
- 105   3                  {
- 106   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //Á½´ÎSENSOR_ID_CHECKµçÆ½ÏàµÈºã¸ß
- 107   4                      {
- 108   5                          currentSensorID = LEFT_SENSOR;
- 109   5                      }
- 110   4                      else //Á½´ÎµçÆ½²»µÈ£¬ÓëP35µçÆ½²»µÈ¾ÍÊÇÓÒ
- 111   4                      {
- 112   5                          currentSensorID = RIGHT_SENSOR;                   
- 113   5                      }
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 3   
+  86   2              {
+  87   3                  ioStatusSaveValueNew = SENSOR_ID_CHECK; //¼ÇÂ¼SENSOR_ID_CHECKµçÆ½
+  88   3                  if (SENSOR_ID_CHECK == LOW)
+  89   3                  {
+  90   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //Á½´ÎSENSOR_ID_CHECKµçÆ½ÏàµÈºãµÍ
+  91   4                      {
+  92   5                          currentSensorID = LEFT_MID_SENSOR;
+  93   5                      }
+  94   4                      else //Á½´ÎµçÆ½²»µÈ£¬µ«ÓëP35µçÆ½ÏàµÈ¾ÍÊÇÓÒÖÐ
+  95   4                      {
+  96   5                          currentSensorID = RIGHT_MID_SENSOR;
+  97   5                      }
+  98   4                  }
+  99   3                  else
+ 100   3                  {
+ 101   4                      if (ioStatusSaveValueNew == ioStatusSaveValueOld) //Á½´ÎSENSOR_ID_CHECKµçÆ½ÏàµÈºã¸ß
+ 102   4                      {
+ 103   5                          currentSensorID = LEFT_SENSOR;
+ 104   5                      }
+ 105   4                      else //Á½´ÎµçÆ½²»µÈ£¬ÓëP35µçÆ½²»µÈ¾ÍÊÇÓÒ
+ 106   4                      {
+ 107   5                          currentSensorID = RIGHT_SENSOR;
+ 108   5                      }
+ 109   4                  }
+ 110   3                  sensorIdCheckState = SensorCheck_4;
+ 111   3                  UART_config();
+ 112   3              }
+ 113   2              break;
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 3   
 
- 114   4                  }
- 115   3                  sensorIdCheckState = SensorCheck_4; 
- 116   3                  UART_config();        
- 117   3              }
- 118   2              break;
- 119   2          case SensorCheck_4: 
- 120   2              if(currentSensorID == RIGHT_SENSOR)//Èç¹ûÊÇÓÒ´«¸ÐÆ÷ÐèÒª¸úÆäËû´«¸ÐÆ÷Í¨ÐÅ
- 121   2              {
- 122   3                  getSensorImfo(RIGHT_MID_SENSOR, CMD_ID);
- 123   3                  sensorIdCheckState = SensorCheck_5;
- 124   3                  sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
- 125   3              }
- 126   2              else//²»ÊÇÓÒ´«¸ÐÆ÷£¬µÈ´ý½ÓÊÕÊý¾Ý
- 127   2              {
- 128   3                  sensorIdCheckState = WAIT_REV_CMD;
- 129   3              }
- 130   2              break;
- 131   2          case SensorCheck_5:                                                      //ÅÐ¶ÏÊÇ·ñÊÕµ½ÓÒÖÐÌ½Í·IDÐÅÏ¢
- 132   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
+ 114   2          case SensorCheck_4:
+ 115   2              if (currentSensorID == RIGHT_SENSOR) //Èç¹ûÊÇÓÒ´«¸ÐÆ÷ÐèÒª¸úÆäËû´«¸ÐÆ÷Í¨ÐÅ
+ 116   2              {
+ 117   3                  getSensorImfo(RIGHT_MID_SENSOR, CMD_ID);
+ 118   3                  sensorIdCheckState = SensorCheck_5;
+ 119   3                  sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
+ 120   3              }
+ 121   2              else //²»ÊÇÓÒ´«¸ÐÆ÷£¬µÈ´ý½ÓÊÕÊý¾Ý
+ 122   2              {
+ 123   3                  sensorIdCheckState = WAIT_REV_CMD;
+ 124   3              }
+ 125   2              break;
+ 126   2          case SensorCheck_5:                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½ÓÒÖÐÌ½Í·ID
+             -ÐÅÏ¢
+ 127   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
              -Ð
- 133   2              {
- 134   3                  if (analysisSensorImfo())
- 135   3                  {
- 136   4                      //ÊÕµ½ÓÒÖÐÌ½Í·IDÐÅÏ¢
- 137   4                      saveTotalSensorID[2] = 1;
- 138   4                      sensorIdGetCnt = 0;
- 139   4                      sensorIdCheckState = SensorCheck_6;
- 140   4                  }
- 141   3                  else
- 142   3                  {
- 143   4                      sensorIdGetCnt++;
- 144   4                      sensorIdCheckState = SensorCheck_4;
- 145   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
- 146   4                      {
- 147   5                          sensorIdGetCnt = 0;
- 148   5                          sensorIdCheckState = SensorCheck_6;
- 149   5                      }
- 150   4                  }
- 151   3              }
+ 128   2              {
+ 129   3                  if (analysisSensorImfo())
+ 130   3                  {
+ 131   4                      //ÊÕµ½ÓÒÖÐÌ½Í·IDÐÅÏ¢
+ 132   4                      saveTotalSensorID[2] = 1;
+ 133   4                      sensorIdGetCnt = 0;
+ 134   4                      sensorIdCheckState = SensorCheck_6;
+ 135   4                  }
+ 136   3                  else
+ 137   3                  {
+ 138   4                      sensorIdGetCnt++;
+ 139   4                      sensorIdCheckState = SensorCheck_4;
+ 140   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+ 141   4                      {
+ 142   5                          sensorIdGetCnt = 0;
+ 143   5                          sensorIdCheckState = SensorCheck_6;
+ 144   5                      }
+ 145   4                  }
+ 146   3              }
+ 147   2              break;
+ 148   2          case SensorCheck_6:                     //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
+ 149   2              getSensorImfo(LEFT_SENSOR, CMD_ID); //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
+ 150   2              sensorIdCheckState = SensorCheck_7;
+ 151   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
  152   2              break;
- 153   2          case SensorCheck_6:                //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
- 154   2              getSensorImfo(LEFT_SENSOR, CMD_ID); //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
- 155   2              sensorIdCheckState = SensorCheck_7;
- 156   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
- 157   2              break;
- 158   2          case SensorCheck_7:                                                      //ÅÐ¶ÏÊÇ·ñÊÕµ½×ó²àÌ½Í·IDÐÅÏ¢
- 159   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
+ 153   2          case SensorCheck_7:                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½×ó²àÌ½Í·ID
+             -ÐÅÏ¢
+ 154   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
              -Ð
- 160   2              {
- 161   3                  if (analysisSensorImfo())
- 162   3                  {
- 163   4                      //ÊÕµ½×ó²àÌ½Í·IDÐÅÏ¢
- 164   4                      saveTotalSensorID[0] = 1;
- 165   4                      sensorIdGetCnt = 0;
- 166   4                      sensorIdCheckState = SensorCheck_8;
- 167   4                  }
- 168   3                  else
- 169   3                  {
- 170   4                      sensorIdGetCnt++;
- 171   4                      sensorIdCheckState = SensorCheck_6;
- 172   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
- 173   4                      {
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 4   
+ 155   2              {
+ 156   3                  if (analysisSensorImfo())
+ 157   3                  {
+ 158   4                      //ÊÕµ½×ó²àÌ½Í·IDÐÅÏ¢
+ 159   4                      saveTotalSensorID[0] = 1;
+ 160   4                      sensorIdGetCnt = 0;
+ 161   4                      sensorIdCheckState = SensorCheck_8;
+ 162   4                  }
+ 163   3                  else
+ 164   3                  {
+ 165   4                      sensorIdGetCnt++;
+ 166   4                      sensorIdCheckState = SensorCheck_6;
+ 167   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+ 168   4                      {
+ 169   5                          sensorIdGetCnt = 0;
+ 170   5                          sensorIdCheckState = SensorCheck_8;
+ 171   5                      }
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 4   
 
- 174   5                          sensorIdGetCnt = 0;
- 175   5                          sensorIdCheckState = SensorCheck_8;
- 176   5                      }
- 177   4                  }
- 178   3              }
+ 172   4                  }
+ 173   3              }
+ 174   2              break;
+ 175   2          case SensorCheck_8:                         //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
+ 176   2              getSensorImfo(LEFT_MID_SENSOR, CMD_ID); //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
+ 177   2              sensorIdCheckState = SensorCheck_9;
+ 178   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
  179   2              break;
- 180   2          case SensorCheck_8:                    //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
- 181   2              getSensorImfo(LEFT_MID_SENSOR, CMD_ID); //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
- 182   2              sensorIdCheckState = SensorCheck_9;
- 183   2              sensorIdCheckTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
- 184   2              break;
- 185   2          case SensorCheck_9:                                                      //ÅÐ¶ÏÊÇ·ñÊÕµ½×óÖÐÌ½Í·IDÐÅÏ¢
- 186   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
+ 180   2          case SensorCheck_9:                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½×óÖÐÌ½Í·ID
+             -ÐÅÏ¢
+ 181   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 50) // 50ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐ
              -Ð
- 187   2              {
- 188   3                  if (analysisSensorImfo())
- 189   3                  {
- 190   4                      //ÊÕµ½×óÖÐÌ½Í·IDÐÅÏ¢
- 191   4                      saveTotalSensorID[1] = 1;
- 192   4                      sensorIdGetCnt = 0;
- 193   4                      sensorIdCheckState = WAIT_STATE;
- 194   4                  }
- 195   3                  else
- 196   3                  {
- 197   4                      sensorIdGetCnt++;
- 198   4                      sensorIdCheckState = SensorCheck_8;
- 199   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
- 200   4                      {
- 201   5                          sensorIdGetCnt = 0;
- 202   5                          sensorIdCheckState = WAIT_STATE;
- 203   5                      }
- 204   4                  }
- 205   3              }
- 206   2              break;
- 207   2          case WAIT_REV_CMD:                                                             //½øÈëÕâÀï£¬±ØÈ»²»ÊÇÓÒ´
+ 182   2              {
+ 183   3                  if (analysisSensorImfo())
+ 184   3                  {
+ 185   4                      //ÊÕµ½×óÖÐÌ½Í·IDÐÅÏ¢
+ 186   4                      saveTotalSensorID[1] = 1;
+ 187   4                      sensorIdGetCnt = 0;
+ 188   4                      sensorIdCheckState = WAIT_STATE;
+ 189   4                  }
+ 190   3                  else
+ 191   3                  {
+ 192   4                      sensorIdGetCnt++;
+ 193   4                      sensorIdCheckState = SensorCheck_8;
+ 194   4                      if (sensorIdGetCnt >= GET_SENSOR_ID_CNT_MAX)
+ 195   4                      {
+ 196   5                          sensorIdGetCnt = 0;
+ 197   5                          sensorIdCheckState = WAIT_STATE;
+ 198   5                      }
+ 199   4                  }
+ 200   3              }
+ 201   2              break;
+ 202   2          case WAIT_REV_CMD:                                                             //½øÈëÕâÀï£¬±ØÈ»²»ÊÇÓÒ´
              -«¸ÐÆ÷
- 208   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 600) // 600ms³¬Ê±ºó¼ÌÐøÍùÏÂ½
+ 203   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorIdCheckTimeCnt) >= 600) // 600ms³¬Ê±ºó¼ÌÐøÍùÏÂ½
              -øÐÐ
- 209   2              {
- 210   3                  sensorIdCheckState = WAIT_STATE;
- 211   3              }
- 212   2              else
- 213   2              {
- 214   3                  if (analysisSensorImfo()) //ÊÇ·ñÊÕµ½»ñÈ¡Î»ÖÃÐÅÏ¢Ö¸Áî
- 215   3                  {
- 216   4                      //½âÎö»Ø¸´Êý¾Ý
- 217   4                      sensorIdCheckState = WAIT_STATE;
- 218   4                  }
- 219   3              }
- 220   2              break;
- 221   2          case WAIT_STATE: // ÅÐ¶Ï×ó²àÌ½Í·Î»ÖÃ
- 222   2              sensorIdCheckState = 0;
- 223   2              sensorIdCheckRunFlag = 1; //Ì½Í·Î»ÖÃÊ¶±ðÍê³É
- 224   2              break;
- 225   2          }
- 226   1      }
- 227          
- 228          void AppTask(void)
- 229          {
- 230   1          if (sensorIdCheckRunFlag == 0)
- 231   1              return;
- 232   1          switch (appTaskState)
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 5   
+ 204   2              {
+ 205   3                  sensorIdCheckState = WAIT_STATE;
+ 206   3              }
+ 207   2              else
+ 208   2              {
+ 209   3                  if (analysisSensorImfo()) //ÊÇ·ñÊÕµ½»ñÈ¡Î»ÖÃÐÅÏ¢Ö¸Áî
+ 210   3                  {
+ 211   4                      //½âÎö»Ø¸´Êý¾Ý
+ 212   4                      sensorIdCheckState = WAIT_STATE;
+ 213   4                  }
+ 214   3              }
+ 215   2              break;
+ 216   2          case WAIT_STATE: // ÅÐ¶Ï×ó²àÌ½Í·Î»ÖÃ
+ 217   2              sensorIdCheckState = 0;
+ 218   2              sensorIdCheckRunFlag = 1; //Ì½Í·Î»ÖÃÊ¶±ðÍê³É
+ 219   2              break;
+ 220   2          }
+ 221   1      }
+ 222          
+ 223          unsigned char appTaskState = 0;
+ 224          unsigned int appTaskTimeCnt = 0;
+ 225          
+ 226          void AppTask(void)
+ 227          {
+ 228   1          if (sensorIdCheckRunFlag == 0)
+ 229   1              return;
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 5   
 
- 233   1          {
- 234   2          case 0: //·¢ËÍPWM 150ms ÓÃÀ´È·ÈÏÎ»ÖÃÐÅºÅ
- 235   2              StartBeepAlarm(150, 0);
- 236   2              appTaskTimeCnt = Get_SysHalfMsTick();
- 237   2              appTaskState = 1;
- 238   2              break;
- 239   2          case 1: // Sensor ID»áÊÕµ½×Ô¼º·¢µÄÐÅºÅ
- 240   2              if (SENSOR_ID_CHECK == 0)
- 241   2              {
- 242   3                  VirtualCOM_StringSend("recv ID!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 243   3                  appTaskState = 2;
- 244   3              }
- 245   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐÐ
- 246   2              {
- 247   3                  VirtualCOM_StringSend("recv ID timeout!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 248   3                  appTaskState = 2;
- 249   3              }
- 250   2              break;
- 251   2          case 2: //¿ª»úÌ½Í·×Ô¼ì
- 252   2              Start_sendOncePlusTask();
- 253   2              appTaskState = 3;
- 254   2              VirtualCOM_StringSend("sensor self check!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 255   2              break;
- 256   2          case 3: //»ñÈ¡Ì½Í·×Ô¼ì½á¹û
- 257   2              if (Get_SendOncePlusTaskFlag() == 0)
- 258   2              {
- 259   3                  if (Get_sensorOkFlag())
- 260   3                  {
- 261   4                      VirtualCOM_StringSend("sensor is ok!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 262   4                      appTaskState = 4;                           //¼ì²âµ½Ì½Í·
- 263   4                  }
- 264   3                  else
- 265   3                  {
- 266   4                      VirtualCOM_StringSend("No sensor!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 267   4                      appTaskState = 0;                        //ÎÞÌ½Í·´ÓÍ·¿ªÊ¼
- 268   4                  }
- 269   3      //            uartSendPackage(SELF_CHECK);
- 270   3              }
- 271   2              break;
- 272   2          case 4: //¿ªÊ¼²â¾à½á¹û
- 273   2              appTaskTimeCnt = Get_SysHalfMsTick();
- 274   2              Start_sendOncePlusTask();
- 275   2              appTaskState = 5;
- 276   2              break;
- 277   2          case 5: //ÅÐ¶ÏÊÇ·ñÓÐÕÏ°­Îï
- 278   2              if (Get_SendOncePlusTaskFlag() == 0)
- 279   2              {
- 280   3                  if (Get_obstaclesExistenceFlag()) //ÓÐÕÏ°­Îï
- 281   3                  {
- 282   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // 50ms²âÊÔÒ»´Î
- 283   4                      {
- 284   5                          VirtualCOM_StringSend("obstacle!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
- 285   5                          appTaskState = 4;
- 286   5      //                    uartSendPackage(NOM_WORK);
- 287   5                      }
- 288   4                  }
- 289   3                  else //Ã»ÓÐÕÏ°­Îï
- 290   3                  {
- 291   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms²âÊÔÒ»´Î
- 292   4                      {
- 293   5                          //»ñÈ¡²âÊÔ¾àÀë
- 294   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
-C51 COMPILER V9.54   TASK                                                                  05/17/2022 22:17:32 PAGE 6   
+ 230   1          switch (appTaskState)
+ 231   1          {
+ 232   2          case 0: //·¢ËÍPWM 150ms ÓÃÀ´È·ÈÏÎ»ÖÃÐÅºÅ
+ 233   2              StartBeepAlarm(150, 0);
+ 234   2              appTaskTimeCnt = Get_SysHalfMsTick();
+ 235   2              appTaskState = 1;
+ 236   2              break;
+ 237   2          case 1: // Sensor ID»áÊÕµ½×Ô¼º·¢µÄÐÅºÅ
+ 238   2              if (SENSOR_ID_CHECK == 0)
+ 239   2              {
+ 240   3                  VirtualCOM_StringSend("recv ID!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 241   3                  appTaskState = 2;
+ 242   3              }
+ 243   2              else if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 20) // 10ms³¬Ê±ºó¼ÌÐøÍùÏÂ½øÐÐ
+ 244   2              {
+ 245   3                  VirtualCOM_StringSend("recv ID timeout!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 246   3                  appTaskState = 2;
+ 247   3              }
+ 248   2              break;
+ 249   2          case 2: //¿ª»úÌ½Í·×Ô¼ì
+ 250   2              Start_sendOncePlusTask();
+ 251   2              appTaskState = 3;
+ 252   2              VirtualCOM_StringSend("sensor self check!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 253   2              break;
+ 254   2          case 3: //»ñÈ¡Ì½Í·×Ô¼ì½á¹û
+ 255   2              if (Get_SendOncePlusTaskFlag() == 0)
+ 256   2              {
+ 257   3                  if (Get_sensorOkFlag())
+ 258   3                  {
+ 259   4                      VirtualCOM_StringSend("sensor is ok!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 260   4                      appTaskState = 4;                           //¼ì²âµ½Ì½Í·
+ 261   4                  }
+ 262   3                  else
+ 263   3                  {
+ 264   4                      VirtualCOM_StringSend("No sensor!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 265   4                      appTaskState = 0;                        //ÎÞÌ½Í·´ÓÍ·¿ªÊ¼
+ 266   4                  }
+ 267   3              }
+ 268   2              break;
+ 269   2          case 4: //¿ªÊ¼²â¾à½á¹û
+ 270   2              appTaskTimeCnt = Get_SysHalfMsTick();
+ 271   2              Start_sendOncePlusTask();
+ 272   2              appTaskState = 5;
+ 273   2              break;
+ 274   2          case 5: //ÅÐ¶ÏÊÇ·ñÓÐÕÏ°­Îï
+ 275   2              if (Get_SendOncePlusTaskFlag() == 0)
+ 276   2              {
+ 277   3                  if (Get_obstaclesExistenceFlag()) //ÓÐÕÏ°­Îï
+ 278   3                  {
+ 279   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 100) // µÈ´ý50ms
+ 280   4                      {
+ 281   5                          VirtualCOM_StringSend("obstacle!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+ 282   5                          appTaskState = 4;
+ 283   5                          sensorIdCheckOKFlag = 1;
+ 284   5                      }
+ 285   4                  }
+ 286   3                  else //Ã»ÓÐÕÏ°­Îï
+ 287   3                  {
+ 288   4                      if (get_time_escape_sec(Get_SysHalfMsTick(), appTaskTimeCnt) >= 400) // 200ms²âÊÔÒ»´Î
+ 289   4                      {
+ 290   5                          //»ñÈ¡²âÊÔ¾àÀë
+ 291   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1·¢ËÍÒ»¸ö×Ö·û´®
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 6   
 
- 295   5                          appTaskState = 4;
- 296   5      //                    uartSendPackage(NOM_WORK);
- 297   5                      }
- 298   4                  }
- 299   3              }
- 300   2              break;
- 301   2          default:
- 302   2              break;
- 303   2          }
- 304   1      }
+ 292   5                          appTaskState = 4;
+ 293   5                          sensorIdCheckOKFlag = 1;
+ 294   5                      }
+ 295   4                  }
+ 296   3              }
+ 297   2              break;
+ 298   2          default:
+ 299   2              break;
+ 300   2          }
+ 301   1      }
+ 302          
+ 303          unsigned char sensorDistanceGetState = 0;  // ¾àÀë»ñÈ¡×´Ì¬»ú
+ 304          unsigned int sensorDistanceGetTimeCnt = 0; //¾àÀë»ñÈ¡¶¨Ê±Æ÷
+ 305          
+ 306          void sensorDistanceGetTask(void)
+ 307          {
+ 308   1          if (sensorIdCheckOKFlag == 0)
+ 309   1              return;
+ 310   1          switch (sensorDistanceGetState)
+ 311   1          {
+ 312   2          case 0:
+ 313   2              if (currentSensorID == RIGHT_SENSOR) //Èç¹ûÊÇÓÒ´«¸ÐÆ÷ÐèÒª¸úÆäËû´«¸ÐÆ÷Í¨ÐÅ
+ 314   2              {
+ 315   3                  getSensorImfo(RIGHT_MID_SENSOR, CMD_DISTANCE);
+ 316   3                  sensorDistanceGetState = 1;
+ 317   3                  sensorDistanceGetTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
+ 318   3              }
+ 319   2              else //²»ÊÇÓÒ´«¸ÐÆ÷£¬µÈ´ý½ÓÊÕÊý¾Ý
+ 320   2              {
+ 321   3                  sensorDistanceGetState = 7;
+ 322   3              }
+ 323   2              break;
+ 324   2          case 1:                                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½ÓÒÖÐÌ½
+             -Í·IDÐÅÏ¢
+ 325   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 40) // 20ms³¬Ê±ºó¼ÌÐøÍùÏ
+             -Â½øÐÐ
+ 326   2              {
+ 327   3                  if (analysisSensorImfo())
+ 328   3                  {
+ 329   4                      //ÊÕµ½ÓÒÖÐÌ½Í·¾àÀëÐÅÏ¢£¬±£´æ
+ 330   4                  }
+ 331   3                  else //Çå³þ¾àÀëÐÅÏ¢
+ 332   3                  {
+ 333   4                  }
+ 334   3                  sensorDistanceGetState = 2;
+ 335   3              }
+ 336   2              break;
+ 337   2          case 2:                                       //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
+ 338   2              getSensorImfo(LEFT_SENSOR, CMD_DISTANCE); //·¢ËÍ»ñÈ¡×ó²àÌ½Í·ÐÅÏ¢Ö¸Áî
+ 339   2              sensorDistanceGetState = 3;
+ 340   2              sensorDistanceGetTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
+ 341   2              break;
+ 342   2          case 3:                                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½×ó²àÌ½
+             -Í·IDÐÅÏ¢
+ 343   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 40) // 20ms³¬Ê±ºó¼ÌÐøÍùÏ
+             -Â½øÐÐ
+ 344   2              {
+ 345   3                  if (analysisSensorImfo())
+ 346   3                  {
+ 347   4                      //ÊÕµ½×ó²àÌ½Í·¾àÀëÐÅÏ¢
+ 348   4                  }
+ 349   3                  else //Çå³þ¾àÀëÐÅÏ¢
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 7   
+
+ 350   3                  {
+ 351   4                  }
+ 352   3                  sensorDistanceGetState = 4;
+ 353   3              }
+ 354   2              break;
+ 355   2          case 4:                                           //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
+ 356   2              getSensorImfo(LEFT_MID_SENSOR, CMD_DISTANCE); //·¢ËÍ»ñÈ¡×óÖÐÌ½Í·ÐÅÏ¢Ö¸Áî
+ 357   2              sensorDistanceGetState = 5;
+ 358   2              sensorDistanceGetTimeCnt = Get_SysHalfMsTick(); //Ë¢ÐÂ¼ÆÊ±Æ÷
+ 359   2              break;
+ 360   2          case 5:                                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½×óÖÐÌ½
+             -Í·IDÐÅÏ¢
+ 361   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 40) // 20ms³¬Ê±ºó¼ÌÐøÍùÏ
+             -Â½øÐÐ
+ 362   2              {
+ 363   3                  if (analysisSensorImfo())
+ 364   3                  {
+ 365   4                      //ÊÕµ½×óÖÐÌ½Í·¾àÀëÐÅÏ¢
+ 366   4                  }
+ 367   3                  else //Çå³þ¾àÀëÐÅÏ¢
+ 368   3                  {
+ 369   4                  }
+ 370   3                  sensorDistanceGetState = 6;
+ 371   3              }
+ 372   2              break;
+ 373   2          case 6:                                                                           //ÅÐ¶ÏÊÇ·ñÊÕµ½×óÖÐÌ½
+             -Í·IDÐÅÏ¢
+ 374   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 40) // 20ms³¬Ê±ºó¼ÌÐøÍùÏ
+             -Â½øÐÐ
+ 375   2              {
+ 376   3                  //·¢ËÍÒ»°ü´ø·½Î»¾àÀëÐÅÏ¢µÄÊý¾Ý
+ 377   3                  sensorTotalPackage();
+ 378   3                  sensorDistanceGetState = 0;
+ 379   3              }
+ 380   2              break;
+ 381   2          case 7:                                                                            //½øÈëÕâÀï£¬±ØÈ»²»Ê
+             -ÇÓÒ´«¸ÐÆ÷
+ 382   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 140) // 70ms³¬Ê±ºó¼ÌÐøÍù
+             -ÏÂ½øÐÐ
+ 383   2              {
+ 384   3                  sensorDistanceGetState = 0;
+ 385   3              }
+ 386   2              else
+ 387   2              {
+ 388   3                  if (analysisSensorImfo()) //ÊÇ·ñÊÕµ½»ñÈ¡Î»ÖÃÐÅÏ¢Ö¸Áî
+ 389   3                  {
+ 390   4                      //½âÎö»Ø¸´Êý¾Ý
+ 391   4                      sensorDistanceGetState = 0;
+ 392   4                  }
+ 393   3              }
+ 394   2              break;
+ 395   2          }
+ 396   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    672    ----
+   CODE SIZE        =    916    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     12    ----
+   DATA SIZE        =     15    ----
    IDATA SIZE       =   ----    ----
+C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 8   
+
    BIT SIZE         =      4    ----
 END OF MODULE INFORMATION.
 

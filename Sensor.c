@@ -14,6 +14,7 @@
 #include "timer.h"
 #include "Beep.h"
 #include "Exti.h"
+#include "uart.h"
 
 #define START_SEND_STATE 0
 #define WAIT_SEND_END_STATE 1
@@ -67,10 +68,13 @@ void SendOncePlusTask(void)
 	switch (SendContinuePlusState)
 	{
 	case START_SEND_STATE:
-		SendContinuePlusTimeCnt = Get_us_250Cnt(); //单位50us
-		Start_SendPlus();							   //发送超声波
-		meterDistance = 0;							   //每次发送前距离清零
-		SendContinuePlusState = WAIT_SEND_END_STATE;
+		if(get_uartUsedFlag() == 0)		//避免串口和高速定时器同时工作，影响串口数据
+		{
+			SendContinuePlusTimeCnt = Get_us_250Cnt(); //单位50us
+			Start_SendPlus();							   //发送超声波
+			meterDistance = 0;							   //每次发送前距离清零
+			SendContinuePlusState = WAIT_SEND_END_STATE;
+		}
 		break;
 	case WAIT_SEND_END_STATE:
 		if (Get_plusOutFlag() == 0) //等待发送完成

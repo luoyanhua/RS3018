@@ -25,4 +25,6 @@ void AppTask(void);
 
 unsigned char get_currentSensorID(void);
 
+void sensorDistanceGetTask(void);
+
 #endif
