@@ -1,9 +1,9 @@
-C51 COMPILER V9.54   BEEP                                                                  05/28/2022 08:12:07 PAGE 1   
+C51 COMPILER V9.54   BEEP                                                                  05/28/2022 11:17:27 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE BEEP
 OBJECT MODULE PLACED IN .\list\Beep.obj
-COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Beep.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Be
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Beep.c OPTIMIZE(3,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Be
                     -ep.lst) OBJECT(.\list\Beep.obj)
 
 line level    source
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          
   54          //运行蜂鸣器报警任务
-C51 COMPILER V9.54   BEEP                                                                  05/28/2022 08:12:07 PAGE 2   
+C51 COMPILER V9.54   BEEP                                                                  05/28/2022 11:17:27 PAGE 2   
 
   55          void BeepAlarmTask(void)
   56          {
@@ -102,11 +102,11 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    121    ----
+   CODE SIZE        =    137    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      6    ----
+   DATA SIZE        =      6       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.

@@ -1,9 +1,9 @@
-C51 COMPILER V9.54   EXTI                                                                  05/28/2022 08:12:07 PAGE 1   
+C51 COMPILER V9.54   EXTI                                                                  05/28/2022 11:17:27 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE EXTI
 OBJECT MODULE PLACED IN .\list\Exti.obj
-COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Exti.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ex
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE Exti.c OPTIMIZE(3,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\Ex
                     -ti.lst) OBJECT(.\list\Exti.obj)
 
 line level    source
@@ -62,7 +62,7 @@ line level    source
   51          {
   52   1              recvPlusFlag = 0;
   53   1              recvPlusCnt = 0;
-C51 COMPILER V9.54   EXTI                                                                  05/28/2022 08:12:07 PAGE 2   
+C51 COMPILER V9.54   EXTI                                                                  05/28/2022 11:17:27 PAGE 2   
 
   54   1              recvPlusTimeCnt = 0;
   55   1              EX1 = 0;                                   //½ûÖ¹ÖÐ¶Ï
@@ -126,13 +126,13 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.54   EXTI                                                                  05/28/2022 08:12:07 PAGE 3   
+C51 COMPILER V9.54   EXTI                                                                  05/28/2022 11:17:27 PAGE 3   
 
-   CODE SIZE        =    269    ----
+   CODE SIZE        =    326    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      5       3
+   DATA SIZE        =      5       7
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.

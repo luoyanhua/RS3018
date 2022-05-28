@@ -1,9 +1,9 @@
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 1   
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE UART
 OBJECT MODULE PLACED IN .\list\UART.obj
-COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE UART.C OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\UA
+COMPILER INVOKED BY: D:\keil\keil_C51\C51\BIN\C51.EXE UART.C OPTIMIZE(3,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\list\UA
                     -RT.lst) OBJECT(.\list\UART.obj)
 
 line level    source
@@ -62,7 +62,7 @@ line level    source
   52   3                                      return 2;                                                //´íÎó
   53   3                              UART2_Priority(COMx->UART_Priority); //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶(µÍµ½¸ß) Priority_0,Priority_1,Priority_2,Priority
              -_3
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 2   
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 2   
 
   54   3                              if (COMx->UART_Mode == UART_9bit_BRTx)
   55   3                                      S2CON |= (1 << 7); // 9bit
@@ -108,34 +108,34 @@ line level    source
   95   3                              if (COM2.RX_Cnt >= COM_RX2_Lenth)
   96   3                                      COM2.RX_Cnt = 0;
   97   3                              RX2_Buffer[COM2.RX_Cnt++] = S2BUF;
-  98   3                              COM2.RX_TimeOut = TimeOutSet2;
-  99   3                      }
- 100   2              }
- 101   1      
- 102   1              if (TI2)
- 103   1              {
- 104   2                      CLR_TI2();
- 105   2                      COM2.B_TX_busy = 0;
- 106   2              }
- 107   1      }
- 108          
- 109          /********************* UART2 º¯Êý ************************/
- 110          void TX2_write2buff(u8 dat) //Ð´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
- 111          {
- 112   1              
- 113   1              while(COM2.B_TX_busy){};
- 114   1              COM2.B_TX_busy = 1; //±êÖ¾Ã¦    
- 115   1              S2BUF = dat; //×°·¢ËÍ»º³å
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 3   
+  98   3                      }
+  99   2              }
+ 100   1      
+ 101   1              if (TI2)
+ 102   1              {
+ 103   2                      CLR_TI2();
+ 104   2                      COM2.B_TX_busy = 0;
+ 105   2              }
+ 106   1      }
+ 107          
+ 108          /********************* UART2 º¯Êý ************************/
+ 109          void TX2_write2buff(u8 dat) //Ð´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
+ 110          {
+ 111   1      
+ 112   1              while (COM2.B_TX_busy)
+ 113   1              {
+ 114   2              };
+ 115   1              COM2.B_TX_busy = 1; //±êÖ¾Ã¦
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 3   
 
- 116   1              CLR_TI2();
- 117   1      }
- 118          
- 119          void VirtualCOM_StringSend(unsigned char *str)
- 120          {
- 121   1      
+ 116   1              S2BUF = dat;            //×°·¢ËÍ»º³å
+ 117   1              CLR_TI2();
+ 118   1      }
+ 119          
+ 120          void VirtualCOM_StringSend(unsigned char *str)
+ 121          {
  122   1      }
-*** WARNING C280 IN LINE 119 OF UART.C: 'str': unreferenced local variable
+*** WARNING C280 IN LINE 120 OF UART.C: 'str': unreferenced local variable
  123          
  124          /***************  ´®¿Ú³õÊ¼»¯º¯Êý *****************/
  125          void UART_config(void)
@@ -145,7 +145,7 @@ line level    source
              -bit_BRTx
  129   1                                                                                                               //     COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;                 //Ñ¡Ôñ²¨ÌØÂÊ·¢ÉúÆ÷, BRT_Timer2 (×¢Òâ: ´
              -®¿Ú2¹Ì¶¨Ê¹ÓÃBRT_Timer2, ËùÒÔ²»ÓÃÑ¡Ôñ)
- 130   1              COMx_InitStructure.UART_BaudRate = 115200ul;             //²¨ÌØÂÊ,     110 ~ 115200
+ 130   1              COMx_InitStructure.UART_BaudRate = 115200ul;     //²¨ÌØÂÊ,     110 ~ 115200
  131   1              COMx_InitStructure.UART_RxEnable = ENABLE;               //½ÓÊÕÔÊÐí,   ENABLE»òDISABLE
  132   1              COMx_InitStructure.UART_Interrupt = ENABLE;              //ÖÐ¶ÏÔÊÐí,   ENABLE»òDISABLE
  133   1              COMx_InitStructure.UART_Priority = Priority_0;   //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶(µÍµ½¸ß) Priority_0,Priority_1,Priority_2
@@ -156,230 +156,262 @@ line level    source
  137   1              UART_CHG_IO = UART_RX_EN;
  138   1      }
  139          
- 140          //Çå³ý½ÓÊÕ»º´æ
- 141          void clrRX2_Buffer(void)
- 142          {
- 143   1              COM2.RX_Cnt = 0;
- 144   1              COM2.B_RX_OK = 0;
- 145   1              memset(RX2_Buffer, 0, COM_TX2_Lenth);
- 146   1      }
- 147          
- 148          //»ñÈ¡½ÓÊÕµ½µÄÊý¾Ý 0:Î´ÊÕµ½ÓÐÐ§Êý¾Ý
- 149          unsigned char getRxBuf(void)
- 150          {
- 151   1              rxlen = COM2.RX_Cnt;
- 152   1              if (rxlen == 4 || rxlen == 5) //Ä¿Ç°Ö»ÓÐÁ½ÖÖÐ­Òé
- 153   1              {
- 154   2                      memcpy(rxbuf, RX2_Buffer, rxlen);
- 155   2                      return rxlen;
- 156   2              }
- 157   1              else
- 158   1                      return 0;
- 159   1      }
- 160          
- 161          bit uartUsedFlag = 0;
- 162          
- 163          bit get_uartUsedFlag(void)
- 164          {
- 165   1              return uartUsedFlag;
- 166   1      }
- 167          
- 168          void uartBuffSenfTask(void)
- 169          {
- 170   1              if(Get_plusOutFlag() == 0)      //±ÜÃâ´®¿ÚºÍ¸ßËÙ¶¨Ê±Æ÷Í¬Ê±¹¤×÷£¬Ó°Ïì´®¿ÚÊý¾Ý
- 171   1              {
- 172   2                      unsigned char i = 0;
- 173   2                      uartUsedFlag = 1;
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 4   
+ 140          unsigned char rxPackageStartPos = 0;
+ 141          unsigned char rxPackageEndPos = 0;
+ 142          bit rxPackageFlag = 0;
+ 143          
+ 144          //Çå³ý½ÓÊÕ»º´æ
+ 145          void clrRX2_Buffer(void)
+ 146          {
+ 147   1              rxPackageFlag = 0;
+ 148   1              COM2.RX_Cnt = 0;
+ 149   1              COM2.B_RX_OK = 0;
+ 150   1              memset(RX2_Buffer, 0, COM_TX2_Lenth);
+ 151   1      }
+ 152          
+ 153          void uartBuffRxTask(void)
+ 154          {
+ 155   1              unsigned char lenTemp = 0;
+ 156   1              if (COM2.RX_Cnt == 0)
+ 157   1                      return;
+ 158   1              if (rxPackageFlag == 0)
+ 159   1              {
+ 160   2                      if (RX2_Buffer[COM2.RX_Cnt - 1] == 0xBB || RX2_Buffer[COM2.RX_Cnt - 1] == 0xEE)
+ 161   2                      {
+ 162   3                              rxPackageStartPos = COM2.RX_Cnt - 1;
+ 163   3                              rxPackageFlag = 1;
+ 164   3                      }
+ 165   2              }
+ 166   1              else
+ 167   1              {
+ 168   2                      if (RX2_Buffer[COM2.RX_Cnt - 1] == 0xBF)
+ 169   2                      {
+ 170   3                              rxPackageEndPos = COM2.RX_Cnt;
+ 171   3                              lenTemp = rxPackageEndPos - rxPackageStartPos;
+ 172   3                              memcpy(rxbuf, &RX2_Buffer[rxPackageStartPos], (rxPackageEndPos - rxPackageStartPos));
+ 173   3                              rxPackageFlag = 0;
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 4   
 
- 174   2                      clrRX2_Buffer();
- 175   2                      UART_CHG_IO = UART_TX_EN;
- 176   2                      _nop_();
- 177   2                      _nop_();
- 178   2                      _nop_();
- 179   2                      _nop_();        
- 180   2                      for (i = 0; i < COM2.TX_write; i++)
- 181   2                      {
- 182   3                              TX2_write2buff(TX2_Buffer[i]);
- 183   3                      }
- 184   2                      while(COM2.B_TX_busy){};
- 185   2                      _nop_();
- 186   2                      _nop_();
- 187   2                      _nop_();
- 188   2                      _nop_();
- 189   2                      COM2.TX_write = 0;                      
- 190   2                      UART_CHG_IO = UART_RX_EN;
- 191   2                      uartUsedFlag = 0;
- 192   2              }
- 193   1      }
- 194          
- 195          void uartSendBuf(unsigned char *buf, unsigned char len)
- 196          {
- 197   1              COM2.TX_write = 0;
- 198   1              if(len == 0) return;
- 199   1              memcpy(TX2_Buffer,buf,len);
- 200   1              COM2.TX_write = len;
- 201   1      }
- 202          
- 203          unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //Ë³Ðò·Ö±ð´ú±í£º×ó£¬×óÖÐ£¬ÓÒÖÐ£¬ÓÒ
- 204          
- 205          unsigned char get_distanceLevel(unsigned char value)
- 206          {
- 207   1              unsigned char temp_distanceLevel;
- 208   1              if(value > 200)
- 209   1              {
- 210   2                      temp_distanceLevel = 5;
- 211   2              }
- 212   1              else if(value > 155)
- 213   1              {
- 214   2                      temp_distanceLevel = 4;
- 215   2              }
- 216   1              else if(value > 110)
- 217   1              {
- 218   2                      temp_distanceLevel = 3;
- 219   2              }
- 220   1              else if(value > 60)
- 221   1              {
- 222   2                      temp_distanceLevel = 2;
- 223   2              }
- 224   1              else
- 225   1              {
- 226   2                      temp_distanceLevel = 1;
- 227   2              }
- 228   1              return temp_distanceLevel;
- 229   1      }
- 230          
- 231          void sensorTotalPackage(void)
- 232          {
- 233   1              txBuf[0] = 0xAA;
- 234   1              txBuf[1] = 4;
- 235   1              txBuf[2] = get_distanceLevel(saveTotalSensorDistance[0]);
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 5   
+ 174   3                              COM2.B_RX_OK = 1;
+ 175   3                      }
+ 176   2              }
+ 177   1      }
+ 178          
+ 179          //»ñÈ¡½ÓÊÕµ½µÄÊý¾Ý 0:Î´ÊÕµ½ÓÐÐ§Êý¾Ý
+ 180          unsigned char getRxBuf(void)
+ 181          {
+ 182   1              return COM2.B_RX_OK;
+ 183   1      }
+ 184          
+ 185          bit uartUsedFlag = 0;
+ 186          
+ 187          bit get_uartUsedFlag(void)
+ 188          {
+ 189   1              return uartUsedFlag;
+ 190   1      }
+ 191          
+ 192          void uartBuffSendTask(void)
+ 193          {
+ 194   1              if (Get_plusOutFlag() == 0) //±ÜÃâ´®¿ÚºÍ¸ßËÙ¶¨Ê±Æ÷Í¬Ê±¹¤×÷£¬Ó°Ïì´®¿ÚÊý¾Ý
+ 195   1              {
+ 196   2                      unsigned char i = 0;
+ 197   2                      if (COM2.TX_write == 0)
+ 198   2                              return;
+ 199   2                      uartUsedFlag = 1;
+ 200   2                      clrRX2_Buffer();
+ 201   2                      UART_CHG_IO = UART_TX_EN;
+ 202   2                      _nop_();
+ 203   2                      _nop_();
+ 204   2                      _nop_();
+ 205   2                      _nop_();
+ 206   2                      for (i = 0; i < COM2.TX_write; i++)
+ 207   2                      {
+ 208   3                              TX2_write2buff(TX2_Buffer[i]);
+ 209   3                      }
+ 210   2                      while (COM2.B_TX_busy)
+ 211   2                      {
+ 212   3                      };
+ 213   2                      _nop_();
+ 214   2                      _nop_();
+ 215   2                      _nop_();
+ 216   2                      _nop_();
+ 217   2                      COM2.TX_write = 0;
+ 218   2                      UART_CHG_IO = UART_RX_EN;
+ 219   2                      uartUsedFlag = 0;
+ 220   2              }
+ 221   1      }
+ 222          
+ 223          void uartSendBuf(unsigned char *buf, unsigned char len)
+ 224          {
+ 225   1              COM2.TX_write = 0;
+ 226   1              if (len == 0)
+ 227   1                      return;
+ 228   1              memcpy(TX2_Buffer, buf, len);
+ 229   1              COM2.TX_write = len;
+ 230   1      }
+ 231          
+ 232          unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //Ë³Ðò·Ö±ð´ú±í£º×ó£¬×óÖÐ£¬ÓÒÖÐ£¬ÓÒ
+ 233          
+ 234          unsigned char get_distanceLevel(unsigned char value)
+ 235          {
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 5   
 
- 236   1              txBuf[3] = saveTotalSensorDistance[0];
- 237   1              txBuf[4] = get_distanceLevel(saveTotalSensorDistance[1]);
- 238   1              txBuf[5] = saveTotalSensorDistance[1];
- 239   1              txBuf[6] = get_distanceLevel(saveTotalSensorDistance[2]);
- 240   1              txBuf[7] = saveTotalSensorDistance[2];
- 241   1              txBuf[8] = get_distanceLevel(Get_meterDistance()/10);
- 242   1              txBuf[9] = Get_meterDistance()/10;      
- 243   1              txBuf[10] = 0xAF;       
- 244   1              uartSendBuf(txBuf,11);  
- 245   1      }
- 246          
- 247          void sensorReplyPackage(unsigned char ch, unsigned char cmd)
- 248          {
- 249   1              unsigned char temp_txLen = 0;
- 250   1              if(cmd == CMD_ID)
- 251   1              {
- 252   2                      txBuf[0] = 0xEE;
- 253   2                      txBuf[1] = cmd;
- 254   2                      txBuf[2] = ch;
- 255   2                      txBuf[3] = 0xBF;
- 256   2                      temp_txLen = 4;
- 257   2              }
- 258   1              else
- 259   1              {
- 260   2                      txBuf[0] = 0xEE;
- 261   2                      txBuf[1] = cmd;
- 262   2                      txBuf[2] = ch;
- 263   2                      txBuf[3] = Get_meterDistance()/10;
- 264   2                      txBuf[4] = 0xBF;        
- 265   2                      temp_txLen = 5; 
- 266   2              }
- 267   1              uartSendBuf(txBuf,temp_txLen);
- 268   1      }
- 269          
- 270          
- 271          // cmd 0:ÓÒ´«¸ÐÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ÐÆ÷Î»ÖÃÐÅÏ¢ 1:ÓÒ´«¸ÐÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ÐÆ÷¾àÀëÐÅÏ¢
- 272          // ch ¸ù¾Ýºê¶¨ÒåÀ´
- 273          void getSensorImfo(unsigned char ch, unsigned char cmd)
- 274          {
- 275   1              txBuf[0] = 0xBB;
- 276   1              txBuf[1] = cmd;
- 277   1              txBuf[2] = ch;
- 278   1              txBuf[3] = 0xBF;
- 279   1              uartSendBuf(txBuf, 4);
- 280   1      }
- 281          
- 282          //½ÓÊÕÊý¾Ý½âÎöº¯Êý
- 283          // buf:½ÓÊÕÊý¾ÝÖ¸Õë
- 284          // len:½ÓÊÕÊý¾Ý³¤¶È
- 285          //¸ñÊ½£ºBB + cmd + ch + distance(BYTE) + BF
- 286          unsigned char analysisSensorImfo(void)
- 287          {
- 288   1              unsigned char result = 0;
- 289   1              if(getRxBuf() ==  0) return 0;
- 290   1              
- 291   1              if (get_currentSensorID() == RIGHT_SENSOR)
- 292   1              {
- 293   2                      if (rxbuf[1] == CMD_ID)
- 294   2                      {
- 295   3                              if (rxbuf[2] == LEFT_SENSOR)
- 296   3                              {
- 297   4                                      result = 1;//´«¸ÐÆ÷´æÔÚ
-C51 COMPILER V9.54   UART                                                                  05/28/2022 08:12:07 PAGE 6   
+ 236   1              unsigned char temp_distanceLevel;
+ 237   1              if (value > 200)
+ 238   1              {
+ 239   2                      temp_distanceLevel = 5;
+ 240   2              }
+ 241   1              else if (value > 155)
+ 242   1              {
+ 243   2                      temp_distanceLevel = 4;
+ 244   2              }
+ 245   1              else if (value > 110)
+ 246   1              {
+ 247   2                      temp_distanceLevel = 3;
+ 248   2              }
+ 249   1              else if (value > 60)
+ 250   1              {
+ 251   2                      temp_distanceLevel = 2;
+ 252   2              }
+ 253   1              else
+ 254   1              {
+ 255   2                      temp_distanceLevel = 1;
+ 256   2              }
+ 257   1              return temp_distanceLevel;
+ 258   1      }
+ 259          
+ 260          void sensorTotalPackage(void)
+ 261          {
+ 262   1              txBuf[0] = 0xAA;
+ 263   1              txBuf[1] = 4;
+ 264   1              txBuf[2] = get_distanceLevel(saveTotalSensorDistance[0]);
+ 265   1              txBuf[3] = saveTotalSensorDistance[0];
+ 266   1              txBuf[4] = get_distanceLevel(saveTotalSensorDistance[1]);
+ 267   1              txBuf[5] = saveTotalSensorDistance[1];
+ 268   1              txBuf[6] = get_distanceLevel(saveTotalSensorDistance[2]);
+ 269   1              txBuf[7] = saveTotalSensorDistance[2];
+ 270   1              txBuf[8] = get_distanceLevel(Get_meterDistance() / 10);
+ 271   1              txBuf[9] = Get_meterDistance() / 10;
+ 272   1              txBuf[10] = 0xAF;
+ 273   1              uartSendBuf(txBuf, 11);
+ 274   1      }
+ 275          
+ 276          void sensorReplyPackage(unsigned char ch, unsigned char cmd)
+ 277          {
+ 278   1              unsigned char temp_txLen = 0;
+ 279   1              if (cmd == CMD_ID)
+ 280   1              {
+ 281   2                      txBuf[0] = 0xEE;
+ 282   2                      txBuf[1] = cmd;
+ 283   2                      txBuf[2] = ch;
+ 284   2                      txBuf[3] = 0xBF;
+ 285   2                      temp_txLen = 4;
+ 286   2              }
+ 287   1              else
+ 288   1              {
+ 289   2                      txBuf[0] = 0xEE;
+ 290   2                      txBuf[1] = cmd;
+ 291   2                      txBuf[2] = ch;
+ 292   2                      txBuf[3] = Get_meterDistance() / 10;
+ 293   2                      txBuf[4] = 0xBF;
+ 294   2                      temp_txLen = 5;
+ 295   2              }
+ 296   1              uartSendBuf(txBuf, temp_txLen);
+ 297   1      }
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 6   
 
- 298   4                              }
- 299   3                              else if (rxbuf[2] == LEFT_MID_SENSOR)
- 300   3                              {
- 301   4                                      result = 1;//´«¸ÐÆ÷´æÔÚ
- 302   4                              }
- 303   3                              else if (rxbuf[2] == RIGHT_MID_SENSOR)
- 304   3                              {
- 305   4                                      result = 1;//´«¸ÐÆ÷´æÔÚ
- 306   4                              }
- 307   3                      }
- 308   2                      else
- 309   2                      {
- 310   3                              if (rxbuf[2] == LEFT_SENSOR)
- 311   3                              {
- 312   4                                      saveTotalSensorDistance[0] = rxbuf[3] ;
- 313   4                                      result = 1;//½âÎö¾àÀë
- 314   4                              }
- 315   3                              else if (rxbuf[2] == LEFT_MID_SENSOR)
- 316   3                              {
- 317   4                                      saveTotalSensorDistance[1] = rxbuf[3] ;
- 318   4                                      result = 1;//½âÎö¾àÀë
- 319   4                              }
- 320   3                              else if (rxbuf[2] == RIGHT_MID_SENSOR)
- 321   3                              {
- 322   4                                      saveTotalSensorDistance[2] = rxbuf[3] ;
- 323   4                                      result = 1;//½âÎö¾àÀë
- 324   4                              }
- 325   3                      }
- 326   2              }
- 327   1              else
- 328   1              {
- 329   2                      if (rxbuf[1] == CMD_ID)
- 330   2                      {
- 331   3                              if (rxbuf[2] == get_currentSensorID()) //ÅÐ¶ÏÊÕµ½µÄÐÅÏ¢ÊÇ·ñÐèÒª»Ø¸´£¬»Ø¸´±ØÐë´«¸ÐÆ÷ºÅ¶ÔÓ¦
- 332   3                              {
- 333   4                                      sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
- 334   4                                      result = 1;//´«¸ÐÆ÷´æÔÚ£¬ÐèÒª»Ø¸´ÐÅÏ¢
- 335   4                              }
- 336   3                      }
- 337   2                      else
- 338   2                      {
- 339   3                              if (rxbuf[2] == get_currentSensorID()) //ÅÐ¶ÏÊÕµ½µÄÐÅÏ¢ÊÇ·ñÐèÒª»Ø¸´£¬»Ø¸´±ØÐë´«¸ÐÆ÷ºÅ¶ÔÓ¦
- 340   3                              {
- 341   4                                      sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
- 342   4                                      result = 1;//ÐèÒª»Ø¸´¾àÀëÐÅÏ¢
- 343   4                              }
- 344   3                      }
- 345   2              }
- 346   1              return result;
- 347   1      }
+ 298          
+ 299          // cmd 0:ÓÒ´«¸ÐÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ÐÆ÷Î»ÖÃÐÅÏ¢ 1:ÓÒ´«¸ÐÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ÐÆ÷¾àÀëÐÅÏ¢
+ 300          // ch ¸ù¾Ýºê¶¨ÒåÀ´
+ 301          void getSensorImfo(unsigned char ch, unsigned char cmd)
+ 302          {
+ 303   1              txBuf[0] = 0xBB;
+ 304   1              txBuf[1] = cmd;
+ 305   1              txBuf[2] = ch;
+ 306   1              txBuf[3] = 0xBF;
+ 307   1              uartSendBuf(txBuf, 4);
+ 308   1      }
+ 309          
+ 310          //½ÓÊÕÊý¾Ý½âÎöº¯Êý
+ 311          // buf:½ÓÊÕÊý¾ÝÖ¸Õë
+ 312          // len:½ÓÊÕÊý¾Ý³¤¶È
+ 313          //¸ñÊ½£ºBB + cmd + ch + distance(BYTE) + BF
+ 314          unsigned char analysisSensorImfo(void)
+ 315          {
+ 316   1              unsigned char result = 0;
+ 317   1              if (getRxBuf() == 0)
+ 318   1                      return 0;
+ 319   1              COM2.B_RX_OK = 0;
+ 320   1      
+ 321   1              if (get_currentSensorID() == RIGHT_SENSOR)
+ 322   1              {
+ 323   2                      if (rxbuf[1] == CMD_ID)
+ 324   2                      {
+ 325   3                              if (rxbuf[2] == LEFT_SENSOR)
+ 326   3                              {
+ 327   4                                      result = 1; //´«¸ÐÆ÷´æÔÚ
+ 328   4                              }
+ 329   3                              else if (rxbuf[2] == LEFT_MID_SENSOR)
+ 330   3                              {
+ 331   4                                      result = 1; //´«¸ÐÆ÷´æÔÚ
+ 332   4                              }
+ 333   3                              else if (rxbuf[2] == RIGHT_MID_SENSOR)
+ 334   3                              {
+ 335   4                                      result = 1; //´«¸ÐÆ÷´æÔÚ
+ 336   4                              }
+ 337   3                      }
+ 338   2                      else
+ 339   2                      {
+ 340   3                              if (rxbuf[2] == LEFT_SENSOR)
+ 341   3                              {
+ 342   4                                      saveTotalSensorDistance[0] = rxbuf[3];
+ 343   4                                      result = 1; //½âÎö¾àÀë
+ 344   4                              }
+ 345   3                              else if (rxbuf[2] == LEFT_MID_SENSOR)
+ 346   3                              {
+ 347   4                                      saveTotalSensorDistance[1] = rxbuf[3];
+ 348   4                                      result = 1; //½âÎö¾àÀë
+ 349   4                              }
+ 350   3                              else if (rxbuf[2] == RIGHT_MID_SENSOR)
+ 351   3                              {
+ 352   4                                      saveTotalSensorDistance[2] = rxbuf[3];
+ 353   4                                      result = 1; //½âÎö¾àÀë
+ 354   4                              }
+ 355   3                      }
+ 356   2              }
+ 357   1              else
+ 358   1              {
+ 359   2                      if (rxbuf[1] == CMD_ID)
+C51 COMPILER V9.54   UART                                                                  05/28/2022 11:17:27 PAGE 7   
+
+ 360   2                      {
+ 361   3                              if (rxbuf[2] == get_currentSensorID()) //ÅÐ¶ÏÊÕµ½µÄÐÅÏ¢ÊÇ·ñÐèÒª»Ø¸´£¬»Ø¸´±ØÐë´«¸ÐÆ÷ºÅ¶ÔÓ¦
+ 362   3                              {
+ 363   4                                      sensorReplyPackage(rxbuf[2], rxbuf[1]);
+ 364   4                                      result = 1; //´«¸ÐÆ÷´æÔÚ£¬ÐèÒª»Ø¸´ÐÅÏ¢
+ 365   4                              }
+ 366   3                      }
+ 367   2                      else
+ 368   2                      {
+ 369   3                              if (rxbuf[2] == get_currentSensorID()) //ÅÐ¶ÏÊÕµ½µÄÐÅÏ¢ÊÇ·ñÐèÒª»Ø¸´£¬»Ø¸´±ØÐë´«¸ÐÆ÷ºÅ¶ÔÓ¦
+ 370   3                              {
+ 371   4                                      sensorReplyPackage(rxbuf[2], rxbuf[1]);
+ 372   4                                      result = 1; //ÐèÒª»Ø¸´¾àÀëÐÅÏ¢
+ 373   4                              }
+ 374   3                      }
+ 375   2              }
+ 376   1              return result;
+ 377   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    979    ----
+   CODE SIZE        =   1236    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    110    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     12      25
+   DATA SIZE        =     14      39
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.
 
 

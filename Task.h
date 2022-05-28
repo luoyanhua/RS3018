@@ -16,8 +16,8 @@
 #define LOW 0
 #define HIGH 1
 
+#define SENSOR_ID_RX P10
 #define SENSOR_ID_CHECK P34
-#define SENSOR_ID_IO    P11
 #define PWM_OUTPUT  P35
 
 void sensorIdAdjustTask(void);

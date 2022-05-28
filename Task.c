@@ -104,7 +104,14 @@ void sensorIdAdjustTask(void)
                 }
                 else //两次电平不等，与P35电平不等就是右
                 {
-                    currentSensorID = RIGHT_SENSOR;
+                    if(SENSOR_ID_RX == 0)
+                    {
+                        currentSensorID = RIGHT_MID_SENSOR;
+                    }
+                    else
+                    {
+                        currentSensorID = RIGHT_SENSOR;
+                    }                  
                 }
             }
             sensorIdCheckState = SensorCheck_4;

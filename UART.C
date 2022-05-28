@@ -95,7 +95,6 @@ void UART2_int(void) interrupt UART2_VECTOR
 			if (COM2.RX_Cnt >= COM_RX2_Lenth)
 				COM2.RX_Cnt = 0;
 			RX2_Buffer[COM2.RX_Cnt++] = S2BUF;
-			COM2.RX_TimeOut = TimeOutSet2;
 		}
 	}
 
@@ -109,16 +108,17 @@ void UART2_int(void) interrupt UART2_VECTOR
 /********************* UART2 º¯Êı ************************/
 void TX2_write2buff(u8 dat) //Ğ´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
 {
-	
-	while(COM2.B_TX_busy){};
-	COM2.B_TX_busy = 1; //±êÖ¾Ã¦	
-	S2BUF = dat; //×°·¢ËÍ»º³å
+
+	while (COM2.B_TX_busy)
+	{
+	};
+	COM2.B_TX_busy = 1; //±êÖ¾Ã¦
+	S2BUF = dat;		//×°·¢ËÍ»º³å
 	CLR_TI2();
 }
 
 void VirtualCOM_StringSend(unsigned char *str)
 {
-
 }
 
 /***************  ´®¿Ú³õÊ¼»¯º¯Êı *****************/
@@ -127,7 +127,7 @@ void UART_config(void)
 	COMx_InitDefine COMx_InitStructure;				 //½á¹¹¶¨Òå
 	COMx_InitStructure.UART_Mode = UART_8bit_BRTx;	 //Ä£Ê½,   UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx
 													 //	COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;			//Ñ¡Ôñ²¨ÌØÂÊ·¢ÉúÆ÷, BRT_Timer2 (×¢Òâ: ´®¿Ú2¹Ì¶¨Ê¹ÓÃBRT_Timer2, ËùÒÔ²»ÓÃÑ¡Ôñ)
-	COMx_InitStructure.UART_BaudRate = 115200ul;		 //²¨ÌØÂÊ,     110 ~ 115200
+	COMx_InitStructure.UART_BaudRate = 115200ul;	 //²¨ÌØÂÊ,     110 ~ 115200
 	COMx_InitStructure.UART_RxEnable = ENABLE;		 //½ÓÊÕÔÊĞí,   ENABLE»òDISABLE
 	COMx_InitStructure.UART_Interrupt = ENABLE;		 //ÖĞ¶ÏÔÊĞí,   ENABLE»òDISABLE
 	COMx_InitStructure.UART_Priority = Priority_0;	 //Ö¸¶¨ÖĞ¶ÏÓÅÏÈ¼¶(µÍµ½¸ß) Priority_0,Priority_1,Priority_2,Priority_3
@@ -137,25 +137,49 @@ void UART_config(void)
 	UART_CHG_IO = UART_RX_EN;
 }
 
+unsigned char rxPackageStartPos = 0;
+unsigned char rxPackageEndPos = 0;
+bit rxPackageFlag = 0;
+
 //Çå³ı½ÓÊÕ»º´æ
 void clrRX2_Buffer(void)
 {
+	rxPackageFlag = 0;
 	COM2.RX_Cnt = 0;
 	COM2.B_RX_OK = 0;
 	memset(RX2_Buffer, 0, COM_TX2_Lenth);
 }
 
+void uartBuffRxTask(void)
+{
+	unsigned char lenTemp = 0;
+	if (COM2.RX_Cnt == 0)
+		return;
+	if (rxPackageFlag == 0)
+	{
+		if (RX2_Buffer[COM2.RX_Cnt - 1] == 0xBB || RX2_Buffer[COM2.RX_Cnt - 1] == 0xEE)
+		{
+			rxPackageStartPos = COM2.RX_Cnt - 1;
+			rxPackageFlag = 1;
+		}
+	}
+	else
+	{
+		if (RX2_Buffer[COM2.RX_Cnt - 1] == 0xBF)
+		{
+			rxPackageEndPos = COM2.RX_Cnt;
+			lenTemp = rxPackageEndPos - rxPackageStartPos;
+			memcpy(rxbuf, &RX2_Buffer[rxPackageStartPos], (rxPackageEndPos - rxPackageStartPos));
+			rxPackageFlag = 0;
+			COM2.B_RX_OK = 1;
+		}
+	}
+}
+
 //»ñÈ¡½ÓÊÕµ½µÄÊı¾İ 0:Î´ÊÕµ½ÓĞĞ§Êı¾İ
 unsigned char getRxBuf(void)
 {
-	rxlen = COM2.RX_Cnt;
-	if (rxlen == 4 || rxlen == 5) //Ä¿Ç°Ö»ÓĞÁ½ÖÖĞ­Òé
-	{
-		memcpy(rxbuf, RX2_Buffer, rxlen);
-		return rxlen;
-	}
-	else
-		return 0;
+	return COM2.B_RX_OK;
 }
 
 bit uartUsedFlag = 0;
@@ -165,28 +189,32 @@ bit get_uartUsedFlag(void)
 	return uartUsedFlag;
 }
 
-void uartBuffSenfTask(void)
+void uartBuffSendTask(void)
 {
-	if(Get_plusOutFlag() == 0)	//±ÜÃâ´®¿ÚºÍ¸ßËÙ¶¨Ê±Æ÷Í¬Ê±¹¤×÷£¬Ó°Ïì´®¿ÚÊı¾İ
+	if (Get_plusOutFlag() == 0) //±ÜÃâ´®¿ÚºÍ¸ßËÙ¶¨Ê±Æ÷Í¬Ê±¹¤×÷£¬Ó°Ïì´®¿ÚÊı¾İ
 	{
 		unsigned char i = 0;
+		if (COM2.TX_write == 0)
+			return;
 		uartUsedFlag = 1;
 		clrRX2_Buffer();
 		UART_CHG_IO = UART_TX_EN;
 		_nop_();
 		_nop_();
 		_nop_();
-		_nop_();	
+		_nop_();
 		for (i = 0; i < COM2.TX_write; i++)
 		{
 			TX2_write2buff(TX2_Buffer[i]);
 		}
-		while(COM2.B_TX_busy){};
+		while (COM2.B_TX_busy)
+		{
+		};
 		_nop_();
 		_nop_();
 		_nop_();
 		_nop_();
-		COM2.TX_write = 0;			
+		COM2.TX_write = 0;
 		UART_CHG_IO = UART_RX_EN;
 		uartUsedFlag = 0;
 	}
@@ -195,8 +223,9 @@ void uartBuffSenfTask(void)
 void uartSendBuf(unsigned char *buf, unsigned char len)
 {
 	COM2.TX_write = 0;
-	if(len == 0) return;
-	memcpy(TX2_Buffer,buf,len);
+	if (len == 0)
+		return;
+	memcpy(TX2_Buffer, buf, len);
 	COM2.TX_write = len;
 }
 
@@ -205,19 +234,19 @@ unsigned char saveTotalSensorDistance[SENSOR_NUM_MAX] = {0}; //Ë³Ğò·Ö±ğ´ú±í£º×ó£
 unsigned char get_distanceLevel(unsigned char value)
 {
 	unsigned char temp_distanceLevel;
-	if(value > 200)
+	if (value > 200)
 	{
 		temp_distanceLevel = 5;
 	}
-	else if(value > 155)
+	else if (value > 155)
 	{
 		temp_distanceLevel = 4;
 	}
-	else if(value > 110)
+	else if (value > 110)
 	{
 		temp_distanceLevel = 3;
 	}
-	else if(value > 60)
+	else if (value > 60)
 	{
 		temp_distanceLevel = 2;
 	}
@@ -238,16 +267,16 @@ void sensorTotalPackage(void)
 	txBuf[5] = saveTotalSensorDistance[1];
 	txBuf[6] = get_distanceLevel(saveTotalSensorDistance[2]);
 	txBuf[7] = saveTotalSensorDistance[2];
-	txBuf[8] = get_distanceLevel(Get_meterDistance()/10);
-	txBuf[9] = Get_meterDistance()/10;	
-	txBuf[10] = 0xAF;	
-	uartSendBuf(txBuf,11);	
+	txBuf[8] = get_distanceLevel(Get_meterDistance() / 10);
+	txBuf[9] = Get_meterDistance() / 10;
+	txBuf[10] = 0xAF;
+	uartSendBuf(txBuf, 11);
 }
 
 void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 {
 	unsigned char temp_txLen = 0;
-	if(cmd == CMD_ID)
+	if (cmd == CMD_ID)
 	{
 		txBuf[0] = 0xEE;
 		txBuf[1] = cmd;
@@ -260,13 +289,12 @@ void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 		txBuf[0] = 0xEE;
 		txBuf[1] = cmd;
 		txBuf[2] = ch;
-		txBuf[3] = Get_meterDistance()/10;
-		txBuf[4] = 0xBF;	
-		temp_txLen = 5;	
+		txBuf[3] = Get_meterDistance() / 10;
+		txBuf[4] = 0xBF;
+		temp_txLen = 5;
 	}
-	uartSendBuf(txBuf,temp_txLen);
+	uartSendBuf(txBuf, temp_txLen);
 }
-
 
 // cmd 0:ÓÒ´«¸ĞÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ĞÆ÷Î»ÖÃĞÅÏ¢ 1:ÓÒ´«¸ĞÆ÷Ñ­»·»ñÈ¡ÆäËû´«¸ĞÆ÷¾àÀëĞÅÏ¢
 // ch ¸ù¾İºê¶¨ÒåÀ´
@@ -286,41 +314,43 @@ void getSensorImfo(unsigned char ch, unsigned char cmd)
 unsigned char analysisSensorImfo(void)
 {
 	unsigned char result = 0;
-	if(getRxBuf() ==  0) return 0;
-	
+	if (getRxBuf() == 0)
+		return 0;
+	COM2.B_RX_OK = 0;
+
 	if (get_currentSensorID() == RIGHT_SENSOR)
 	{
 		if (rxbuf[1] == CMD_ID)
 		{
 			if (rxbuf[2] == LEFT_SENSOR)
 			{
-				result = 1;//´«¸ĞÆ÷´æÔÚ
+				result = 1; //´«¸ĞÆ÷´æÔÚ
 			}
 			else if (rxbuf[2] == LEFT_MID_SENSOR)
 			{
-				result = 1;//´«¸ĞÆ÷´æÔÚ
+				result = 1; //´«¸ĞÆ÷´æÔÚ
 			}
 			else if (rxbuf[2] == RIGHT_MID_SENSOR)
 			{
-				result = 1;//´«¸ĞÆ÷´æÔÚ
+				result = 1; //´«¸ĞÆ÷´æÔÚ
 			}
 		}
 		else
 		{
 			if (rxbuf[2] == LEFT_SENSOR)
 			{
-				saveTotalSensorDistance[0] = rxbuf[3] ;
-				result = 1;//½âÎö¾àÀë
+				saveTotalSensorDistance[0] = rxbuf[3];
+				result = 1; //½âÎö¾àÀë
 			}
 			else if (rxbuf[2] == LEFT_MID_SENSOR)
 			{
-				saveTotalSensorDistance[1] = rxbuf[3] ;
-				result = 1;//½âÎö¾àÀë
+				saveTotalSensorDistance[1] = rxbuf[3];
+				result = 1; //½âÎö¾àÀë
 			}
 			else if (rxbuf[2] == RIGHT_MID_SENSOR)
 			{
-				saveTotalSensorDistance[2] = rxbuf[3] ;
-				result = 1;//½âÎö¾àÀë
+				saveTotalSensorDistance[2] = rxbuf[3];
+				result = 1; //½âÎö¾àÀë
 			}
 		}
 	}
@@ -330,16 +360,16 @@ unsigned char analysisSensorImfo(void)
 		{
 			if (rxbuf[2] == get_currentSensorID()) //ÅĞ¶ÏÊÕµ½µÄĞÅÏ¢ÊÇ·ñĞèÒª»Ø¸´£¬»Ø¸´±ØĞë´«¸ĞÆ÷ºÅ¶ÔÓ¦
 			{
-				sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
-				result = 1;//´«¸ĞÆ÷´æÔÚ£¬ĞèÒª»Ø¸´ĞÅÏ¢
+				sensorReplyPackage(rxbuf[2], rxbuf[1]);
+				result = 1; //´«¸ĞÆ÷´æÔÚ£¬ĞèÒª»Ø¸´ĞÅÏ¢
 			}
 		}
 		else
 		{
 			if (rxbuf[2] == get_currentSensorID()) //ÅĞ¶ÏÊÕµ½µÄĞÅÏ¢ÊÇ·ñĞèÒª»Ø¸´£¬»Ø¸´±ØĞë´«¸ĞÆ÷ºÅ¶ÔÓ¦
 			{
-				sensorReplyPackage(rxbuf[2] ,rxbuf[1]);
-				result = 1;//ĞèÒª»Ø¸´¾àÀëĞÅÏ¢
+				sensorReplyPackage(rxbuf[2], rxbuf[1]);
+				result = 1; //ĞèÒª»Ø¸´¾àÀëĞÅÏ¢
 			}
 		}
 	}
