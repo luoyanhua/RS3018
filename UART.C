@@ -249,7 +249,7 @@ void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 	unsigned char temp_txLen = 0;
 	if(cmd == CMD_ID)
 	{
-		txBuf[0] = 0xBB;
+		txBuf[0] = 0xEE;
 		txBuf[1] = cmd;
 		txBuf[2] = ch;
 		txBuf[3] = 0xBF;
@@ -257,7 +257,7 @@ void sensorReplyPackage(unsigned char ch, unsigned char cmd)
 	}
 	else
 	{
-		txBuf[0] = 0xBB;
+		txBuf[0] = 0xEE;
 		txBuf[1] = cmd;
 		txBuf[2] = ch;
 		txBuf[3] = Get_meterDistance()/10;

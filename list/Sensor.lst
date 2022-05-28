@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 1   
+C51 COMPILER V9.54   SENSOR                                                                05/28/2022 08:12:07 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
@@ -62,7 +62,7 @@ line level    source
   52   1              return obstaclesExistenceFlag;
   53   1      }
   54          
-C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 2   
+C51 COMPILER V9.54   SENSOR                                                                05/28/2022 08:12:07 PAGE 2   
 
   55          //×¼±¸¿ªÊ¼²âÊÔ£¬³õÊ¼»¯Ïà¹Ø²ÎÊý
   56          void Start_sendOncePlusTask(void)
@@ -126,7 +126,7 @@ line level    source
  113   2              case START_METER_STATE:
  114   2                      if (Get_recvPlusFlag() == 0) //ÊÕµ½²¨ÐÎ£¬¿ªÊ¼¼ÆËã¾àÀë
  115   2                      {
-C51 COMPILER V9.54   SENSOR                                                                05/19/2022 21:29:15 PAGE 3   
+C51 COMPILER V9.54   SENSOR                                                                05/28/2022 08:12:07 PAGE 3   
 
  116   3                              meterDistance = get_time_escape_sec(Get_us_250Cnt(), SendContinuePlusTimeCnt) * 2.5 * 17; // 340/2=170Â
              -·³ÌÀ´»Ø£¬1¸ö²îÖµ´ú±í250us

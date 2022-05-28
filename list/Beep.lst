@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   BEEP                                                                  05/19/2022 21:29:15 PAGE 1   
+C51 COMPILER V9.54   BEEP                                                                  05/28/2022 08:12:07 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE BEEP
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          
   54          //运行蜂鸣器报警任务
-C51 COMPILER V9.54   BEEP                                                                  05/19/2022 21:29:15 PAGE 2   
+C51 COMPILER V9.54   BEEP                                                                  05/28/2022 08:12:07 PAGE 2   
 
   55          void BeepAlarmTask(void)
   56          {

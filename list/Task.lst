@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 1   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE TASK
@@ -62,7 +62,7 @@ line level    source
   51   1      }
   52          
   53          //≈–∂œ±Í◊º
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 2   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 2   
 
   54          // P35 ‰≥ˆ∏ﬂµÁ∆Ω£¨»Áπ˚P34µÁ—πŒ™µÕµÁ∆Ω£¨æÕ «◊Û,”“¥´∏–∆˜£ª»Áπ˚P34Œ™∏ﬂµÁ∆ΩæÕ «◊Û÷–£¨”“÷–
   55          // P35 ‰≥ˆµÕµÁ∆Ω£¨»Áπ˚P34µÁ—πŒ™µÕµÁ∆Ω£¨æÕ «◊Û£¨”“÷–¥´∏–∆˜£¨»Áπ˚P34Œ™∏ﬂµÁ∆Ω£¨æÕ «”“£¨◊Û÷–¥´∏–∆˜°£
@@ -126,7 +126,7 @@ line level    source
  111   3                  UART_config();
  112   3              }
  113   2              break;
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 3   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 3   
 
  114   2          case SensorCheck_4:
  115   2              if (currentSensorID == RIGHT_SENSOR) //»Áπ˚ «”“¥´∏–∆˜–Ë“™∏˙∆‰À˚¥´∏–∆˜Õ®–≈
@@ -190,7 +190,7 @@ line level    source
  169   5                          sensorIdGetCnt = 0;
  170   5                          sensorIdCheckState = SensorCheck_8;
  171   5                      }
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 4   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 4   
 
  172   4                  }
  173   3              }
@@ -254,7 +254,7 @@ line level    source
  227          {
  228   1          if (sensorIdCheckRunFlag == 0)
  229   1              return;
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 5   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 5   
 
  230   1          switch (appTaskState)
  231   1          {
@@ -318,7 +318,7 @@ line level    source
  289   4                      {
  290   5                          //ªÒ»°≤‚ ‘æ‡¿Î
  291   5                          VirtualCOM_StringSend("No obstacles!\r\n"); // UART1∑¢ÀÕ“ª∏ˆ◊÷∑˚¥Æ
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 6   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 6   
 
  292   5                          appTaskState = 4;
  293   5                          sensorIdCheckOKFlag = 1;
@@ -382,7 +382,7 @@ line level    source
  347   4                      // ’µΩ◊Û≤‡ÃΩÕ∑æ‡¿Î–≈œ¢
  348   4                  }
  349   3                  else //«Â≥˛æ‡¿Î–≈œ¢
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 7   
+C51 COMPILER V9.54   TASK                                                                  05/28/2022 08:12:07 PAGE 7   
 
  350   3                  {
  351   4                  }
@@ -419,35 +419,24 @@ line level    source
  378   3                  sensorDistanceGetState = 0;
  379   3              }
  380   2              break;
- 381   2          case 7:                                                                            //Ω¯»Î’‚¿Ô£¨±ÿ»ª≤ª 
-             -«”“¥´∏–∆˜
- 382   2              if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 140) // 70ms≥¨ ±∫ÛºÃ–¯Õ˘
-             -œ¬Ω¯––
+ 381   2          case 7:                       //Ω¯»Î’‚¿Ô£¨±ÿ»ª≤ª «”“¥´∏–∆˜
+ 382   2              if (analysisSensorImfo()) // «∑Ò ’µΩªÒ»°Œª÷√–≈œ¢÷∏¡Ó
  383   2              {
- 384   3                  sensorDistanceGetState = 0;
- 385   3              }
- 386   2              else
- 387   2              {
- 388   3                  if (analysisSensorImfo()) // «∑Ò ’µΩªÒ»°Œª÷√–≈œ¢÷∏¡Ó
- 389   3                  {
- 390   4                      //Ω‚Œˆªÿ∏¥ ˝æ›
- 391   4                      sensorDistanceGetState = 0;
- 392   4                  }
- 393   3              }
- 394   2              break;
- 395   2          }
- 396   1      }
+ 384   3                  //Ω‚Œˆªÿ∏¥ ˝æ›
+ 385   3                  sensorDistanceGetState = 0;
+ 386   3              }
+ 387   2              break;
+ 388   2          }
+ 389   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    916    ----
+   CODE SIZE        =    892    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =     15    ----
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.54   TASK                                                                  05/19/2022 21:29:15 PAGE 8   
-
    BIT SIZE         =      4    ----
 END OF MODULE INFORMATION.
 

@@ -378,18 +378,11 @@ void sensorDistanceGetTask(void)
             sensorDistanceGetState = 0;
         }
         break;
-    case 7:                                                                            //进入这里，必然不是右传感器
-        if (get_time_escape_sec(Get_SysHalfMsTick(), sensorDistanceGetTimeCnt) >= 140) // 70ms超时后继续往下进行
+    case 7:                       //进入这里，必然不是右传感器
+        if (analysisSensorImfo()) //是否收到获取位置信息指令
         {
+            //解析回复数据
             sensorDistanceGetState = 0;
-        }
-        else
-        {
-            if (analysisSensorImfo()) //是否收到获取位置信息指令
-            {
-                //解析回复数据
-                sensorDistanceGetState = 0;
-            }
         }
         break;
     }
